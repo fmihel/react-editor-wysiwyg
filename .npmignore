@@ -1,6 +1,7 @@
 dev
 node_modules
 .vscode
+.git
 test
 .eslintignore
 .gitignore

@@ -2,7 +2,7 @@
   "name": "react-editor-wysyvig",
   "version": "0.0.1",
   "description": "react,wysyvig,editor,javascript",
-  "main": "dist/react-editor-wysyvig.js",
+  "main": "dist/Editor.js",
   "scripts": {
     "build": "rm -rf ./dist && webpack --prod",
     "npm-publish-patch": "npm run build && npm version patch && npm publish",
