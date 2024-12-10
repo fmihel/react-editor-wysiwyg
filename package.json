@@ -1,6 +1,6 @@
 {
   "name": "react-editor-wysyvig",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "react,wysyvig,editor,javascript",
   "main": "dist/Editor.js",
   "scripts": {
@@ -26,7 +26,6 @@
     "url": "https://github.com/fmihel/react-editor-wysyvig/issues"
   },
   "homepage": "https://github.com/fmihel/react-editor-wysyvig#readme",
-
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
@@ -66,5 +65,4 @@
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.3"
   }
-
 }
