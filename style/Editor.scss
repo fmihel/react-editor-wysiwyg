@@ -1,0 +1,33 @@
+.editor{
+    //  @include no-select();
+    overflow: auto;
+    max-height: 200px;
+    height: 200px;
+    span{
+        // border-bottom:1px solid  rgba(0,0,0,0);
+    }
+    .cursor{
+        border-left:1px solid lime;
+    }
+
+    img{
+        &.cursor{
+            border-left:0px;
+            outline: 1px solid lime;
+        }
+        &.select{
+            filter:  invert(100%) grayscale(100%) sepia(100%) invert(100%);
+
+        }
+    }
+    
+
+    .select{
+        // border-left:1px solid lime;
+         background-color: #01359F;
+         color:white !important;
+        // font-size: 0.6rem;
+    }
+   
+
+}

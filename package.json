@@ -2,9 +2,14 @@
   "name": "react-editor-wysyvig",
   "version": "0.0.1",
   "description": "react,wysyvig,editor,javascript",
-  "main": "index.js",
+  "main": "dist/react-editor-wysyvig.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rm -rf dist && webpack --prod",
+    "git-push-main": "git checkout main && git push origin main && git push origin main --tag",
+    "npm-publish-patch": "npm run build && npm version patch && npm publish",
+    "npm-publish-minor": "npm run build && npm version minor && npm publish",
+    "npm-publish-major": "npm run build && npm version major && npm publish",
+    "npm-publish-beta": "npm run build && npm publish  --tag beta"
   },
   "repository": {
     "type": "git",

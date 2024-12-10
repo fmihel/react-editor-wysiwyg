@@ -1,17 +1,18 @@
 const path = require('path');
 
-const {defArg} = require('fmihel-server-lib');
+// получить переменную командной строки
+const arg = (name) => process.argv.find((a) => ((a === name) || (a === (`--${name}`)))) !== undefined;
 
 let remotePath = false;
 const toRemotePath = '';
-const toProduction = !toRemotePath && defArg('prod');
+const toProduction = !toRemotePath && arg('prod');
 
 
 module.exports = {
   mode: toProduction?'production':'development',
   devtool: toProduction?'':'inline-source-map',
   entry: {
-    'windeco-components':'./jsx/index.js',
+    'Editor':'./jsx/Editor.jsx',
     //Btn:'./source/Btn/Btn.jsx',
     //Edit:'./source/Edit/Edit.jsx',
   },
@@ -35,8 +36,6 @@ module.exports = {
         amd: "ReactDOM",          
         root: "ReactDOM"      
     },
-    "fmihel-browser-lib":"fmihel-browser-lib",
-    "jquery":'jquery',
     "lodash":"lodash"
   },    
   module: {

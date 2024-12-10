@@ -1,0 +1,31 @@
+.dialog{
+    // padding: 0px;
+
+    [frame]{
+        min-height: 100px;
+        min-width: 100px;
+        
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-content: stretch;
+        align-items: stretch;        
+        
+        [body]{
+            flex:1 1 auto;
+        }
+        
+        [footer]{
+            // border: 1px solid gray;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: flex-end;
+            align-items: center;
+            align-content: center;            
+            
+            height: 1.5rem
+        }
+    }
+}
