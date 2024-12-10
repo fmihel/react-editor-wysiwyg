@@ -1,7 +1,7 @@
 /* eslint-disable prefer-destructuring */
 
 import eq from './eq.js';
-import { isNotEnd } from '../EditorTags/End/End.jsx';
+import { isNotEnd } from '../jsx/EditorTags/End/End.jsx';
 import get from './get.js';
 
 class Selected {

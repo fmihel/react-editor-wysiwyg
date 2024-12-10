@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
 import React from 'react';
-import get from '../../common/get';
-import random_str from '../../common/random_str';
-import dialog from '../../EditorDialog/dialog';
+import get from '../../../_js/get.js';
+import random_str from '../../../_js/random_str.js';
+import dialog from '../../EditorDialog/dialog.js';
 import Prop from './Prop.jsx';
 
 function A({

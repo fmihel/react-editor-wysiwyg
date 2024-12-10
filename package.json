@@ -4,8 +4,7 @@
   "description": "react,wysyvig,editor,javascript",
   "main": "dist/react-editor-wysyvig.js",
   "scripts": {
-    "build": "rm -rf dist && webpack --prod",
-    "git-push-main": "git checkout main && git push origin main && git push origin main --tag",
+    "build": "rm -rf ./dist && webpack --prod",
     "npm-publish-patch": "npm run build && npm version patch && npm publish",
     "npm-publish-minor": "npm run build && npm version minor && npm publish",
     "npm-publish-major": "npm run build && npm version major && npm publish",

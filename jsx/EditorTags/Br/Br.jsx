@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import React from 'react';
-import random_str from '../../common/random_str';
+import random_str from '../../../_js/random_str';
 
 function Br({
     id,

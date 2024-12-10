@@ -6,6 +6,8 @@ const arg = (name) => process.argv.find((a) => ((a === name) || (a === (`--${nam
 let remotePath = false;
 const toRemotePath = '';
 const toProduction = !toRemotePath && arg('prod');
+//  const toProduction = false;
+
 
 
 module.exports = {

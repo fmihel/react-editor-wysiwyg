@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
 import React from 'react';
-import random_str from '../../common/random_str';
-import get from '../../common/get';
+import random_str from '../../../_js/random_str.js';
+import get from '../../../_js/get.js';
 import Prop from './Prop.jsx';
-import dialog from '../../EditorDialog/dialog';
+import dialog from '../../EditorDialog/dialog.js';
 
 function Img({
     id,

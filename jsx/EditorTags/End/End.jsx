@@ -1,5 +1,5 @@
 import React from 'react';
-import eq from '../../common/eq';
+import eq from '../../../_js/eq';
 
 const ID = 'end';
 function End({

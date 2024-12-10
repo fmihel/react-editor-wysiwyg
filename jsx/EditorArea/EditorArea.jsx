@@ -2,10 +2,10 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
 import React, { useEffect, useState } from 'react';
-import array from '../common/array.js';
-import selected from '../common/selected.js';
-import Data from '../common/Data.js';
-import eq from '../common/eq.js';
+import array from '../../_js/array.js';
+import selected from '../../_js/selected.js';
+import Data from '../../_js/Data.js';
+import eq from '../../_js/eq.js';
 import {
     KEY_CODE_0, KEY_CODE_A, KEY_CODE_BACKSPACE, KEY_CODE_C, KEY_CODE_DEL, KEY_CODE_DOWN, KEY_CODE_ENTER,
     KEY_CODE_LEFT, KEY_CODE_RIGHT, KEY_CODE_UP, KEY_CODE_Z, KEY_CODE_9, KEY_CODE_SPACE, KEY_CODE_V,
