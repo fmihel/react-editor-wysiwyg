@@ -42,7 +42,7 @@ function A({
         <span
             id={id}
             style={{ ...style }}
-            className={`${cursor ? 'cursor' : ''} ${select ? 'select' : ''}` }
+            className={`a-tag ${cursor ? 'cursor' : ''} ${select ? 'select' : ''}` }
             onMouseDown={doClick}
             onDoubleClick={doDoubleClick}
         >

@@ -3,27 +3,13 @@
 @use './editor-area' as area;
 @use './dialog';
 @use './editor-panel' as panel;
-
+@use './tags.scss';
 
 .editor{
-    @include area.define;
+    @include area.define{
+        @include tags.define;
+    };
     @include dialog.define;
     @include panel.define;
-
-    .test{
-        border:1px solid red;
-        font-family: 'Font Awesome 6 Pro';
-        &::before{
-            content: "\f032"; /*Bold*/
-            content: "\f0cd"; /*Underline*/
-            content: "\f033"; /*italic*/
-            content: "\f53f"; /*color*/
-            content: "\f5aa"; /*background*/
-            content: "\f03e"; /*img*/
-            content: "\f0c1"; /*url*/
-
-            content: "\f015\f032\f0cd\f033\f53f\f5aa\f03e\f0c1"; /*Bold*/
-
-        }
-    }
+ 
 }

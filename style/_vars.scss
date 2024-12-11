@@ -2,18 +2,24 @@
 :root{ 
     --rew-size:24px;
     --rew-gap:2px;
-        
+
+
     --rew-color:black;
-    --rew-fone: silver;        
-    --rew-border: gray;        
-    --rew-fone-edit: rgba(192, 192, 192, 0.473);        
-    --rew-shadow: #434343;
-    
+    --rew-fone: rgb(218, 218, 218);        
+    --rew-border: rgb(167, 167, 167);        
+    --rew-fone-edit: rgba(255, 255, 255, 0.473);        
+    --rew-shadow: #b4b4b4;
+    --rew-cursor: rgb(8, 150, 8);
 
     &.dark{
-        --rew-color:white;
-        --rew-fone: black;        
-    
+            
+        --rew-color:black;
+        --rew-fone: silver;        
+        --rew-border: gray;        
+        --rew-fone-edit: rgba(192, 192, 192, 0.473);        
+        --rew-shadow: #434343;
+        --rew-cursor: lime;
+        
     }
 }        
 

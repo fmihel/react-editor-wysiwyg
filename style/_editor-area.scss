@@ -8,24 +8,14 @@
         background-color: var(--rew-fone-edit);
         padding: var(--rew-gap);
         box-shadow:inset 2px 2px 4px 0px var(--rew-shadow);
-
+        >*{
+            color:var(--rew-color);
+        }
         .cursor{
-             border-left:2px solid lime;
+             border-left:2px solid var(--rew-cursor);
             // outline: 1px solid lime;
             // box-shadow:-1px 0px 0px 0px lime,inset 1px 0px 0px 0px lime;
-        
         }
-
-        img{
-            &.cursor{
-                border-left:0px;
-                outline: 1px solid lime;
-            }
-            &.select{
-                filter:  invert(100%) grayscale(100%) sepia(100%) invert(100%);
-            }
-        }
-    
 
         .select{
             // border-left:1px solid lime;
@@ -33,5 +23,6 @@
             color:white !important;
             // font-size: 0.6rem;
         }
+        @content;
     }
 }

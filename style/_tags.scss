@@ -1,0 +1,28 @@
+@mixin define{
+
+    .img-tag{
+        &.cursor{
+            border-left:0px;
+            outline: 1px solid lime;
+        }
+
+        &.select{
+            filter:  invert(100%) grayscale(100%) sepia(100%) invert(100%);
+        }
+    }
+
+    .a-tag{
+        text-decoration: underline;
+        color:blue;
+        margin-left:1px;
+        margin-right:1px;        
+
+        &.cursor{
+            border-left:0px;
+            outline: 1px solid lime;
+        }
+    }
+
+
+
+}

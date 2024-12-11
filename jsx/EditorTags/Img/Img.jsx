@@ -44,7 +44,7 @@ function Img({
                 id={id}
                 alt={alt}
                 style={{ ...style }}
-                className={`${cursor ? 'cursor' : ''} ${select ? 'select' : ''}` }
+                className={`img-tag ${cursor ? 'cursor' : ''} ${select ? 'select' : ''}` }
                 onMouseDown={doClick}
                 onDoubleClick={onDoubleClick}
                 src={src}

@@ -130,7 +130,7 @@ function EditorPanel({
                 <button onClick={underline} className="icon-underline"></button>
                 <button onClick={italic} className="icon-italic"></button>
                 <input type="color" id="color" name="color" value="#000000" onChange={changeColor}/>
-                <input type="color" id="fone" name="fone" value="#000000" onChange={changeFone}/>
+                <input type="color" id="fone" name="fone" value="text" onChange={changeFone}/>
                 <button onClick={image} className="icon-img"></button>
                 <button onClick={url} className="icon-link"></button>
                 <input type='number' min={0.5} max={4} step={0.1} value={fontSize} onChange={changeFontSize} onFocus={doFocus}/>
