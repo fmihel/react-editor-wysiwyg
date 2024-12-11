@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
 import React from 'react';
-import get from '../../../_js/get.js';
-import random_str from '../../../_js/random_str.js';
-import dialog from '../../EditorDialog/dialog.js';
+import get from '../../js/get.js';
+import random_str from '../../js/random_str.js';
+import dialog from '../../EditorDialog.jsx';
 import Prop from './Prop.jsx';
 
 function A({
@@ -30,7 +30,7 @@ function A({
     };
 
     const doDoubleClick = (o) => {
-        dialog({ Prop, data: { href, value } })
+        dialog.open({ Prop, data: { href, value } })
             .then(({ result, btn }) => {
                 if (btn === 'ok') {
                     change(result);

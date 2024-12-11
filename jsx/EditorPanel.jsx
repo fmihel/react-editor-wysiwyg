@@ -4,13 +4,13 @@ import React, {
     useCallback, useState,
 } from 'react';
 import _ from 'lodash';
-import Style from '../../utils/Style.js';
-import eq from '../../_js/eq.js';
-import EditorTags from '../EditorTags/EditorTags.jsx';
-import Data from '../../_js/Data.js';
-import dialog from '../EditorDialog/dialog.js';
-import ImgProp from '../EditorTags/Img/Prop.jsx';
-import UrlProp from '../EditorTags/A/Prop.jsx';
+import Style from '../utils/Style.js';
+import eq from './js/eq.js';
+import EditorTags from './EditorTags.jsx';
+import Data from './js/Data.js';
+import dialog from './EditorDialog.jsx';
+import ImgProp from './EditorTags/Img/Prop.jsx';
+import UrlProp from './EditorTags/A/Prop.jsx';
 
 function EditorPanel({
     data,
@@ -83,7 +83,7 @@ function EditorPanel({
     };
 
     const image = () => {
-        dialog({
+        dialog.open({
             Prop: ImgProp,
             data: { src: '' },
         })
@@ -101,7 +101,7 @@ function EditorPanel({
     };
 
     const url = () => {
-        dialog({
+        dialog.open({
             Prop: UrlProp,
             data: { href: '', value: '' },
         })

@@ -1,8 +1,8 @@
 /* eslint-disable array-callback-return */
-import Parsing from '../_js/Parsing.js';
-import EditorTags from '../jsx/EditorTags/EditorTags.jsx';
-import eq from '../_js/eq.js';
-import styleNameReactToCss from '../_js/styleNameReactToCss.js';
+import Parsing from '../jsx/js/Parsing.js';
+import EditorTags from '../jsx/EditorTags.jsx';
+import eq from '../jsx/js/eq.js';
+import styleNameReactToCss from '../jsx/js/styleNameReactToCss.js';
 import Style from './Style.js';
 
 const defaultTags = [

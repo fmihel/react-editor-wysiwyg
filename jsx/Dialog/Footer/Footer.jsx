@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import gettype from '../../../../_js/gettype';
+import gettype from '../../js/gettype';
 
 function toBtns(list) {
     const type = gettype(list);

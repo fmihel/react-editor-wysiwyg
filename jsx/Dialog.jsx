@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import React, { useEffect, useRef } from 'react';
-import './Dialog.scss';
-import Footer from './Footer/Footer.jsx';
+import Footer from './Dialog/Footer/Footer.jsx';
 
 const promises = {};
 let btnPress;

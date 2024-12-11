@@ -1,13 +1,14 @@
 import React, {
     useState, Children, cloneElement, useEffect, useReducer,
 } from 'react';
-import EditorPanel from './EditorPanel/EditorPanel.jsx';
-import EditorArea from './EditorArea/EditorArea.jsx';
-import demoData from './EditorArea/demoData.js';
-import Dialog from './EditorDialog/Dialog/Dialog.jsx';
-import dialog from './EditorDialog/dialog.js';
-import reducer from './EditorDialog/reducer.js';
-import { DIALOG_ID } from './EditorDialog/consts.js';
+import EditorPanel from './EditorPanel.jsx';
+import EditorArea from './EditorArea.jsx';
+import demoData from './js/demoData.js';
+// import Dialog from './Dialog.jsx';
+// import dialog from './EditorDialog/dialog.js';
+// import reducer from './EditorDialog/reducer.js';
+// import { DIALOG_ID } from './EditorDialog/consts.js';
+import EditorDialog from './EditorDialog.jsx';
 
 function Editor({
     data = demoData,
@@ -17,11 +18,11 @@ function Editor({
     const [selects, setSelects] = useState([]);
     const [outerSelects, setOuterSelects] = useState([]);
     const [cursor, setCursor] = useState(false);
-    const [dialogData, dispatch] = useReducer(reducer, undefined);
+    // const [dialogData, dispatch] = useReducer(reducer, undefined);
 
-    useEffect(() => {
-        dialog.dispatch = dispatch;
-    }, [dispatch]);
+    // useEffect(() => {
+    //     dialog.dispatch = dispatch;
+    // }, [dispatch]);
 
     const doChange = (newData) => {
         if (onChange) {
@@ -40,9 +41,9 @@ function Editor({
         setOuterSelects(o);
     };
 
-    const doChangeProp = (o) => {
-        dialog.result(o);
-    };
+    // const doChangeProp = (o) => {
+    //     dialog.result(o);
+    // };
     return (
         <div>
             <div>
@@ -77,10 +78,10 @@ function Editor({
                 onCursor={doCursor}
             />
 
-            <Dialog id={DIALOG_ID} {...dialogData && dialogData.param ? dialogData.param : {}}>
+            {/* <Dialog id={DIALOG_ID} {...dialogData && dialogData.param ? dialogData.param : {}}>
                 {(dialogData) && <dialogData.Prop {...dialogData.data} onChange={doChangeProp} />}
-            </Dialog>
-
+            </Dialog> */}
+            <EditorDialog/>
         </div>
     );
 }

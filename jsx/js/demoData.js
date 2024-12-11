@@ -1,4 +1,4 @@
-import EditorTags from '../EditorTags/EditorTags.jsx';
+import EditorTags from '../EditorTags.jsx';
 
 let _id = 1;
 const id = () => ({ id: _id++ });

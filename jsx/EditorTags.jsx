@@ -1,10 +1,10 @@
 import React from 'react';
 
-import Br from './Br/Br.jsx';
-import A from './A/A.jsx';
-import Char from './Char/Char.jsx';
-import End from './End/End.jsx';
-import Img from './Img/Img.jsx';
+import Br from './EditorTags/Br/Br.jsx';
+import A from './EditorTags/A/A.jsx';
+import Char from './EditorTags/Char/Char.jsx';
+import End from './EditorTags/End/End.jsx';
+import Img from './EditorTags/Img/Img.jsx';
 
 function EditorTags({
     id, type, cursor, select, onClick, ...prop

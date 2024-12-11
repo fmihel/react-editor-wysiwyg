@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
 import React from 'react';
-import random_str from '../../../_js/random_str.js';
-import get from '../../../_js/get.js';
+import random_str from '../../js/random_str.js';
+import get from '../../js/get.js';
 import Prop from './Prop.jsx';
-import dialog from '../../EditorDialog/dialog.js';
+import dialog from '../../EditorDialog.jsx';
 
 function Img({
     id,
@@ -29,7 +29,7 @@ function Img({
         }
     };
     const onDoubleClick = (o) => {
-        dialog({ Prop, data: { src } })
+        dialog.open({ Prop, data: { src } })
             .then(({ result, btn }) => {
                 if (btn === 'ok') {
                     change(result);

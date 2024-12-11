@@ -1,6 +1,6 @@
 /* eslint-disable prefer-destructuring */
-import get from '../_js/get';
-import keys from '../_js/keys';
+import get from '../jsx/js/get';
+import keys from '../jsx/js/keys';
 
 class Style {
     // static toggleValue(values, currentValue) {

@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import React from 'react';
-import get from '../../../_js/get';
-import random_str from '../../../_js/random_str';
+import get from '../../js/get';
+import random_str from '../../js/random_str';
 
 function Char({
     id,
