@@ -1,0 +1,36 @@
+@use './font';
+
+
+@mixin define{
+    .editor-panel{
+        padding-top: var(--rew-gap);
+        padding-bottom: var(--rew-gap);
+
+        display: flex;
+        
+        >*{
+            max-height: 24px;
+            margin-right: var(--rew-gap);
+        }
+        button{
+            // width: 24px;
+            background-color: var(--rew-fone);
+            color:var(--rew-color);
+            border:1px solid var(--rew-border)
+        }
+        input{
+            padding: 0px;
+            margin-top:0px;
+            margin-bottom:0px;
+            &[type=color]{
+                background-color: var(--rew-fone);
+            }
+            &[type=number]{
+                text-align: center;
+            }
+        }
+        
+        
+    }
+
+}

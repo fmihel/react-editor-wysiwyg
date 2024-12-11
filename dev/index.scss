@@ -1,4 +1,5 @@
 // @use "sass:map";
+@use  "./style/Editor.scss";
 
 *{
     box-sizing: border-box;
@@ -41,4 +42,3 @@ body{
     
 }
 
-@import "./style/Editor.scss";

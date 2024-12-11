@@ -64,15 +64,20 @@ function EditorPanel({
         changeStyle((style) => Style.toggle({ fontStyle: ['italic', ''] }, style));
     };
 
-    const color = (value) => {
-        changeStyle(() => ({ color: value }));
+    const color = (name, value) => {
+        changeStyle(() => ({ [name]: value }));
     };
 
     const colorDelay = useCallback(_.debounce(color, 1000), [data, selects]);
 
     const changeColor = (o) => {
-        colorDelay(o.target.value);
+        colorDelay('color', o.target.value);
     };
+
+    const changeFone = (o) => {
+        colorDelay('background', o.target.value);
+    };
+
     const changeFontSize = (o) => {
         fixFocus();
         setFontSize(o.target.value);
@@ -120,14 +125,14 @@ function EditorPanel({
 
     return (
         <>
-            <div>
-                <button onClick={bold}>{'B'}</button>
-                <button onClick={underline}>{'U'}</button>
-                <button onClick={italic}>{'I'}</button>
-                {/* <button onClick={show}>dlg</button> */}
-                <input type="color" id="head" name="head" value="#000000" onChange={changeColor}/>
-                <button onClick={image}>{'img'}</button>
-                <button onClick={url}>{'url'}</button>
+            <div className='editor-panel'>
+                <button onClick={bold} className="icon-bold"></button>
+                <button onClick={underline} className="icon-underline"></button>
+                <button onClick={italic} className="icon-italic"></button>
+                <input type="color" id="color" name="color" value="#000000" onChange={changeColor}/>
+                <input type="color" id="fone" name="fone" value="#000000" onChange={changeFone}/>
+                <button onClick={image} className="icon-img"></button>
+                <button onClick={url} className="icon-link"></button>
                 <input type='number' min={0.5} max={4} step={0.1} value={fontSize} onChange={changeFontSize} onFocus={doFocus}/>
 
             </div>

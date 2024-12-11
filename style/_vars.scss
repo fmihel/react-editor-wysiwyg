@@ -1,0 +1,20 @@
+
+:root{ 
+    --rew-size:24px;
+    --rew-gap:2px;
+        
+    --rew-color:black;
+    --rew-fone: silver;        
+    --rew-border: gray;        
+    --rew-fone-edit: rgba(192, 192, 192, 0.473);        
+    --rew-shadow: #434343;
+    
+
+    &.dark{
+        --rew-color:white;
+        --rew-fone: black;        
+    
+    }
+}        
+
+

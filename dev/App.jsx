@@ -22,7 +22,7 @@ function App() {
 
     return (
         <>
-            <div>
+            <div style={{ padding: 5 }}>
                 <Editor onChange={doChange} data = {data}/>
             </div>
             <code>

@@ -1,0 +1,24 @@
+$icons: (
+    "bold":"\f032",
+    "underline":"\f0cd",
+    "italic":"\f033",
+    "color":"\f53f",
+    "fone":"\f5aa",
+    "img":"\f03e",
+    "link":"\f0c1"
+);
+
+@font-face {
+    font-family:'Font Awesome 6 Pro';
+    src: url('https://site-assets.fontawesome.com/releases/v6.7.1/webfonts/fa-solid-900.woff2') format('woff2');
+};
+
+    
+        
+@each $name, $glyph in $icons {
+    .icon-#{$name}::before{
+        font-family: 'Font Awesome 6 Pro';
+        content: $glyph;
+    }
+}
+        

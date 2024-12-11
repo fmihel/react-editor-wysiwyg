@@ -238,11 +238,6 @@ function EditorArea({
         <>
             <div className='editor-area'
                 tabIndex={0}
-                style={{
-                    border: '1px dashed gray',
-                    // height: 'auto',
-                    textAlign: 'center',
-                }}
                 onMouseDown={doMouseDown}
                 onMouseUp={doMouseUp}
                 onMouseMove={doMouseMove}

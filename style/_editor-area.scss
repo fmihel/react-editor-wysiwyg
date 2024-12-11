@@ -1,8 +1,13 @@
-@mixin editor-area{
+@mixin define{
     .editor-area{
         overflow: auto;
         max-height: 200px;
         height: 200px;
+
+        border:1px solid var(--rew-border);
+        background-color: var(--rew-fone-edit);
+        padding: var(--rew-gap);
+        box-shadow:inset 2px 2px 4px 0px var(--rew-shadow);
 
         .cursor{
              border-left:2px solid lime;
