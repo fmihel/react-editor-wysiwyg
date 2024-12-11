@@ -122,7 +122,8 @@ function EditorArea({
         const index = data.findIndex((it) => it.id === cursor);
         let no_handler = true;
 
-        const symbols = [KEY_CODE_SPACE];
+        // const symbols = [KEY_CODE_SPACE];
+        const symbols = [];
         if ((cursor)
             && (!o.ctrlKey || o.keyCode !== KEY_CODE_C)
             && (
@@ -136,6 +137,18 @@ function EditorArea({
             doChange([
                 ...data.slice(0, index),
                 EditorTags.createData('char', { value: o.key }),
+                ...data.slice(index)]);
+        }
+        if ((cursor)
+            && (!o.ctrlKey || o.keyCode !== KEY_CODE_C)
+            && ((o.keyCode === KEY_CODE_SPACE)
+            )
+        ) {
+            no_handler = false;
+
+            doChange([
+                ...data.slice(0, index),
+                EditorTags.createData('space', { value: ' ' }),
                 ...data.slice(index)]);
         }
 

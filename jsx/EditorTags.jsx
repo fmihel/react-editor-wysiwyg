@@ -5,6 +5,7 @@ import A from './EditorTags/A/A.jsx';
 import Char from './EditorTags/Char/Char.jsx';
 import End from './EditorTags/End/End.jsx';
 import Img from './EditorTags/Img/Img.jsx';
+import Space from './EditorTags/Space/Space.jsx';
 
 function EditorTags({
     id, type, cursor, select, onClick, ...prop
@@ -24,6 +25,7 @@ EditorTags._tags = {
     br: Br,
     char: Char,
     img: Img,
+    space: Space,
     end: End,
 };
 
