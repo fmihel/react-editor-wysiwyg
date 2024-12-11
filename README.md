@@ -15,8 +15,9 @@ $ npm i react-editor-wysyvig
 ```jsx
 import React, { useCallback, useState } from 'react';
 import _ from 'lodash';
-import Editor from 'react-editor-wysyvig/Editor.js';
+import Editor from 'react-editor-wysyvig';
 import Html from 'react-editor-wysyvig/utils/Html.js';
+import 'react-editor-wysyvig/style/Editor.scss';
 
 const HTML = 'Simple<br>text';// init html text';
 

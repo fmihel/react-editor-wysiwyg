@@ -236,7 +236,7 @@ function EditorArea({
     };
     return (
         <>
-            <div className='editor'
+            <div className='editor-area'
                 tabIndex={0}
                 style={{
                     border: '1px dashed gray',

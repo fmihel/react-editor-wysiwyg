@@ -45,7 +45,7 @@ function Editor({
     //     dialog.result(o);
     // };
     return (
-        <div>
+        <div className='editor'>
             <div>
                 {children
                     && Children.map(children, (child) => cloneElement(child, {

@@ -1,0 +1,32 @@
+@mixin editor-area{
+    .editor-area{
+        overflow: auto;
+        max-height: 200px;
+        height: 200px;
+
+        .cursor{
+             border-left:2px solid lime;
+            // outline: 1px solid lime;
+            // box-shadow:-1px 0px 0px 0px lime,inset 1px 0px 0px 0px lime;
+        
+        }
+
+        img{
+            &.cursor{
+                border-left:0px;
+                outline: 1px solid lime;
+            }
+            &.select{
+                filter:  invert(100%) grayscale(100%) sepia(100%) invert(100%);
+            }
+        }
+    
+
+        .select{
+            // border-left:1px solid lime;
+            background-color: #01359F;
+            color:white !important;
+            // font-size: 0.6rem;
+        }
+    }
+}
