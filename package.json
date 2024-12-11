@@ -4,6 +4,7 @@
   "description": "react,wysyvig,editor,javascript",
   "main": "dist/Editor.js",
   "scripts": {
+    "run": "webpack-dev-server --config webpack.config.dev.js",
     "build": "rm -rf ./dist && webpack --prod",
     "npm-publish-patch": "npm run build && npm version patch && npm publish",
     "npm-publish-minor": "npm run build && npm version minor && npm publish",

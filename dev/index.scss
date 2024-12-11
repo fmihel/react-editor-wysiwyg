@@ -1,0 +1,44 @@
+// @use "sass:map";
+
+*{
+    box-sizing: border-box;
+}
+
+body{
+    background-color: rgb(3, 3, 3);
+    color: white;
+    // user-select: none;
+    margin:0px;
+    padding:0px;
+    overflow:hidden;
+    font-family: roboto,"Noto Sans Myanmar UI",arial,sans-serif ;
+
+    input[type="text"] {
+        user-select: auto;
+    }
+
+    #root{
+        overflow: hidden;
+        position: absolute;
+
+        margin:0px;
+        padding:0px;
+        width:100%;
+        height:100%;
+        border:1px solid 0;
+
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-content: stretch;
+        align-items: stretch;
+
+        .app{
+            flex:1 1 auto;
+        }
+    }
+    
+}
+
+@import "./style/Editor.scss";
