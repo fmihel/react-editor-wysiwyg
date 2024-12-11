@@ -14,7 +14,7 @@ module.exports = {
   mode: toProduction?'production':'development',
   devtool: toProduction?'':'inline-source-map',
   entry: {
-    'Editor':'./jsx/Editor.jsx',
+    'Editor':'./jsx/index.js',
     //Btn:'./source/Btn/Btn.jsx',
     //Edit:'./source/Edit/Edit.jsx',
   },
