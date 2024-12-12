@@ -1,4 +1,4 @@
-# react-editor-wysyvig v0.0.2
+# react-editor-wysyvig v0.0.x
 
 Simple wysyvig editor on React .
 

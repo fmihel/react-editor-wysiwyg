@@ -9,6 +9,7 @@ import eq from './js/eq.js';
 import {
     KEY_CODE_0, KEY_CODE_A, KEY_CODE_BACKSPACE, KEY_CODE_C, KEY_CODE_DEL, KEY_CODE_DOWN, KEY_CODE_ENTER,
     KEY_CODE_LEFT, KEY_CODE_RIGHT, KEY_CODE_UP, KEY_CODE_Z, KEY_CODE_9, KEY_CODE_SPACE, KEY_CODE_V,
+    isCharKey,
 } from './js/consts.js';
 import End from './EditorTags/End/End.jsx';
 import EditorTags from './EditorTags.jsx';
@@ -118,19 +119,14 @@ function EditorArea({
 
     const doKeyDown = (o) => {
         // console.log(o.key, o.keyCode, 'ctrl', o.ctrlKey, 'shift', o.shiftKey, selects_debug(selects));
-
+        // console.log(o.key, o.keyCode);
         const index = data.findIndex((it) => it.id === cursor);
         let no_handler = true;
 
         // const symbols = [KEY_CODE_SPACE];
-        const symbols = [];
         if ((cursor)
             && (!o.ctrlKey || o.keyCode !== KEY_CODE_C)
-            && (
-                (o.keyCode >= KEY_CODE_0 && o.keyCode <= KEY_CODE_9)
-                || (o.keyCode >= KEY_CODE_A && o.keyCode <= KEY_CODE_Z)
-                || symbols.indexOf(o.keyCode) > -1
-            )
+            && (isCharKey(o.keyCode))
         ) {
             no_handler = false;
 
