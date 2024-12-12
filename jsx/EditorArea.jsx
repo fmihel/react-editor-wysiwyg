@@ -148,7 +148,7 @@ function EditorArea({
 
             doChange([
                 ...data.slice(0, index),
-                EditorTags.createData('space', { value: ' ' }),
+                EditorTags.createData('space'),
                 ...data.slice(index)]);
         }
 

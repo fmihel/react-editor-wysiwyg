@@ -9,7 +9,6 @@ function App() {
     const [code, setCode] = useState('');
 
     const doDecode = (from) => {
-        // console.log(Html.fromData(from));
         setCode(Html.fromData(from));
     };
 

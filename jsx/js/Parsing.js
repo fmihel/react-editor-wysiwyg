@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-cond-assign */
 /* eslint-disable no-param-reassign */
@@ -18,6 +19,11 @@ class Parsing {
         let pos = 0;
 
         const out = [];
+
+        html = html.trim();
+        while (html.indexOf('  ') > -1)html = html.replaceAll('  ', ' ');
+        html = html.replaceAll('&nbsp;', ' ');
+
         while (pos < html.length) {
             const pack = this._get_start(html, tags, pos);
 

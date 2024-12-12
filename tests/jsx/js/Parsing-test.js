@@ -98,4 +98,24 @@ describe('Parsing.html', () => {
         ];
         expect(result).to.deep.equal(should);
     });
+
+    it('<span>A <span>', () => {
+        const str = '<span>A &nbsp;</span>&nbsp;&nbsp;';
+        const result = Parsing.html(str);
+        const should = [
+            { name: 'span', value: 'A  ' },
+            { name: 'span', value: '  ' },
+            // { name: 'span', value: ' ', attrs: { style: { color: 'red', backgroundColor: '#ff00ff' } } },
+        ];
+        expect(result).to.deep.equal(should);
+    });
+
+    // it('&nbsp;', () => {
+    //     const str = '&nbsp;';
+    //     const result = Parsing.html(str);
+    //     const should = [
+    //         { name: 'space' },
+    //     ];
+    //     expect(result).to.deep.equal(should);
+    // });
 });

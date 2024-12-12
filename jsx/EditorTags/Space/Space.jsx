@@ -35,6 +35,7 @@ function Space({
 Space.createData = (data = {}) => ({
     id: random_str(3),
     type: 'space',
+    value: '&nbsp;',
     ...data,
     style: { ...get(data, ['style'], {}) },
 });

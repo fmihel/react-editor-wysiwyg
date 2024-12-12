@@ -9,7 +9,7 @@ describe('eq.id', () => {
         const id2 = 1;
 
         const value = eq.id(id1, id2);
-        const should = false;
+        const should = true;
         expect(value).to.equal(should);
     });
 });

@@ -1,5 +1,6 @@
 @mixin define{
     .editor-area{
+
         overflow: auto;
         max-height: 200px;
         height: 200px;
@@ -12,7 +13,23 @@
             color:var(--rew-color);
         }
         .cursor{
-             border-left:2px solid var(--rew-cursor);
+            animation: blink 2s infinite; /* Параметры анимации */
+            @keyframes blink {
+                0% { 
+                    border-left:2px solid var(--rew-cursor);
+                }
+                80% { 
+                    border-left:2px solid var(--rew-cursor);
+                }
+                81% { 
+                    border-left:2px solid rgba(0,0,0,0);
+                }
+                100% { 
+                    border-left:2px solid rgba(0,0,0,0);
+                }
+
+            }            
+            border-left:2px solid var(--rew-cursor);
             // outline: 1px solid lime;
             // box-shadow:-1px 0px 0px 0px lime,inset 1px 0px 0px 0px lime;
         }

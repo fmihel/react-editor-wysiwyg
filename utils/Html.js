@@ -5,6 +5,9 @@ import eq from '../jsx/js/eq.js';
 import styleNameReactToCss from '../jsx/js/styleNameReactToCss.js';
 import Style from './Style.js';
 
+const SPACE_HTML = '&nbsp;';
+const SPACE_CHAR = ' ';
+
 const defaultTags = [
     { name: 'span' },
     { name: 'a' },
@@ -17,23 +20,29 @@ const typeTag = {
     a: 'a',
     img: 'img',
     br: 'br',
+    space: 'span',
 };
 
 class Html {
     toData(html, tags = defaultTags) {
+        const out = [];
         const names = tags.map((it) => it.name);
-        const data = [];
         const pars = Parsing.html(html, { tags });
 
+        const prepare = [];
         pars.map((it) => {
             const { name, value, attrs } = it;
             if (names.indexOf(name) > -1) {
                 if (name === 'span') {
                     value.split('').map((char) => {
-                        data.push(EditorTags.createData('char', { value: char, ...attrs }));
+                        if (char === SPACE_CHAR) {
+                            prepare.push(EditorTags.createData('space', { ...attrs }));
+                        } else {
+                            prepare.push(EditorTags.createData('char', { value: char, ...attrs }));
+                        }
                     });
                 } else {
-                    data.push(EditorTags.createData(name, {
+                    prepare.push(EditorTags.createData(name, {
                         value,
                         ...attrs,
                     }));
@@ -41,20 +50,19 @@ class Html {
             }
         });
 
-        return data;
+        return prepare;
     }
 
     fromData(data) {
         const com = [];
         // console.log(data);
+
         data.map((it) => {
             if (com.length === 0) {
                 com.push({ ...it });
-            } else if ((com[com.length - 1].type === 'char')
-                && eq.object(com[com.length - 1], it, {
-                    exclude: ['id', 'value', 'Com'],
-                    custom: { style: (style1, style2) => Style.eq(style1, style2) },
-                })) {
+            } else if (this._eqByStyle('char', it, com[com.length - 1])) {
+                com[com.length - 1].value += it.value;
+            } else if (this._eqByStyle('space', it, com[com.length - 1])) {
                 com[com.length - 1].value += it.value;
             } else {
                 com.push({ ...it });
@@ -65,6 +73,7 @@ class Html {
             const {
                 id, type, Com, ...attr
             } = o;
+
             return this.tag({
                 ...attr,
                 name: typeTag[o.type],
@@ -93,6 +102,18 @@ class Html {
             }
             return `${attr}="${attrs[attr]}"`;
         }).join(' ');
+    }
+
+    _eqByStyle(type, current, last, exclude = ['id', 'value', 'Com']) {
+        return (current.type === type && last.type === type)
+        && eq.object(last, current, {
+            exclude,
+            custom: { style: (style1, style2) => Style.eq(style1, style2) },
+        });
+    }
+
+    _spaceAsNbsp(str) {
+        return str.replaceAll(' ', SPACE_HTML);
     }
 }
 
