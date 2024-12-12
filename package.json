@@ -6,10 +6,13 @@
   "scripts": {
     "run": "webpack-dev-server --config webpack.config.dev.js",
     "build": "rm -rf ./dist && webpack --prod",
-    "npm-publish-patch": "npm run build && npm version patch && npm publish",
-    "npm-publish-minor": "npm run build && npm version minor && npm publish",
-    "npm-publish-major": "npm run build && npm version major && npm publish",
-    "npm-publish-beta": "npm run build && npm publish  --tag beta"
+    "npm-publish-patch": "npm run test && npm run build && npm version patch && npm publish",
+    "npm-publish-minor": "npm run test && npm run build && npm version minor && npm publish",
+    "npm-publish-major": "npm run test && npm run build && npm version major && npm publish",
+    "npm-publish-beta": "npm run test && npm run build && npm publish  --tag beta",
+    "-----------------------------------------": "",
+    "test": "mocha \"./tests/**/*-test.js\" --reporter min",
+    "test-watch": "mocha \"./tests/**/*-test.js\" --reporter min --watch"
   },
   "repository": {
     "type": "git",
@@ -28,14 +31,15 @@
   },
   "homepage": "https://github.com/fmihel/react-editor-wysyvig#readme",
   "dependencies": {
+    "lodash": "^4.17.16",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "lodash": "^4.17.16"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
+    "@babel/register": "^7.25.9",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
@@ -44,6 +48,7 @@
     "babel-cli": "^6.26.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.3",
+    "chai": "^4.5.0",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.6.0",
@@ -57,6 +62,7 @@
     "fmihel-redux-wrapper": "^2.0.0",
     "fmihel-server-lib": "^0.1.0",
     "html-webpack-plugin": "^4.3.0",
+    "mocha": "^10.8.2",
     "postcss-loader": "^3.0.0",
     "precss": "^4.0.0",
     "sass": "^1.49.7",

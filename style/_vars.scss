@@ -13,12 +13,12 @@
 
     &.dark{
             
-        --rew-color:black;
-        --rew-fone: silver;        
+        --rew-color:rgb(59, 59, 59);
+        --rew-fone: rgb(139, 139, 139);        
         --rew-border: gray;        
-        --rew-fone-edit: rgba(192, 192, 192, 0.473);        
+        --rew-fone-edit: rgb(214, 214, 214);        
         --rew-shadow: #434343;
-        --rew-cursor: lime;
+        --rew-cursor: rgb(0, 0, 0);
         
     }
 }        

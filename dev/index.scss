@@ -5,12 +5,11 @@
     box-sizing: border-box;
 }
 
-body{
-    background-color:rgba(223, 223, 223, 0.5);
-    color: gray;
 
-    // background-color: rgb(3, 3, 3);
-    // color: white;
+body{
+     background-color:rgba(223, 223, 223, 0.5);
+     color: gray;
+
 
     // user-select: none;
     margin:0px;
@@ -46,3 +45,9 @@ body{
     
 }
 
+.dark{
+    body{
+        background-color: rgb(3, 3, 3);
+        color: white;
+    }
+}
