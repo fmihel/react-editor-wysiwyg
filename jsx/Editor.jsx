@@ -18,11 +18,6 @@ function Editor({
     const [selects, setSelects] = useState([]);
     const [outerSelects, setOuterSelects] = useState([]);
     const [cursor, setCursor] = useState(false);
-    // const [dialogData, dispatch] = useReducer(reducer, undefined);
-
-    // useEffect(() => {
-    //     dialog.dispatch = dispatch;
-    // }, [dispatch]);
 
     const doChange = (newData) => {
         if (onChange) {
@@ -41,25 +36,19 @@ function Editor({
         setOuterSelects(o);
     };
 
-    // const doChangeProp = (o) => {
-    //     dialog.result(o);
-    // };
     return (
         <div className='editor'>
             <div>
                 {children
                     && Children.map(children, (child) => cloneElement(child, {
                         data,
-                        selects: outerSelects,
+                        selects,
                         cursor,
                         onChange: doChange,
                         onSelect: doSelectFromPanel,
 
                     }))
                 }
-                {/* {
-                    children && Children.map((children,key), (child) => ({ child }))
-                } */}
                 {!children
                     && <EditorPanel
                         data={data}
@@ -77,10 +66,6 @@ function Editor({
                 onSelected={doSelected}
                 onCursor={doCursor}
             />
-
-            {/* <Dialog id={DIALOG_ID} {...dialogData && dialogData.param ? dialogData.param : {}}>
-                {(dialogData) && <dialogData.Prop {...dialogData.data} onChange={doChangeProp} />}
-            </Dialog> */}
             <EditorDialog/>
         </div>
     );
