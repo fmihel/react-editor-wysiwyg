@@ -95,12 +95,24 @@ function EditorArea({
         setShiftSelect([]);
     };
 
+    const reposCursor = () => {
+        if (cursor === false) {
+            const last = data[data.length - 1];
+            setCursor(last.id);
+        }
+    };
     const doMouseDown = () => {
         if (shiftSelect.length) {
             // useOuterSelect = false;
             setShiftSelect([]);
             setCursor(false);
+        } else {
+            reposCursor();
         }
+    };
+
+    const doFocus = () => {
+
     };
 
     const doMouseUp = () => {
@@ -252,6 +264,7 @@ function EditorArea({
                 onMouseMove={doMouseMove}
                 onKeyDown={doKeyDown}
                 onDoubleClick={doDoubleClick}
+                onBlur={doFocus}
             >
                 {data.map(({
                     id, type, Com, ...prop

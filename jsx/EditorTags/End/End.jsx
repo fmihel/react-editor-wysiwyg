@@ -9,7 +9,7 @@ function End({
     return (
         <span
             id={id}
-            className={`${cursor ? 'cursor' : ''}` }
+            className={`end-tag${(cursor ? ' cursor' : '')}` }
         />
     );
 }

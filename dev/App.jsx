@@ -3,7 +3,7 @@ import _ from 'lodash';
 import Editor from '../jsx/Editor.jsx';
 import Html from '../utils/Html.js';
 
-const HTML = 'Simple';// text write to filed.';
+const HTML = '';// text write to filed.';
 function App() {
     const [data, setData] = useState(Html.toData(HTML));
     const [code, setCode] = useState('');
