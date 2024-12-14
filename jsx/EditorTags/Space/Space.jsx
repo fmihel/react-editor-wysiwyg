@@ -22,7 +22,7 @@ function Space({
     return (
         <span
             id={id}
-            style={{ ...style, color: 'rgba(0,0,0,0)' }}
+            style={{ ...style, color: '#00000000' }}
             className={`${cursor ? 'cursor' : ''} ${select ? 'select' : ''}` }
             // className={`${cursor ? 'cursor' : ''}` }
             onMouseDown={doClick}
