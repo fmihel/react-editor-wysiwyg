@@ -14,6 +14,7 @@
         }
         .cursor{
             animation: blink 2s infinite; /* Параметры анимации */
+            border-left:2px solid var(--rew-cursor);
             @keyframes blink {
                 0% { 
                     border-left:2px solid var(--rew-cursor);
@@ -29,7 +30,6 @@
                 }
 
             }            
-            border-left:2px solid var(--rew-cursor);
             // outline: 1px solid lime;
             // box-shadow:-1px 0px 0px 0px lime,inset 1px 0px 0px 0px lime;
         }
