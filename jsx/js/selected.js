@@ -89,7 +89,7 @@ class Selected {
             const end = rangeToDom(range.endContainer, range.endOffset - 1);
             // const from = selection.anchorNode.parentElement.id;
             // const to = selection.focusNode.parentElement.id;
-            console.log({ start, end, range });
+            // console.log({ start, end, range });
             return { from: start, to: end };
         }
         return false;

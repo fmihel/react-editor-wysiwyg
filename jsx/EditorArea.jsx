@@ -30,6 +30,7 @@ function EditorArea({
     const ref = useRef();
     const [data, setData] = useState([]);
     const [cursor, setCursor] = useState(false);
+    const [showCursor, setShowCursor] = useState(false);
     const [shiftSelect, setShiftSelect] = useState([]);
     const [mouseSelect, setMouseSelect] = useState(false);
     const [copy, setCopy] = useState([]);
@@ -71,10 +72,12 @@ function EditorArea({
     }, []);
 
     const onFocusIn = () => {
-
+        console.log('show');
+        setShowCursor(true);
     };
     const onFocsuOut = () => {
-
+        setShowCursor(false);
+        console.log('hide');
     };
     useEffect(() => {
         if (ref) {
@@ -93,6 +96,7 @@ function EditorArea({
     }, [outerSelect]);
 
     useEffect(() => {
+        // setShowCursor(shiftSelect.length || mouseSelect.length || outerSelect.length);
         changeSelects();
     }, [shiftSelect, cursor, mouseSelect, outerSelect]);
 
@@ -126,8 +130,8 @@ function EditorArea({
         }
     };
     const doMouseDown = () => {
+        ref.current.focus();
         if (shiftSelect.length) {
-            // useOuterSelect = false;
             setShiftSelect([]);
             setCursor(false);
         } else {
@@ -285,7 +289,8 @@ function EditorArea({
                 onMouseMove={doMouseMove}
                 onKeyDown={doKeyDown}
                 onDoubleClick={doDoubleClick}
-                onBlur={onFocusIn}
+                // onBlur={onFocusIn}
+                onFocus={onFocusIn}
                 ref={ref}
             >
                 {data.map(({
@@ -294,7 +299,7 @@ function EditorArea({
                     key={id}
                     id={id}
                     type={type}
-                    cursor= {id === cursor}
+                    cursor= {id === cursor && showCursor}
                     select={shiftSelect.indexOf(id) > -1}
                     {...prop}
                     onClick={ doClickTag}

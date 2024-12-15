@@ -5,11 +5,20 @@ export const ID = 'end';
 function End({
     id,
     cursor = false,
+    onClick,
 }) {
+    const doClick = (sender) => {
+        if (onClick) {
+            onClick({
+                id,
+            });
+        }
+    };
     return (
         <span
             id={id}
             className={`end-tag${(cursor ? ' cursor' : '')}` }
+            onMouseDown={doClick}
         >
             &nbsp;
         </span>
