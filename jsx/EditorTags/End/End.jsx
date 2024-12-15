@@ -1,7 +1,7 @@
 import React from 'react';
 import eq from '../../js/eq';
 
-const ID = 'end';
+export const ID = 'end';
 function End({
     id,
     cursor = false,
@@ -10,7 +10,9 @@ function End({
         <span
             id={id}
             className={`end-tag${(cursor ? ' cursor' : '')}` }
-        />
+        >
+            &nbsp;
+        </span>
     );
 }
 

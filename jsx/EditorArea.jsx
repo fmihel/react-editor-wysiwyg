@@ -1,7 +1,8 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import array from './js/array.js';
 import selected from './js/selected.js';
 import Data from './js/Data.js';
@@ -11,7 +12,7 @@ import {
     KEY_CODE_LEFT, KEY_CODE_RIGHT, KEY_CODE_UP, KEY_CODE_Z, KEY_CODE_9, KEY_CODE_SPACE, KEY_CODE_V,
     isCharKey,
 } from './js/consts.js';
-import End from './EditorTags/End/End.jsx';
+import End, { ID } from './EditorTags/End/End.jsx';
 import EditorTags from './EditorTags.jsx';
 
 const buffer = {
@@ -26,6 +27,7 @@ function EditorArea({
     onCursor = undefined,
 
 }) {
+    const ref = useRef();
     const [data, setData] = useState([]);
     const [cursor, setCursor] = useState(false);
     const [shiftSelect, setShiftSelect] = useState([]);
@@ -38,7 +40,14 @@ function EditorArea({
     // let useOuterSelect = false;
 
     /** получаем выделеные блоки из стандартартного выделения или имметированного shift */
-    const getSelects = () => (shiftSelect.length ? shiftSelect : selected.get_ids(data));
+    const getSelects = () => {
+        const out = shiftSelect.length ? shiftSelect : selected.get_ids(data);
+        if (out.length && out[out.length - 1] === ID) {
+            out.pop();
+        }
+
+        return out;
+    };
 
     const changeSelects = () => {
         if (onSelected) {
@@ -60,6 +69,21 @@ function EditorArea({
         });
         return () => { remove(); };
     }, []);
+
+    const onFocusIn = () => {
+
+    };
+    const onFocsuOut = () => {
+
+    };
+    useEffect(() => {
+        if (ref) {
+            ref.current.addEventListener('focusout', onFocsuOut);
+            return () => {
+                ref.current.removeEventListener('focusout', onFocsuOut);
+            };
+        }
+    }, [ref]);
 
     useEffect(() => {
         if (outerSelect.length) {
@@ -109,10 +133,6 @@ function EditorArea({
         } else {
             reposCursor();
         }
-    };
-
-    const doFocus = () => {
-
     };
 
     const doMouseUp = () => {
@@ -257,14 +277,16 @@ function EditorArea({
     };
     return (
         <>
-            <div className='editor-area'
+            <div
+                className='editor-area'
                 tabIndex={0}
                 onMouseDown={doMouseDown}
                 onMouseUp={doMouseUp}
                 onMouseMove={doMouseMove}
                 onKeyDown={doKeyDown}
                 onDoubleClick={doDoubleClick}
-                onBlur={doFocus}
+                onBlur={onFocusIn}
+                ref={ref}
             >
                 {data.map(({
                     id, type, Com, ...prop

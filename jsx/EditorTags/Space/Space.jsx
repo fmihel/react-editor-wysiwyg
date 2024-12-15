@@ -27,7 +27,7 @@ function Space({
             // className={`${cursor ? 'cursor' : ''}` }
             onMouseDown={doClick}
         >
-            _
+        &nbsp;
         </span>
     );
 }

@@ -7,7 +7,7 @@
 
         border:1px solid var(--rew-border);
         background-color: var(--rew-fone-edit);
-        padding: var(--rew-gap);
+        padding: calc(var(--rew-gap)*3);
         box-shadow:inset 2px 2px 4px 0px var(--rew-shadow);
         >*{
             color:var(--rew-color);

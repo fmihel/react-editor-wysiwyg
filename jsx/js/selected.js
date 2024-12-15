@@ -84,10 +84,12 @@ class Selected {
                 return dom.parentElement;
             };
             const range = selection.getRangeAt(0);
+
             const start = rangeToDom(range.startContainer, range.startOffset);
             const end = rangeToDom(range.endContainer, range.endOffset - 1);
             // const from = selection.anchorNode.parentElement.id;
             // const to = selection.focusNode.parentElement.id;
+            console.log({ start, end, range });
             return { from: start, to: end };
         }
         return false;
