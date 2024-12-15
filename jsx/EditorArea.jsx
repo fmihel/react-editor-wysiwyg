@@ -50,6 +50,11 @@ function EditorArea({
         return out;
     };
 
+    const getSelectsObjects = () => {
+        const s = getSelects();
+        return data.filter((it) => s.indexOf(it.id) > -1);
+    };
+
     const changeSelects = () => {
         if (onSelected) {
             const s = getSelects();
@@ -160,39 +165,44 @@ function EditorArea({
         let no_handler = true;
 
         // const symbols = [KEY_CODE_SPACE];
-        if ((cursor)
-            && (!o.ctrlKey || o.keyCode !== KEY_CODE_C)
-            && (isCharKey(o.keyCode))
-        ) {
-            no_handler = false;
+        if (cursor && !o.ctrlKey) {
+            if (isCharKey(o.keyCode)) {
+                no_handler = false;
 
-            doChange([
-                ...data.slice(0, index),
-                EditorTags.createData('char', { value: o.key }),
-                ...data.slice(index)]);
+                doChange([
+                    ...data.slice(0, index),
+                    EditorTags.createData('char', { value: o.key }),
+                    ...data.slice(index)]);
+            }
+            if (o.keyCode === KEY_CODE_SPACE) {
+                no_handler = false;
+
+                doChange([
+                    ...data.slice(0, index),
+                    EditorTags.createData('space'),
+                    ...data.slice(index)]);
+            }
         }
-        if ((cursor)
-            && (!o.ctrlKey || o.keyCode !== KEY_CODE_C)
-            && ((o.keyCode === KEY_CODE_SPACE)
-            )
-        ) {
-            no_handler = false;
-
-            doChange([
-                ...data.slice(0, index),
-                EditorTags.createData('space'),
-                ...data.slice(index)]);
-        }
-
         if (o.ctrlKey) {
             no_handler = false;
 
             if (o.keyCode === KEY_CODE_C) {
-                setCopy(getSelects());
+                // setCopy(getSelects());
+                navigator.clipboard.writeText(Data.asArray(getSelectsObjects(), (it) => it.value).join(''));
             }
             if (o.keyCode === KEY_CODE_V && copy.length && cursor) {
-                const clone = Data.clone(data.filter((it) => copy.indexOf(it.id) > -1));
-                doChange(Data.insert(data, clone, cursor));
+                navigator.clipboard
+                    .readText()
+                    .then((clipText) => {
+                        const clone = Data.clone(data.filter((it) => copy.indexOf(it.id) > -1));
+                        // doChange(Data.insert(data, clone, cursor));
+                    });
+                // const clone = Data.clone(data.filter((it) => copy.indexOf(it.id) > -1));
+                // doChange(Data.insert(data, clone, cursor));
+            }
+
+            if (o.keyCode === KEY_CODE_A) {
+                setShiftSelect(Data.ids(data).filter((it) => it.id !== 'end'));
             }
         }
 

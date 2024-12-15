@@ -89,6 +89,16 @@ class Data {
             return f ? { ...it, ...f, style: { ...it.style, ...f.style } } : { ...it };
         });
     }
+
+    static ids(data) {
+        return this.asArray(data, (item) => item.id);
+    }
+
+    static asArray(data, itemToValue) {
+        const out = [];
+        data.map((item) => out.push(itemToValue(item)));
+        return out;
+    }
 }
 
 export default Data;
