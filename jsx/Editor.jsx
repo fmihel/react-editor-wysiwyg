@@ -11,6 +11,9 @@ import demoData from './js/demoData.js';
 import EditorDialog from './EditorDialog.jsx';
 
 function Editor({
+    id,
+    className,
+    style = {},
     data = demoData,
     onChange,
     children,
@@ -37,7 +40,11 @@ function Editor({
     };
 
     return (
-        <div className='editor'>
+        <div
+            {...id ? { id } : {}}
+            className={`editor${className ? ` ${className}` : ''}`}
+            {...style ? { style: { ...style } } : {}}
+        >
             <div>
                 {children
                     && Children.map(children, (child) => cloneElement(child, {

@@ -15,7 +15,7 @@ import {
 import End, { ID } from './EditorTags/End/End.jsx';
 import EditorTags from './EditorTags.jsx';
 import Html from '../utils/Html.js';
-import HtmlSpecialChars from './js/HtmlSpecialChars.js';
+import HtmlSpecialChars, { CR_CHAR, CR_HTML } from './js/HtmlSpecialChars.js';
 
 const buffer = {
     selects: [],
@@ -80,12 +80,12 @@ function EditorArea({
     }, []);
 
     const onFocusIn = () => {
-        console.log('show');
+        // console.log('show');
         setShowCursor(true);
     };
     const onFocsuOut = () => {
         setShowCursor(false);
-        console.log('hide');
+        // console.log('hide');
     };
     useEffect(() => {
         if (ref) {
@@ -197,7 +197,7 @@ function EditorArea({
                 navigator.clipboard
                     .readText()
                     .then((clipText) => {
-                        const newData = Html.toData(HtmlSpecialChars.shield(clipText))
+                        const newData = Html.toData(HtmlSpecialChars.shield(clipText).replaceAll(CR_CHAR, CR_HTML))
                             .map((it) => ({
                                 ...it,
                                 ...it.value ? { value: HtmlSpecialChars.unShield(it.value) } : {},

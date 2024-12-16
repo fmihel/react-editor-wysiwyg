@@ -141,7 +141,7 @@ describe('Html.fromData', () => {
         const result = Html.fromData([
             { type: 'char', value: 'value' },
         ]);
-        const should = '<span>value</span>';
+        const should = 'value';
         expect(result).to.equal(should);
     });
 
@@ -152,7 +152,7 @@ describe('Html.fromData', () => {
             { type: 'char', value: 'x' },
             { type: 'char', value: 't' },
         ]);
-        const should = '<span>Text</span>';
+        const should = 'Text';
         expect(result).to.equal(should);
     });
 
@@ -164,7 +164,7 @@ describe('Html.fromData', () => {
             { type: 'char', value: 'x' },
             { type: 'char', value: 't' },
         ]);
-        const should = '<span>Te</span><br><span>xt</span>';
+        const should = 'Te<br>xt';
         expect(result).to.equal(should);
     });
 
@@ -175,7 +175,7 @@ describe('Html.fromData', () => {
             { type: 'char', value: 'x', style: { color: 'red' } },
             { type: 'char', value: 't', style: { color: 'red' } },
         ]);
-        const should = '<span>Te</span><span style="color:red">xt</span>';
+        const should = 'Te<span style="color:red">xt</span>';
         expect(result).to.equal(should);
     });
 
@@ -186,7 +186,7 @@ describe('Html.fromData', () => {
             { type: 'char', value: 'x', style: { color: 'red', border: 0 } },
             { type: 'char', value: 't', style: { border: 0, color: 'red' } },
         ]);
-        const should = '<span>Te</span><span style="color:red;border:0">xt</span>';
+        const should = 'Te<span style="color:red;border:0">xt</span>';
         expect(result).to.equal(should);
     });
 
@@ -199,7 +199,7 @@ describe('Html.fromData', () => {
             { type: 'char', value: 'n', style: { border: 0, color: 'red', opacity: 0.1 } },
             { type: 'char', value: 'o', style: { border: 0, color: 'red', opacity: 0.1 } },
         ]);
-        const should = '<span>Te</span><span style="color:red;border:0">xt</span><span style="border:0;color:red;opacity:0.1">no</span>';
+        const should = 'Te<span style="color:red;border:0">xt</span><span style="border:0;color:red;opacity:0.1">no</span>';
         expect(result).to.equal(should);
     });
 
@@ -209,7 +209,7 @@ describe('Html.fromData', () => {
             { type: 'space', value: '&nbsp;' },
             { type: 'space', value: '&nbsp;' },
         ]);
-        const should = '<span>T</span><span>&nbsp;&nbsp;</span>';
+        const should = 'T&nbsp;&nbsp;';
         expect(result).to.equal(should);
     });
 });

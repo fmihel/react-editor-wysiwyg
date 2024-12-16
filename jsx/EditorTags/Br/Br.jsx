@@ -21,6 +21,7 @@ function Br({
 Br.createData = (data = {}) => ({
     id: getid(),
     type: 'br',
+    value: '↳',
     ...data,
 
 });

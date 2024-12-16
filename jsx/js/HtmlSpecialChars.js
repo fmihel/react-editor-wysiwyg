@@ -1,11 +1,14 @@
 /* eslint-disable no-return-assign */
-const LT_HTML = '&lt;';
-const LT_CHAR = '<';
-const LT_SHIELD = '◄';
+export const LT_HTML = '&lt;';
+export const LT_CHAR = '<';
+export const LT_SHIELD = '◄';
 
-const GT_HTML = '&gt;';
-const GT_CHAR = '>';
-const GT_SHIELD = '►';
+export const GT_HTML = '&gt;';
+export const GT_CHAR = '>';
+export const GT_SHIELD = '►';
+
+export const CR_HTML = '<br>';
+export const CR_CHAR = '↳';
 
 class HtmlSpecialChars {
     /** < to &lt; */

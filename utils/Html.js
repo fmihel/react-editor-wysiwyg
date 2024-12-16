@@ -79,6 +79,8 @@ class Html {
                 id, type, Com, ...attr
             } = o;
 
+            const name = typeTag[o.type];
+
             return this.tag({
                 ...attr,
                 name: typeTag[o.type],
@@ -94,6 +96,9 @@ class Html {
         const strAttrs = (_attrs ? ` ${_attrs}` : _attrs);
 
         if (value) {
+            if (name === 'span' && !strAttrs) {
+                return HtmlSpecialChars.code(value);
+            }
             return `<${name}${strAttrs}>${HtmlSpecialChars.code(value)}</${name}>`;
         }
         return `<${name}${strAttrs}/>`;
