@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import React from 'react';
-import random_str from '../../js/random_str';
+import getid from '../../js/getid';
 
 function Br({
     id,
@@ -19,7 +19,7 @@ function Br({
 }
 
 Br.createData = (data = {}) => ({
-    id: random_str(3),
+    id: getid(),
     type: 'br',
     ...data,
 

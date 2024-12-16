@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import get from '../../js/get';
-import random_str from '../../js/random_str';
+import getid from '../../js/getid';
 
 function Char({
     id,
@@ -34,7 +34,7 @@ function Char({
 }
 
 Char.createData = (data = {}) => ({
-    id: random_str(3),
+    id: getid(),
     type: 'char',
 
     value: '',

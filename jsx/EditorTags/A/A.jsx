@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import get from '../../js/get.js';
-import random_str from '../../js/random_str.js';
 import dialog from '../../EditorDialog.jsx';
 import Prop from './Prop.jsx';
+import getid from '../../js/getid.js';
 
 function A({
     id,
@@ -52,7 +52,7 @@ function A({
 }
 
 A.createData = (data = {}) => ({
-    id: random_str(3),
+    id: getid(),
     type: 'a',
 
     value: '',

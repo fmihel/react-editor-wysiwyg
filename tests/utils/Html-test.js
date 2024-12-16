@@ -325,4 +325,29 @@ describe('Html.toData', () => {
 
         expect(true).to.equal(should);
     });
+
+    it('11', () => {
+        const result = Html.toData('&nbsp;<span>t></span>');
+
+        const should = eq.object(result, [
+            { type: 'space', value: '&nbsp;', style: {} },
+            { type: 'char', value: 't', style: { } },
+            { type: 'char', value: '>', style: { } },
+        ], { exclude: ['id', 'Com'] });
+
+        expect(true).to.equal(should);
+    });
+
+    it('12', () => {
+        const result = Html.toData('&nbsp;<span>t&lt;</span>>');
+
+        const should = eq.object(result, [
+            { type: 'space', value: '&nbsp;', style: {} },
+            { type: 'char', value: 't', style: { } },
+            { type: 'char', value: '<', style: { } },
+            { type: 'char', value: '>', style: { } },
+        ], { exclude: ['id', 'Com'] });
+
+        expect(true).to.equal(should);
+    });
 });

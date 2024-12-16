@@ -1,12 +1,7 @@
 /* eslint-disable camelcase */
 import eq from './eq.js';
-import random_str from './random_str.js';
 
 class Data {
-    static getid(pref = '', len = 3) {
-        return (pref ? `${pref}-` : '') + random_str(len);
-    }
-
     static find(data, id) {
         return data.find((it) => eq.id(it.id, id));
     }

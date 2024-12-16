@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
 import React from 'react';
-import random_str from '../../js/random_str.js';
 import get from '../../js/get.js';
 import Prop from './Prop.jsx';
 import dialog from '../../EditorDialog.jsx';
+import getid from '../../js/getid.js';
 
 function Img({
     id,
@@ -54,7 +54,7 @@ function Img({
 }
 
 Img.createData = (data = {}) => ({
-    id: random_str(3),
+    id: getid(),
     type: 'img',
 
     alt: '',

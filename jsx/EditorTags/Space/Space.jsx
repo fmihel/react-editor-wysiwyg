@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import get from '../../js/get';
-import random_str from '../../js/random_str';
+import getid from '../../js/getid';
 
 function Space({
     id,
@@ -33,7 +33,7 @@ function Space({
 }
 
 Space.createData = (data = {}) => ({
-    id: random_str(3),
+    id: getid(),
     type: 'space',
     value: '&nbsp;',
     ...data,

@@ -8,16 +8,19 @@ import selected from './js/selected.js';
 import Data from './js/Data.js';
 import eq from './js/eq.js';
 import {
-    KEY_CODE_0, KEY_CODE_A, KEY_CODE_BACKSPACE, KEY_CODE_C, KEY_CODE_DEL, KEY_CODE_DOWN, KEY_CODE_ENTER,
-    KEY_CODE_LEFT, KEY_CODE_RIGHT, KEY_CODE_UP, KEY_CODE_Z, KEY_CODE_9, KEY_CODE_SPACE, KEY_CODE_V,
+    KEY_CODE_A, KEY_CODE_BACKSPACE, KEY_CODE_C, KEY_CODE_DEL, KEY_CODE_DOWN, KEY_CODE_ENTER,
+    KEY_CODE_LEFT, KEY_CODE_RIGHT, KEY_CODE_UP, KEY_CODE_SPACE, KEY_CODE_V,
     isCharKey,
 } from './js/consts.js';
 import End, { ID } from './EditorTags/End/End.jsx';
 import EditorTags from './EditorTags.jsx';
+import Html from '../utils/Html.js';
+import HtmlSpecialChars from './js/HtmlSpecialChars.js';
 
 const buffer = {
     selects: [],
 };
+
 function EditorArea({
     // list = test_list,
     data: outerData,
@@ -33,7 +36,7 @@ function EditorArea({
     const [showCursor, setShowCursor] = useState(false);
     const [shiftSelect, setShiftSelect] = useState([]);
     const [mouseSelect, setMouseSelect] = useState(false);
-    const [copy, setCopy] = useState([]);
+    // const [copy, setCopy] = useState([]);
     // let copy = [];
     // const setCopy = (newCopy) => {
     //     copy = [...newCopy];
@@ -190,15 +193,18 @@ function EditorArea({
                 // setCopy(getSelects());
                 navigator.clipboard.writeText(Data.asArray(getSelectsObjects(), (it) => it.value).join(''));
             }
-            if (o.keyCode === KEY_CODE_V && copy.length && cursor) {
+            if (o.keyCode === KEY_CODE_V && cursor) {
                 navigator.clipboard
                     .readText()
                     .then((clipText) => {
-                        const clone = Data.clone(data.filter((it) => copy.indexOf(it.id) > -1));
-                        // doChange(Data.insert(data, clone, cursor));
+                        const newData = Html.toData(HtmlSpecialChars.shield(clipText))
+                            .map((it) => ({
+                                ...it,
+                                ...it.value ? { value: HtmlSpecialChars.unShield(it.value) } : {},
+                            }));
+
+                        doChange(Data.insert(data, newData, cursor));
                     });
-                // const clone = Data.clone(data.filter((it) => copy.indexOf(it.id) > -1));
-                // doChange(Data.insert(data, clone, cursor));
             }
 
             if (o.keyCode === KEY_CODE_A) {

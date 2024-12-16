@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable camelcase */
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-cond-assign */
@@ -19,10 +20,17 @@ class Parsing {
         let pos = 0;
 
         const out = [];
-
+        //---------------------------------------------------------------
         html = html.trim();
         while (html.indexOf('  ') > -1)html = html.replaceAll('  ', ' ');
-        html = html.replaceAll('&nbsp;', ' ');
+        [
+            ['&nbsp;', ' '],
+            ['&lt;', '<'],
+            ['&gt;', '>'],
+        ]
+            .map((o) => html = html.replaceAll(o[0], o[1]));
+
+        //---------------------------------------------------------------
 
         while (pos < html.length) {
             const pack = this._get_start(html, tags, pos);

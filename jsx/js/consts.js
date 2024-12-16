@@ -26,6 +26,8 @@ export const KEY_CODE_KOV = 222;
 export const KEY_CODE_LINE = 220;
 export const KEY_CODE_SLASH_LEFT = 191;
 export const KEY_CODE_SLASH_RIGHT = 226;
+export const KEY_CODE_LT = 188;
+export const KEY_CODE_GT = 190;
 
 export function isCharKey(keyCode) {
     if (keyCode >= KEY_CODE_0 && keyCode <= KEY_CODE_9) {
@@ -46,6 +48,8 @@ export function isCharKey(keyCode) {
         KEY_CODE_LINE,
         KEY_CODE_SLASH_LEFT,
         KEY_CODE_SLASH_RIGHT,
+        KEY_CODE_LT,
+        KEY_CODE_GT,
     ].find((it) => it == keyCode)) {
         return true;
     }

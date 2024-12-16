@@ -1,12 +1,18 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable array-callback-return */
 import Parsing from '../jsx/js/Parsing.js';
 import EditorTags from '../jsx/EditorTags.jsx';
 import eq from '../jsx/js/eq.js';
 import styleNameReactToCss from '../jsx/js/styleNameReactToCss.js';
 import Style from './Style.js';
+import HtmlSpecialChars from '../jsx/js/HtmlSpecialChars.js';
 
 const SPACE_HTML = '&nbsp;';
 const SPACE_CHAR = ' ';
+const LT_HTML = '&lt;';
+const LT_CHAR = '<';
+const GT_HTML = '&gt;';
+const GT_CHAR = '>';
 
 const defaultTags = [
     { name: 'span' },
@@ -29,20 +35,19 @@ class Html {
         const names = tags.map((it) => it.name);
         const pars = Parsing.html(html, { tags });
 
-        const prepare = [];
         pars.map((it) => {
             const { name, value, attrs } = it;
             if (names.indexOf(name) > -1) {
                 if (name === 'span') {
                     value.split('').map((char) => {
                         if (char === SPACE_CHAR) {
-                            prepare.push(EditorTags.createData('space', { ...attrs }));
+                            out.push(EditorTags.createData('space', { ...attrs }));
                         } else {
-                            prepare.push(EditorTags.createData('char', { value: char, ...attrs }));
+                            out.push(EditorTags.createData('char', { value: char, ...attrs }));
                         }
                     });
                 } else {
-                    prepare.push(EditorTags.createData(name, {
+                    out.push(EditorTags.createData(name, {
                         value,
                         ...attrs,
                     }));
@@ -50,7 +55,7 @@ class Html {
             }
         });
 
-        return prepare;
+        return out;
     }
 
     fromData(data) {
@@ -89,7 +94,7 @@ class Html {
         const strAttrs = (_attrs ? ` ${_attrs}` : _attrs);
 
         if (value) {
-            return `<${name}${strAttrs}>${value}</${name}>`;
+            return `<${name}${strAttrs}>${HtmlSpecialChars.code(value)}</${name}>`;
         }
         return `<${name}${strAttrs}/>`;
     }
