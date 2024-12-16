@@ -6,6 +6,21 @@
 @use './tags.scss';
 
 .editor{
+
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-items: stretch;
+	align-content: stretch;
+
+    .editor-area{
+        flex:1 1 auto;        
+    }
+
     @include area.define{
         @include tags.define;
     };

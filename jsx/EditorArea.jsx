@@ -16,6 +16,7 @@ import End, { ID } from './EditorTags/End/End.jsx';
 import EditorTags from './EditorTags.jsx';
 import Html from '../utils/Html.js';
 import HtmlSpecialChars, { CR_CHAR, CR_HTML } from './js/HtmlSpecialChars.js';
+import scroll from './js/scroll.js';
 
 const buffer = {
     selects: [],
@@ -284,6 +285,10 @@ function EditorArea({
             }
         }
 
+        // if ([KEY_CODE_LEFT, KEY_CODE_RIGHT, KEY_CODE_UP, KEY_CODE_DOWN,KEY_].indexOf(o.keyCode) > -1 || isCharKey(o.keyCode)) {
+        const scr = scroll.toViewPort('.editor-area', '.cursor', { margin: 32 });
+        if (scr) console.log({ scr });
+        // }
         if (no_handler) {
             console.log('no handler');
         }
@@ -316,6 +321,7 @@ function EditorArea({
                     id={id}
                     type={type}
                     cursor= {id === cursor && showCursor}
+                    // cursor= {id === cursor}
                     select={shiftSelect.indexOf(id) > -1}
                     {...prop}
                     onClick={ doClickTag}
