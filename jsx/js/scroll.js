@@ -11,8 +11,8 @@ class scroll {
      *  @param {string || DOM} селектор или объект DOM
      *  @returns {int} величина скролинга или -1 если не найден DOMs
     */
-    static get(outer) {
-        const dom = DOM(outer);
+    static get(domOrSelector) {
+        const dom = DOM(domOrSelector);
 
         return {
             y: dom ? dom.scrollTop : -1,
@@ -63,9 +63,16 @@ class scroll {
             posOuter.h -= (margin.bottom + margin.top);
             let current;
 
-            if (posInner.y < posOuter.y || posInner.y > (posOuter.y + posOuter.h - a.narrow)) {
+            if (posInner.y < posOuter.y) {
                 current = scroll.get(outerDOM);
-                const top = posInner.y - posOuter.y + current.y - a.off;
+                const top = posInner.y - posOuter.y + current.y;
+                scroll.top(outerDOM, top);
+                result = true;
+            }
+            if (posInner.y > (posOuter.y + posOuter.h)) {
+                current = !current ? scroll.get(outerDOM) : current;
+                // const top = posInner.y - posOuter.y + current.y;
+                const top = posInner.y - (posOuter.y + posOuter.h - current.y);
                 scroll.top(outerDOM, top);
                 result = true;
             }
@@ -73,9 +80,16 @@ class scroll {
             posOuter.x += margin.left;
             posOuter.w -= (margin.right + margin.left);
 
-            if (posInner.x < posOuter.x || posInner.x > (posOuter.x + posOuter.w - a.narrow)) {
+            if (posInner.x < posOuter.x) {
                 current = !current ? scroll.get(outerDOM) : current;
-                const left = posInner.x - posOuter.x + current.x - a.off;
+                const left = posInner.x - posOuter.x + current.x;
+                scroll.left(outerDOM, left);
+                result = true;
+            }
+
+            if (posInner.x > (posOuter.x + posOuter.w - a.narrow)) {
+                current = !current ? scroll.get(outerDOM) : current;
+                const left = posInner.x - (posOuter.x + posOuter.w - current.x);
                 scroll.left(outerDOM, left);
                 result = true;
             }

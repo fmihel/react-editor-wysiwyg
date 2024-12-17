@@ -287,7 +287,7 @@ function EditorArea({
 
         // if ([KEY_CODE_LEFT, KEY_CODE_RIGHT, KEY_CODE_UP, KEY_CODE_DOWN,KEY_].indexOf(o.keyCode) > -1 || isCharKey(o.keyCode)) {
         const scr = scroll.toViewPort('.editor-area', '.cursor', { margin: 32 });
-        if (scr) console.log({ scr });
+        // if (scr) console.log({ scr });
         // }
         if (no_handler) {
             console.log('no handler');
