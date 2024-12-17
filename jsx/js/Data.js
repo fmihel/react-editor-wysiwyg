@@ -1,13 +1,40 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable camelcase */
 import eq from './eq.js';
+import Thread from './Thread.js';
 
 class Data {
+    static findAsync(data, callback) {
+        return Thread.run((buffer) => {
+            if (buffer.step < data.length) {
+                if (callback(data[buffer.step])) {
+                    return data[buffer.step];
+                }
+            } else {
+                return true;
+            }
+        }).then((result) => (result === true ? false : result));
+    }
+
     static find(data, id) {
         return data.find((it) => eq.id(it.id, id));
     }
 
     static findIndex(data, id) {
         return data.findIndex((it) => eq.id(it.id, id));
+    }
+
+    static prevAsync(data, callback) {
+        return Thread.run((buffer) => {
+            if (buffer.step < data.length) {
+                if (callback(data[buffer.step])) {
+                    return !buffer.prev ? true : buffer.prev;
+                }
+                buffer.prev = data[buffer.step];
+            } else {
+                return true;
+            }
+        }).then((result) => (result === true ? false : result));
     }
 
     static prev(data, callback) {
@@ -24,6 +51,19 @@ class Data {
         return finded;
     }
 
+    static nextAsync(data, callback) {
+        return Thread.run((buffer) => {
+            if (buffer.step < data.length) {
+                if (callback(data[data.length - (buffer.step + 1)])) {
+                    return !buffer.next ? true : buffer.next;
+                }
+                buffer.next = data[data.length - (buffer.step + 1)];
+            } else {
+                return true;
+            }
+        }).then((result) => (result === true ? false : result));
+    }
+
     static next(data, callback) {
         let finded = false;
         let prev = false;
@@ -36,6 +76,31 @@ class Data {
         });
 
         return finded;
+    }
+
+    static nearestAsync(data, callback, findedCallback, left = true) {
+        const index = data.findIndex((it) => callback(it));
+        return Thread.run((buffer) => {
+            if (buffer.start) {
+                if (left) {
+                    buffer.i = index - 1;
+                    buffer.direct = -1;
+                } else {
+                    buffer.i = index + 1;
+                    buffer.direct = 1;
+                }
+            }
+
+            if (buffer.i >= 0 && buffer.i < data.length) {
+                const it = data[buffer.i];
+                if (findedCallback(it)) {
+                    return it;
+                }
+                buffer.i += buffer.direct;
+            } else {
+                return true;
+            }
+        }, {}).then((result) => (result === true ? false : result));
     }
 
     static nearest(data, callback, findedCallback, left = true) {

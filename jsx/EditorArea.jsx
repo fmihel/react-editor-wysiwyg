@@ -3,6 +3,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
 import React, { useEffect, useRef, useState } from 'react';
+import _ from 'lodash';
 import array from './js/array.js';
 import selected from './js/selected.js';
 import Data from './js/Data.js';
@@ -22,6 +23,7 @@ const buffer = {
     selects: [],
 };
 
+let process = false;
 function EditorArea({
     // list = test_list,
     data: outerData,
@@ -155,14 +157,19 @@ function EditorArea({
     };
 
     const doChange = (newData) => {
-        if (onChange) {
-            onChange(newData.filter((it) => it.id !== 'end'));
-        } else {
-            setData(newData);
-        }
+        // if (onChange) {
+        //     onChange(newData.filter((it) => it.id !== 'end'));
+        // } else {
+        setData(newData);
+        // }
     };
 
     const doKeyDown = (o) => {
+        if (process) {
+            o.preventDefault();
+            return false;
+        }
+
         // console.log(o.key, o.keyCode, 'ctrl', o.ctrlKey, 'shift', o.shiftKey, selects_debug(selects));
         // console.log(o.key, o.keyCode);
         const index = data.findIndex((it) => it.id === cursor);
@@ -231,26 +238,55 @@ function EditorArea({
         }
 
         if (o.keyCode === KEY_CODE_RIGHT) { // to right
+            process = true;
             no_handler = false;
-            const next = Data.next(data, (it) => eq.id(it.id, cursor));
-            if (next) {
-                setCursor(next.id);
-            }
-            setShiftSelect(o.shiftKey ? array.addUnique(shiftSelect, cursor) : []);
+            console.time('check');
+            Data.nextAsync(data, (it) => eq.id(it.id, cursor))
+                .then((next) => {
+                    if (next) {
+                        setCursor(next.id);
+                    }
+                    setShiftSelect(o.shiftKey ? array.addUnique(shiftSelect, cursor) : []);
+                    // setShiftSelect(o.shiftKey ? array.addUnique(shiftSelect, cursor) : []);
+                    scroll.toViewPort('.editor-area', '.cursor', { margin: 32 });
+                    process = false;
+                    console.timeEnd('check');
+                });
+            // const next = Data.next(data, (it) => eq.id(it.id, cursor));
+            // if (next) {
+            //     setCursor(next.id);
+            // }
+            // setShiftSelect(o.shiftKey ? array.addUnique(shiftSelect, cursor) : []);
         }
 
         if (o.keyCode === KEY_CODE_UP) { // to up
             no_handler = false;
-            const up = Data.nearest(data, (it) => eq.id(it.id, cursor), (it) => it.type === 'br');
-            setShiftSelect([]);
-            setCursor(up ? up.id : (data.length ? data[0].id : 0));
+            process = true;
+            Data.nearestAsync(data, (it) => eq.id(it.id, cursor), (it) => it.type === 'br')
+                .then((up) => {
+                    setShiftSelect([]);
+                    setCursor(up ? up.id : (data.length ? data[0].id : 0));
+                    scroll.toViewPort('.editor-area', '.cursor', { margin: 32 });
+                    process = false;
+                });
         }
 
         if (o.keyCode === KEY_CODE_DOWN) { // to down
             no_handler = false;
-            const down = Data.nearest(data, (it) => eq.id(it.id, cursor), (it) => it.type === 'br', false);
-            setShiftSelect([]);
-            setCursor(down ? down.id : (data.length ? data[data.length - 1].id : 0));
+            process = true;
+            Data.nearestAsync(data, (it) => eq.id(it.id, cursor), (it) => it.type === 'br', false)
+                .then((down) => {
+                    setShiftSelect([]);
+                    setCursor(down ? down.id : (data.length ? data[data.length - 1].id : 0));
+                    scroll.toViewPort('.editor-area', '.cursor', { margin: 32 });
+                    process = false;
+                });
+
+            // no_handler = false;
+            // const down = Data.nearest(data, (it) => eq.id(it.id, cursor), (it) => it.type === 'br', false);
+            // setShiftSelect([]);
+            // setCursor(down ? down.id : (data.length ? data[data.length - 1].id : 0));
+            // process = true;
         }
 
         if (o.keyCode === KEY_CODE_BACKSPACE) { // backspace
@@ -286,7 +322,7 @@ function EditorArea({
         }
 
         // if ([KEY_CODE_LEFT, KEY_CODE_RIGHT, KEY_CODE_UP, KEY_CODE_DOWN,KEY_].indexOf(o.keyCode) > -1 || isCharKey(o.keyCode)) {
-        const scr = scroll.toViewPort('.editor-area', '.cursor', { margin: 32 });
+        // scroll.toViewPort('.editor-area', '.cursor', { margin: 32 });
         // if (scr) console.log({ scr });
         // }
         if (no_handler) {
