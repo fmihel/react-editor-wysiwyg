@@ -2,7 +2,9 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+    Profiler, useEffect, useRef, useState,
+} from 'react';
 import _ from 'lodash';
 import array from './js/array.js';
 import selected from './js/selected.js';
@@ -19,6 +21,7 @@ import Html from '../utils/Html.js';
 import HtmlSpecialChars, { CR_CHAR, CR_HTML } from './js/HtmlSpecialChars.js';
 import scroll from './js/scroll.js';
 import DataWrap from './js/DataWrap.js';
+import DOM from './js/DOM.js';
 
 const buffer = {
     selects: [],
@@ -182,7 +185,9 @@ function EditorArea({
         }
     };
     const scrollToViewPort = () => {
-        scroll.toViewPort('.editor-area', '.cursor', { margin: 32 });
+        if (cursor && ref.current) {
+            scroll.toViewPort(ref.current, DOM(`#${cursor}`), { margin: 32 });
+        }
     };
     const doKeyDown = (o) => {
         lockKey(() => {
@@ -326,8 +331,21 @@ function EditorArea({
     const doChangeTag = (o) => {
         doChange(data.map((it) => (eq.id(o.id, it.id) ? { ...it, ...o } : { ...it })));
     };
+
+    // const checkRender = (id, // проп "id" из дерева компонента Profiler, для которого было зафиксировано изменение
+    //     phase, // либо "mount" (если дерево было смонтировано), либо "update" (если дерево было повторно отрендерено)
+    //     actualDuration, // время, затраченное на рендер зафиксированного обновления
+    //     baseDuration, // предполагаемое время рендера всего поддерева без кеширования
+    //     startTime, // когда React начал рендерить это обновление
+    //     commitTime, // когда React зафиксировал это обновление
+    //     interactions, // Множество «взаимодействий» для данного обновления
+    // ) => {
+    //     // console.log('---------------------------');
+    //     console.log('phase', phase, 'all', actualDuration.toFixed(2), 'base', baseDuration.toFixed(2));
+    // };
     return (
         <>
+            {/* <Profiler id='area' onRender={checkRender}> */}
             <div
                 className='editor-area'
                 tabIndex={0}
@@ -354,6 +372,7 @@ function EditorArea({
                     onChange={doChangeTag}
                 />)}
             </div>
+            {/* </Profiler> */}
         </>
     );
 }

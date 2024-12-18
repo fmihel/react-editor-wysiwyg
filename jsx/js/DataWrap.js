@@ -1,4 +1,7 @@
 /* eslint-disable no-return-assign */
+import { format } from 'date-format-parse';
+import random_str from './random_str';
+
 class DataWrap {
     constructor(data = []) {
         this.data = data;
@@ -32,10 +35,11 @@ class DataWrap {
 
     sync() {
         if (this._locksync === 0) {
-            // console.time('sync');
+            //  const time = `${format(new Date(), 'HH:mm:ss')} sync`;
+            // console.time(time);
             this.indexs = {};
             this.data.map((it, i) => this.indexs[it.id] = i);
-            // console.timeEnd('sync');
+            // console.timeEnd(time);
         }
     }
 
