@@ -1,47 +1,30 @@
-import React from 'react';
+import React, { memo } from 'react';
+import EditorTag from './EditorTags/EditorTag.jsx';
 
-import Br from './EditorTags/Br/Br.jsx';
-import A from './EditorTags/A/A.jsx';
-import Char from './EditorTags/Char/Char.jsx';
-import End from './EditorTags/End/End.jsx';
-import Img from './EditorTags/Img/Img.jsx';
-import Space from './EditorTags/Space/Space.jsx';
+const EditorTags = memo(({
+    data,
+    cursor,
+    showCursor,
+    shiftSelect,
+    doClickTag,
+    doChangeTag,
+}) => (
+    <>
+        {data.map(({
+            id, type, Com, ...prop
+        }) => <EditorTag
+            key={id}
+            id={id}
+            type={type}
+            cursor= {id === cursor && showCursor}
+            // cursor= {id === cursor}
+            select={shiftSelect.indexOf(id) > -1}
+            {...prop}
+            onClick={ doClickTag}
+            onChange={doChangeTag}
+        />)}
 
-function EditorTags({
-    id, type, cursor, select, onClick, ...prop
-}) {
-    return EditorTags.get(type)({
-        id,
-        type,
-        cursor,
-        select,
-        onClick,
-        ...prop,
-    });
-}
-
-EditorTags._tags = {
-    a: A,
-    br: Br,
-    char: Char,
-    img: Img,
-    space: Space,
-    end: End,
-};
-
-EditorTags.add = (o) => {
-    const tags = EditorTags._tags;
-    Object.keys(o).map((type) => {
-        if (!(type in tags)) {
-            tags[type] = o[type];
-        } else {
-            console.error(`tag ${type} already exists`);
-        }
-    });
-};
-
-EditorTags.get = (type) => EditorTags._tags[type];
-
-EditorTags.createData = (type, data) => EditorTags.get(type).createData(data);
+    </>
+));
 
 export default EditorTags;

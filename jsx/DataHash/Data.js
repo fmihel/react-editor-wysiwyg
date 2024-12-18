@@ -1,8 +1,8 @@
 /* eslint-disable no-return-assign */
-import { format } from 'date-format-parse';
-import random_str from './random_str';
+// import { format } from 'date-format-parse';
+// import random_str from './random_str';
 
-class DataWrap {
+class Data {
     constructor(data = []) {
         this.data = data;
         this.indexs = {};
@@ -84,6 +84,10 @@ class DataWrap {
 
         return false;
     }
+
+    map(callback) {
+        return this.data.map(callback);
+    }
 }
 
-export default DataWrap;
+export default Data;

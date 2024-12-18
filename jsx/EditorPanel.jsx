@@ -12,6 +12,7 @@ import dialog from './EditorDialog.jsx';
 import ImgProp from './EditorTags/Img/Prop.jsx';
 import UrlProp from './EditorTags/A/Prop.jsx';
 import scroll from './js/scroll.js';
+import EditorTagClass from './EditorTags/EditorTagClass.js';
 
 function EditorPanel({
     data,
@@ -98,7 +99,7 @@ function EditorPanel({
                     change(
                         Data.insert(
                             data,
-                            [EditorTags.createData('img', result)],
+                            [EditorTagClass.createData('img', result)],
                             cursor,
                         ),
                     );
@@ -116,7 +117,7 @@ function EditorPanel({
                     change(
                         Data.insert(
                             data,
-                            [EditorTags.createData('a', result)],
+                            [EditorTagClass.createData('a', result)],
                             cursor,
                         ),
                     );

@@ -3,12 +3,11 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
 import React, {
-    Profiler, useEffect, useRef, useState,
+    Profiler, useCallback, useEffect, useRef, useState,
 } from 'react';
 import _ from 'lodash';
 import array from './js/array.js';
 import selected from './js/selected.js';
-import Data from './js/Data.js';
 import eq from './js/eq.js';
 import {
     KEY_CODE_A, KEY_CODE_BACKSPACE, KEY_CODE_C, KEY_CODE_DEL, KEY_CODE_DOWN, KEY_CODE_ENTER,
@@ -20,8 +19,11 @@ import EditorTags from './EditorTags.jsx';
 import Html from '../utils/Html.js';
 import HtmlSpecialChars, { CR_CHAR, CR_HTML } from './js/HtmlSpecialChars.js';
 import scroll from './js/scroll.js';
-import DataWrap from './js/DataWrap.js';
+import Data from './DataHash/Data.js';
 import DOM from './js/DOM.js';
+import getid from './js/getid.js';
+import DataHash from './DataHash/DataHash.js';
+import EditorTagClass from './EditorTags/EditorTagClass.js';
 
 const buffer = {
     selects: [],
@@ -47,12 +49,12 @@ function EditorArea({
 
 }) {
     const ref = useRef();
+    const [hash, setHash] = useState();
     const [data, setData] = useState([]);
     const [cursor, setCursor] = useState(false);
     const [showCursor, setShowCursor] = useState(false);
     const [shiftSelect, setShiftSelect] = useState([]);
     const [mouseSelect, setMouseSelect] = useState(false);
-    const wrap = new DataWrap(data);
 
     // const [copy, setCopy] = useState([]);
     // let copy = [];
@@ -61,7 +63,7 @@ function EditorArea({
     // };
     // let useOuterSelect = false;
 
-    /** получаем выделеные блоки из стандартартного выделения или имметированного shift */
+    /** получаем выделеные блоки из стандартартного sыделения или имметированного shift */
     const getSelects = () => {
         const out = shiftSelect.length ? shiftSelect : selected.get_ids(data);
         if (out.length && out[out.length - 1] === ID) {
@@ -87,6 +89,9 @@ function EditorArea({
     };
 
     useEffect(() => {
+        const newHash = DataHash.create();
+        setHash(newHash);
+
         const remove = selected.on((o) => {
             if (o) {
                 setCursor(false);
@@ -94,7 +99,10 @@ function EditorArea({
             }
             setMouseSelect(!!o);
         });
-        return () => { remove(); };
+        return () => {
+            remove();
+            DataHash.free(newHash);
+        };
     }, []);
 
     const onFocusIn = () => {
@@ -127,8 +135,10 @@ function EditorArea({
     }, [shiftSelect, cursor, mouseSelect, outerSelect]);
 
     useEffect(() => {
-        setData(wrap.change(([...outerData, End.createData()])));
-    }, [outerData]);
+        if (hash) {
+            setData(DataHash.data(hash).change(([...outerData, End.createData()])));
+        }
+    }, [outerData, hash]);
 
     useEffect(() => {
         if (onCursor) {
@@ -137,13 +147,13 @@ function EditorArea({
         scrollToViewPort();
     }, [cursor]);
 
-    const doClickTag = (o) => {
+    const doClickTag = useCallback((o) => {
         setCursor(mouseSelect ? false : o.id);
         setShiftSelect([]);
 
         // o.sender.stopPropagation();
         // o.preventDefault();
-    };
+    }, [hash]);
 
     const doDoubleClick = () => {
         setCursor(false);
@@ -174,15 +184,15 @@ function EditorArea({
     };
 
     const doChange = (newData) => {
-        if (onChange) {
-            const out = [...newData];
-            if (newData.length && newData[newData.length - 1].id === 'end') {
-                out.pop();
-            }
-            onChange(wrap.change(out));
-        } else {
-            setData(wrap.change(newData));
-        }
+        // if (onChange) {
+        //     const out = [...newData];
+        //     if (newData.length && newData[newData.length - 1].id === 'end') {
+        //         out.pop();
+        //     }
+        //     onChange(wrap.change(out));
+        // } else {
+        setData(DataHash.data(hash).change(newData));
+        // }
     };
     const scrollToViewPort = () => {
         if (cursor && ref.current) {
@@ -194,6 +204,7 @@ function EditorArea({
             // console.log(o.key, o.keyCode, 'ctrl', o.ctrlKey, 'shift', o.shiftKey, selects_debug(selects));
             // console.log(o.key, o.keyCode);
             // const index = data.findIndex((it) => it.id === cursor);
+            const wrap = DataHash.data(hash);
             const index = wrap.index(cursor);
             let no_handler = true;
 
@@ -204,7 +215,7 @@ function EditorArea({
 
                     doChange([
                         ...data.slice(0, index),
-                        EditorTags.createData('char', { value: o.key }),
+                        EditorTagClass.createData('char', { value: o.key }),
                         ...data.slice(index)]);
                 }
                 if (o.keyCode === KEY_CODE_SPACE) {
@@ -212,7 +223,7 @@ function EditorArea({
 
                     doChange([
                         ...data.slice(0, index),
-                        EditorTags.createData('space'),
+                        EditorTagClass.createData('space'),
                         ...data.slice(index)]);
                 }
             }
@@ -246,7 +257,7 @@ function EditorArea({
                 no_handler = false;
                 doChange([
                     ...data.slice(0, index),
-                    EditorTags.createData('br'),
+                    EditorTagClass.createData('br'),
                     ...data.slice(index)]);
             }
 
@@ -328,9 +339,9 @@ function EditorArea({
         return false;
     };
 
-    const doChangeTag = (o) => {
-        doChange(data.map((it) => (eq.id(o.id, it.id) ? { ...it, ...o } : { ...it })));
-    };
+    const doChangeTag = useCallback((o) => {
+        doChange(DataHash.data(hash).map((it) => (eq.id(o.id, it.id) ? { ...it, ...o } : { ...it })));
+    }, [hash]);
 
     // const checkRender = (id, // проп "id" из дерева компонента Profiler, для которого было зафиксировано изменение
     //     phase, // либо "mount" (если дерево было смонтировано), либо "update" (если дерево было повторно отрендерено)
@@ -358,19 +369,14 @@ function EditorArea({
                 onFocus={onFocusIn}
                 ref={ref}
             >
-                {data.map(({
-                    id, type, Com, ...prop
-                }) => <EditorTags
-                    key={id}
-                    id={id}
-                    type={type}
-                    cursor= {id === cursor && showCursor}
-                    // cursor= {id === cursor}
-                    select={shiftSelect.indexOf(id) > -1}
-                    {...prop}
-                    onClick={ doClickTag}
-                    onChange={doChangeTag}
-                />)}
+                <EditorTags
+                    data={data}
+                    cursor={cursor}
+                    showCursor={showCursor}
+                    shiftSelect={shiftSelect}
+                    doClickTag={doClickTag}
+                    doChangeTag={doChangeTag}
+                />
             </div>
             {/* </Profiler> */}
         </>

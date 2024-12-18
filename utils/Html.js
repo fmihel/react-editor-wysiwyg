@@ -6,6 +6,7 @@ import eq from '../jsx/js/eq.js';
 import styleNameReactToCss from '../jsx/js/styleNameReactToCss.js';
 import Style from './Style.js';
 import HtmlSpecialChars from '../jsx/js/HtmlSpecialChars.js';
+import EditorTagClass from '../jsx/EditorTags/EditorTagClass.js';
 
 const SPACE_HTML = '&nbsp;';
 const SPACE_CHAR = ' ';
@@ -41,9 +42,9 @@ class Html {
                 if (name === 'span') {
                     value.split('').map((char) => {
                         if (char === SPACE_CHAR) {
-                            out.push(EditorTags.createData('space', { ...attrs }));
+                            out.push(EditorTagClass.createData('space', { ...attrs }));
                         } else {
-                            out.push(EditorTags.createData('char', { value: char, ...attrs }));
+                            out.push(EditorTagClass.createData('char', { value: char, ...attrs }));
                         }
                     });
                 } else {

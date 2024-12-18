@@ -5,7 +5,7 @@ import Html from '../utils/Html.js';
 import { LOW, MID, HIGH } from './demoData.js';
 
 function App() {
-    const [data, setData] = useState(Html.toData(MID));
+    const [data, setData] = useState(Html.toData(LOW));
     const [code, setCode] = useState('');
 
     const doDecode = (from) => {
