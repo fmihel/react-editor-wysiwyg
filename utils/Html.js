@@ -48,7 +48,7 @@ class Html {
                         }
                     });
                 } else {
-                    out.push(EditorTags.createData(name, {
+                    out.push(EditorTagClass.createData(name, {
                         value,
                         ...attrs,
                     }));
