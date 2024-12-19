@@ -63,7 +63,7 @@ class Data {
         return this.itemByIndex(this.index(id) + 1);
     }
 
-    nearest(id, findedCallback, left = true) {
+    nearest(id, callback, left = true) {
         const index = this.index(id);
         let from; let step;
         if (left) {
@@ -76,13 +76,37 @@ class Data {
         let i = from;
         while (i >= 0 && i < this.data.length) {
             const it = this.data[i];
-            if (findedCallback(it)) {
+            if (callback(it, i)) {
                 return it;
             }
             i += step;
         }
 
         return false;
+    }
+
+    delta(id, callback, left = true) {
+        const index = this.index(id);
+        let from; let step;
+        if (left) {
+            from = index - 1;
+            step = -1;
+        } else {
+            from = index + 1;
+            step = 1;
+        }
+        let i = from;
+        let result = 0;
+        while (i >= 0 && i < this.data.length) {
+            const it = this.data[i];
+            if (callback(it, i)) {
+                break;
+            }
+            i += step;
+            result += 1;
+        }
+
+        return result;
     }
 
     map(callback) {
@@ -97,12 +121,27 @@ class Data {
         return this.data.slice(start, end);
     }
 
-    last() {
-        return this.data.length ? this.data[this.data.length - 1] : false;
+    last(off = 0) {
+        const d = this.data;
+        const index = d.length - 1 + off;
+        return (d.length && index >= 0 && index < d.length) ? d[index] : false;
     }
 
-    first() {
-        return this.data.length ? this.data[0] : false;
+    first(off = 0) {
+        const d = this.data;
+        return (d.length && off >= 0 && off < d.length) ? d[off] : false;
+    }
+
+    find(callback, start = 0, step = 1) {
+        let i = start;
+        while (i >= 0 && i < this.data.length) {
+            const it = this.data[i];
+            if (callback(it, i)) {
+                return it;
+            }
+            i += step;
+        }
+        return false;
     }
 }
 

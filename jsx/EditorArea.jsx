@@ -308,17 +308,60 @@ function EditorArea({
 
             if (o.keyCode === KEY_CODE_UP && cursor) { // to up
                 no_handler = false;
-                const up = wrap.nearest(cursor, (it) => isBr(it));
+
+                let move = wrap.first();
+                let next = wrap.nearest(cursor, (it) => isBr(it));// начало текущей строки строки
+                if (next) {
+                    let off = wrap.delta(cursor, (it) => isBr(it));// кол-во до левого края
+                    next = wrap.nearest(next.id, (it) => isBr(it));// начало предыдущей строки
+                    if (!next) {
+                        next = wrap.first();
+                        off--;
+                    }
+                    if (next) {
+                        next = wrap.next(next.id);
+                        move = wrap.find((it) => {
+                            off--;
+                            return (isBr(it) || off < 0);
+                        }, wrap.index(next.id), 1);
+                    }
+                }
+                setCursor(move ? move.id : false);
                 setShiftSelect([]);
-                setCursor(up ? up.id : (data.length ? data[0].id : 0));
             }
 
             if (o.keyCode === KEY_CODE_DOWN && cursor) { // to down
                 no_handler = false;
-                const down = wrap.nearest(cursor, (it) => isBr(it), false);
 
+                let move = wrap.last(-1);
+                const cursorItem = wrap.itemById(cursor);
+                let next = isBr(cursorItem) ? cursorItem : wrap.nearest(cursor, (it) => isBr(it), false);// след строка
+                if (next) {
+                    let first = false;
+                    let off = wrap.delta(cursor, (it, i) => {
+                        first = (i === 0);
+                        return isBr(it) || first;
+                    });// кол-во до левого края
+                    if (first) {
+                        off++;
+                    }
+                    next = wrap.next(next.id);
+
+                    if (next) {
+                        move = wrap.find((it) => {
+                            off--;
+                            return (isBr(it) || off < 0);
+                        }, wrap.index(next.id), 1) || wrap.last(0);
+                    }
+                }
+
+                setCursor(move ? move.id : false);
                 setShiftSelect([]);
-                setCursor(down ? down.id : (data.length ? data[data.length - 1].id : 0));
+
+                // const down = wrap.nearest(cursor, (it) => isBr(it), false) || wrap.last();
+
+                // setShiftSelect([]);
+                // setCursor(down ? down.id : false);
             }
 
             if (o.keyCode === KEY_CODE_BACKSPACE) { // backspace

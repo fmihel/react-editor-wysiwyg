@@ -1,6 +1,9 @@
-export const LOW = `1 aaaa aaaa aaaa aaaa aaaa aaaa  aaaa aaaa aaaa aaaa  aaaa aaaa aaaa aaaa aaaa aaaa aaaa xxxx 1<br>
-2 aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa xxxx 2<br>
-3 aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa xxxx 3`;
+export const LOW = `
+1 aaaa aaaa xxxx 1<br>
+2 aaaa aaaa xxxx 2<br>
+3 aaaa aaaa xxxx 3<br>
+4 aaaa aaaa xxxx 4<br>
+5 aaaa aaaa xxxx 5<br>`.replaceAll('\n', '');
 
 export const MID = `
 1 aaaa aaaa aaaa aaaa aaaa aaaa  aaaa aaaa aaaa aaaa  aaaa aaaa aaaa aaaa aaaa aaaa aaaa xxxx 1<br>
@@ -27,7 +30,7 @@ export const MID = `
 22 aaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa xxxx 6<br>
 23 aaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa xxxx 6<br>
 24 aaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa xxxx 6<br>
-`;
+`.replaceAll('\n', '');
 
 export const HIGH = `
 1 aaaa aaaa aaaa aaaa aaaa aaaa  aaaa aaaa aaaa aaaa  aaaa aaaa aaaa aaaa aaaa aaaa aaaa xxxx 1<br>
@@ -78,4 +81,4 @@ export const HIGH = `
 46 aaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa xxxx 6<br>
 47 aaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa xxxx 6<br>
 48 aaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa xxxx 6<br>
-`;
+`.replaceAll('\n', '');
