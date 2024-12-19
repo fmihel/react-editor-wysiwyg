@@ -12,7 +12,8 @@ function Br({
         <>
 
             <span key="2" className={`${cursor ? 'cursor' : ''}` } style={{ minHeight: 12 }} >
-            ↳<br id={id} key="1" />
+                {/* ↳ */}
+                <br id={id} key="1" />
             </span>
         </>
     );
