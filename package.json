@@ -12,7 +12,8 @@
     "npm-publish-beta": "npm run test && npm run build && npm publish  --tag beta",
     "-----------------------------------------": "",
     "test": "mocha \"./tests/**/*-test.js\" --reporter min",
-    "test-watch": "mocha \"./tests/**/*-test.js\" --reporter min --watch"
+    "test-watch": "mocha \"./tests/**/*-test.js\" --reporter min --watch",
+    "copy-to":"cp ./dist/Editor.js D:\\work\\windeco\\windeco.ru\\main\\node_modules\\react-editor-wysyvig\\dist\\Editor.js"
   },
   "repository": {
     "type": "git",

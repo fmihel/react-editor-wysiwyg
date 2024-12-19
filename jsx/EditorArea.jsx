@@ -26,6 +26,7 @@ import DOM from './js/DOM.js';
 import DataHash from './DataHash/DataHash.js';
 import EditorTagClass from './EditorTags/EditorTagClass.js';
 import { isBr } from './EditorTags/Br/Br.jsx';
+import eventListener from './js/eventListener.js';
 
 const buffer = {
     selects: [],
@@ -118,10 +119,10 @@ function EditorArea({
     };
 
     useEffect(() => {
-        if (ref) {
-            ref.current.addEventListener('focusout', onFocsuOut);
+        if (ref && ref.current) {
+            const remove = eventListener(ref.current, 'focusout', onFocsuOut);
             return () => {
-                ref.current.removeEventListener('focusout', onFocsuOut);
+                remove();
             };
         }
     }, [ref]);
