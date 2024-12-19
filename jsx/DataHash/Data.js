@@ -6,8 +6,8 @@ class Data {
     constructor(data = []) {
         this.data = data;
         this.indexs = {};
-        this._locksync = 0;
-        this.sync();
+        this._lockCreateIndexs = 0;
+        this.reCreactIndexs();
     }
 
     itemById(id) {
@@ -22,19 +22,19 @@ class Data {
         return id in this.indexs ? this.indexs[id] : false;
     }
 
-    lockSync() {
-        this._locksync += 1;
+    lockCreateIndexs() {
+        this._lockCreateIndexs += 1;
     }
 
-    unlockSync() {
-        this._locksync -= 1;
-        if (this._locksync === 0) {
-            this.sync();
+    unlockCreateIndexs() {
+        this._lockCreateIndexs -= 1;
+        if (this._lockCreateIndexs === 0) {
+            this.reCreactIndexs();
         }
     }
 
-    sync() {
-        if (this._locksync === 0) {
+    reCreactIndexs() {
+        if (this._lockCreateIndexs === 0) {
             //  const time = `${format(new Date(), 'HH:mm:ss')} sync`;
             // console.time(time);
             this.indexs = {};
@@ -45,13 +45,13 @@ class Data {
 
     add(data) {
         this.data = [...this.data, ...data];
-        this.sync();
+        this.reCreactIndexs();
         return this.data;
     }
 
     change(data) {
         this.data = data;
-        this.sync();
+        this.reCreactIndexs();
         return this.data;
     }
 
@@ -87,6 +87,14 @@ class Data {
 
     map(callback) {
         return this.data.map(callback);
+    }
+
+    filter(callback) {
+        return this.data.filter(callback);
+    }
+
+    slice(start, end) {
+        return this.data.slice(start, end);
     }
 }
 

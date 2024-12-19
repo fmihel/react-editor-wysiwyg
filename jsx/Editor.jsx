@@ -9,7 +9,6 @@ import demoData from './js/demoData.js';
 // import reducer from './EditorDialog/reducer.js';
 // import { DIALOG_ID } from './EditorDialog/consts.js';
 import EditorDialog from './EditorDialog.jsx';
-import random_str from './js/random_str.js';
 
 function Editor({
     id,

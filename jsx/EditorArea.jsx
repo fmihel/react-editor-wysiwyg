@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-use-before-define */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-nested-ternary */
@@ -14,14 +15,12 @@ import {
     KEY_CODE_LEFT, KEY_CODE_RIGHT, KEY_CODE_UP, KEY_CODE_SPACE, KEY_CODE_V,
     isCharKey,
 } from './js/consts.js';
-import End, { ID } from './EditorTags/End/End.jsx';
+import End, { ID, removeLastEnd } from './EditorTags/End/End.jsx';
 import EditorTags from './EditorTags.jsx';
 import Html from '../utils/Html.js';
 import HtmlSpecialChars, { CR_CHAR, CR_HTML } from './js/HtmlSpecialChars.js';
 import scroll from './js/scroll.js';
-import Data from './DataHash/Data.js';
 import DOM from './js/DOM.js';
-import getid from './js/getid.js';
 import DataHash from './DataHash/DataHash.js';
 import EditorTagClass from './EditorTags/EditorTagClass.js';
 
@@ -109,10 +108,12 @@ function EditorArea({
         // console.log('show');
         setShowCursor(true);
     };
+
     const onFocsuOut = () => {
         setShowCursor(false);
         // console.log('hide');
     };
+
     useEffect(() => {
         if (ref) {
             ref.current.addEventListener('focusout', onFocsuOut);
@@ -184,16 +185,17 @@ function EditorArea({
     };
 
     const doChange = (newData) => {
-        // if (onChange) {
-        //     const out = [...newData];
-        //     if (newData.length && newData[newData.length - 1].id === 'end') {
-        //         out.pop();
-        //     }
-        //     onChange(wrap.change(out));
-        // } else {
-        setData(DataHash.data(hash).change(newData));
-        // }
+        if (onChange) {
+            onChange(DataHash.data(hash).change(removeLastEnd(newData)));
+        } else {
+            setData(DataHash.data(hash).change(newData));
+        }
     };
+
+    const doChangeTag = useCallback((o) => {
+        doChange(DataHash.data(hash).map((it) => (eq.id(o.id, it.id) ? { ...it, ...o } : { ...it })));
+    }, [hash]);
+
     const scrollToViewPort = () => {
         if (cursor && ref.current) {
             scroll.toViewPort(ref.current, DOM(`#${cursor}`), { margin: 32 });
@@ -203,16 +205,14 @@ function EditorArea({
         lockKey(() => {
             // console.log(o.key, o.keyCode, 'ctrl', o.ctrlKey, 'shift', o.shiftKey, selects_debug(selects));
             // console.log(o.key, o.keyCode);
-            // const index = data.findIndex((it) => it.id === cursor);
+
             const wrap = DataHash.data(hash);
             const index = wrap.index(cursor);
             let no_handler = true;
 
-            // const symbols = [KEY_CODE_SPACE];
             if (cursor && !o.ctrlKey) {
                 if (isCharKey(o.keyCode)) {
                     no_handler = false;
-
                     doChange([
                         ...data.slice(0, index),
                         EditorTagClass.createData('char', { value: o.key }),
@@ -226,13 +226,21 @@ function EditorArea({
                         EditorTagClass.createData('space'),
                         ...data.slice(index)]);
                 }
+                if (o.keyCode === KEY_CODE_ENTER) { // enter
+                    no_handler = false;
+                    doChange([
+                        ...data.slice(0, index),
+                        EditorTagClass.createData('br'),
+                        ...data.slice(index)]);
+                }
             }
             if (o.ctrlKey) {
                 no_handler = false;
 
                 if (o.keyCode === KEY_CODE_C) {
                 // setCopy(getSelects());
-                    navigator.clipboard.writeText(Data.asArray(getSelectsObjects(), (it) => it.value).join(''));
+                    // navigator.clipboard.writeText(Data.asArray(getSelectsObjects(), (it) => it.value).join(''));
+                    navigator.clipboard.writeText(getSelects().map((id) => wrap.itemById(id).value).join(''));
                 }
                 if (o.keyCode === KEY_CODE_V && cursor) {
                     navigator.clipboard
@@ -243,22 +251,19 @@ function EditorArea({
                                     ...it,
                                     ...it.value ? { value: HtmlSpecialChars.unShield(it.value) } : {},
                                 }));
-
-                            doChange(Data.insert(data, newData, cursor));
+                            const indexTo = wrap.index(cursor);
+                            doChange([
+                                ...wrap.slice(0, indexTo),
+                                ...newData,
+                                ...wrap.slice(indexTo),
+                            ]);
+                            // doChange(wrap.insert(data, newData, cursor));
                         });
                 }
 
                 if (o.keyCode === KEY_CODE_A) {
-                    setShiftSelect(Data.ids(data).filter((it) => it.id !== 'end'));
+                    setShiftSelect(removeLastEnd(wrap.map((it) => it.id)));
                 }
-            }
-
-            if (o.keyCode === KEY_CODE_ENTER) { // enter
-                no_handler = false;
-                doChange([
-                    ...data.slice(0, index),
-                    EditorTagClass.createData('br'),
-                    ...data.slice(index)]);
             }
 
             if (o.keyCode === KEY_CODE_LEFT && cursor) { // to left
@@ -298,15 +303,15 @@ function EditorArea({
                 no_handler = false;
                 const sel = getSelects();
                 if (sel.length) {
-                    const next = Data.next(data, (it) => eq.id(it.id, sel[sel.length - 1]));
+                    const next = wrap.next(sel[sel.length - 1]);
 
-                    doChange(data.filter((it) => !sel.find((sid) => eq.id(it.id, sid))));
+                    doChange(wrap.filter((it) => !sel.find((sid) => eq.id(it.id, sid))));
                     setShiftSelect([]);
                     setCursor(next ? next.id : 0);
                 } else {
-                    const prev = Data.prev(data, (it) => eq.id(it.id, cursor));
+                    const prev = wrap.prev(cursor);
                     // console.log({ prev });
-                    doChange(data.filter((it) => !eq.id(it.id, prev.id)));
+                    doChange(wrap.filter((it) => !eq.id(it.id, prev.id)));
                 }
             }
 
@@ -314,14 +319,14 @@ function EditorArea({
                 no_handler = false;
                 const sel = getSelects();
                 if (sel.length) {
-                    const next = Data.next(data, (it) => eq.id(it.id, sel[sel.length - 1]));
+                    const next = wrap.next(sel[sel.length - 1]);
 
-                    doChange(data.filter((it) => !sel.find((sid) => eq.id(it.id, sid))));
+                    doChange(wrap.filter((it) => !sel.find((sid) => eq.id(it.id, sid))));
                     setShiftSelect([]);
                     setCursor(next ? next.id : 0);
                 } else {
-                    const next = Data.next(data, (it) => eq.id(it.id, cursor));
-                    doChange(data.filter((it) => !eq.id(it.id, cursor)));
+                    const next = wrap.next(cursor);
+                    doChange(wrap.filter((it) => !eq.id(it.id, cursor)));
                     setCursor(next ? next.id : 0);
                 }
             }
@@ -338,10 +343,6 @@ function EditorArea({
         o.preventDefault();
         return false;
     };
-
-    const doChangeTag = useCallback((o) => {
-        doChange(DataHash.data(hash).map((it) => (eq.id(o.id, it.id) ? { ...it, ...o } : { ...it })));
-    }, [hash]);
 
     // const checkRender = (id, // проп "id" из дерева компонента Profiler, для которого было зафиксировано изменение
     //     phase, // либо "mount" (если дерево было смонтировано), либо "update" (если дерево было повторно отрендерено)
@@ -373,7 +374,7 @@ function EditorArea({
                     data={data}
                     cursor={cursor}
                     showCursor={showCursor}
-                    shiftSelect={shiftSelect}
+                    selects={shiftSelect}
                     doClickTag={doClickTag}
                     doChangeTag={doChangeTag}
                 />

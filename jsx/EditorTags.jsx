@@ -5,7 +5,7 @@ const EditorTags = memo(({
     data,
     cursor,
     showCursor,
-    shiftSelect,
+    selects,
     doClickTag,
     doChangeTag,
 }) => (
@@ -18,7 +18,7 @@ const EditorTags = memo(({
             type={type}
             cursor= {id === cursor && showCursor}
             // cursor= {id === cursor}
-            select={shiftSelect.indexOf(id) > -1}
+            select={selects.indexOf(id) > -1}
             {...prop}
             onClick={ doClickTag}
             onChange={doChangeTag}

@@ -34,6 +34,17 @@ End.createData = (data = {}) => ({
 export default End;
 
 const isNotEnd = (item) => !eq.id(item.id, ID);
+const removeLastEnd = (list) => {
+    const out = [...list];
+    if (out.length) {
+        const last = out[out.length - 1];
+        if (last === ID || (typeof (last) === 'object' && last.type === ID)) {
+            out.pop();
+        }
+    }
+    return out;
+};
 export {
     isNotEnd,
+    removeLastEnd,
 };

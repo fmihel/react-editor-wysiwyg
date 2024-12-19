@@ -1,4 +1,6 @@
-export const LOW = '0123456789';// text write to filed.';
+export const LOW = `1 aaaa aaaa aaaa aaaa aaaa aaaa  aaaa aaaa aaaa aaaa  aaaa aaaa aaaa aaaa aaaa aaaa aaaa xxxx 1<br>
+2 aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa xxxx 2`;
+
 export const MID = `
 1 aaaa aaaa aaaa aaaa aaaa aaaa  aaaa aaaa aaaa aaaa  aaaa aaaa aaaa aaaa aaaa aaaa aaaa xxxx 1<br>
 2 aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa xxxx 2<br>
