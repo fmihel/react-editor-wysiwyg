@@ -11,6 +11,9 @@ export const KEY_CODE_ESC = 27;
 export const KEY_CODE_SPACE = 32;
 export const KEY_CODE_TAB = 9;
 
+export const KEY_CODE_HOME = 36;
+export const KEY_CODE_END = 35;
+
 export const KEY_CODE_0 = 48;
 export const KEY_CODE_9 = 57;
 export const KEY_CODE_A = 65;

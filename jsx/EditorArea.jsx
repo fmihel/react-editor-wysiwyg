@@ -14,6 +14,8 @@ import {
     KEY_CODE_A, KEY_CODE_BACKSPACE, KEY_CODE_C, KEY_CODE_DEL, KEY_CODE_DOWN, KEY_CODE_ENTER,
     KEY_CODE_LEFT, KEY_CODE_RIGHT, KEY_CODE_UP, KEY_CODE_SPACE, KEY_CODE_V,
     isCharKey,
+    KEY_CODE_HOME,
+    KEY_CODE_END,
 } from './js/consts.js';
 import End, { ID, removeLastEnd } from './EditorTags/End/End.jsx';
 import EditorTags from './EditorTags.jsx';
@@ -23,6 +25,7 @@ import scroll from './js/scroll.js';
 import DOM from './js/DOM.js';
 import DataHash from './DataHash/DataHash.js';
 import EditorTagClass from './EditorTags/EditorTagClass.js';
+import { isBr } from './EditorTags/Br/Br.jsx';
 
 const buffer = {
     selects: [],
@@ -234,6 +237,7 @@ function EditorArea({
                         ...data.slice(index)]);
                 }
             }
+
             if (o.ctrlKey) {
                 no_handler = false;
 
@@ -275,7 +279,7 @@ function EditorArea({
                 setShiftSelect(o.shiftKey ? array.addUnique(shiftSelect, prev.id) : []);
             }
 
-            if (o.keyCode === KEY_CODE_RIGHT && cursor) { // to right
+            if (o.keyCode === KEY_CODE_RIGHT) { // to right
                 no_handler = false;
                 const next = wrap.next(cursor);
                 if (next) {
@@ -284,16 +288,34 @@ function EditorArea({
                 setShiftSelect(o.shiftKey ? array.addUnique(shiftSelect, cursor) : []);
             }
 
+            if (o.keyCode === KEY_CODE_HOME && cursor) { // to home
+                no_handler = false;
+                const left = wrap.nearest(cursor, (it) => isBr(it));
+                const to = left ? wrap.next(left.id) : wrap.first();
+
+                setShiftSelect([]);
+                setCursor(to ? to.id : false);
+            }
+
+            if (o.keyCode === KEY_CODE_END && cursor) { // to end
+                no_handler = false;
+                if (!isBr(wrap.itemById(cursor))) {
+                    const right = wrap.nearest(cursor, (it) => isBr(it), false) || wrap.last();
+                    setShiftSelect([]);
+                    setCursor(right ? right.id : false);
+                }
+            }
+
             if (o.keyCode === KEY_CODE_UP && cursor) { // to up
                 no_handler = false;
-                const up = wrap.nearest(cursor, (it) => it.type === 'br');
+                const up = wrap.nearest(cursor, (it) => isBr(it));
                 setShiftSelect([]);
                 setCursor(up ? up.id : (data.length ? data[0].id : 0));
             }
 
             if (o.keyCode === KEY_CODE_DOWN && cursor) { // to down
                 no_handler = false;
-                const down = wrap.nearest(cursor, (it) => it.type === 'br', false);
+                const down = wrap.nearest(cursor, (it) => isBr(it), false);
 
                 setShiftSelect([]);
                 setCursor(down ? down.id : (data.length ? data[data.length - 1].id : 0));

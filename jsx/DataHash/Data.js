@@ -96,6 +96,14 @@ class Data {
     slice(start, end) {
         return this.data.slice(start, end);
     }
+
+    last() {
+        return this.data.length ? this.data[this.data.length - 1] : false;
+    }
+
+    first() {
+        return this.data.length ? this.data[0] : false;
+    }
 }
 
 export default Data;

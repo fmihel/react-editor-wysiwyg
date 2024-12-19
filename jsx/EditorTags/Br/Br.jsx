@@ -12,7 +12,7 @@ function Br({
         <>
 
             <span key="2" className={`${cursor ? 'cursor' : ''}` } style={{ minHeight: 12 }} >
-                <br id={id} key="1" />
+            ↳<br id={id} key="1" />
             </span>
         </>
     );
@@ -25,5 +25,11 @@ Br.createData = (data = {}) => ({
     ...data,
 
 });
+
+const isBr = (o) => o === 'br' || o.type === 'br';
+
+export {
+    isBr,
+};
 
 export default Br;
