@@ -15,7 +15,7 @@ class DataUtils {
 
     static insert(toData, insertData, toId) {
         const out = this.copy(toData);
-        const index = toData.findIndex(toData, ({ id }) => id === toId);
+        const index = toData.findIndex(({ id }) => id === toId);
         out.splice(index, 0, ...insertData);
         return out;
     }
