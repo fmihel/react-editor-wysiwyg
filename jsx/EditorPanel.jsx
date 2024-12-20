@@ -6,13 +6,12 @@ import React, {
 import _ from 'lodash';
 import Style from '../utils/Style.js';
 import eq from './js/eq.js';
-import EditorTags from './EditorTags.jsx';
-import Data from './js/Data.js';
 import dialog from './EditorDialog.jsx';
 import ImgProp from './EditorTags/Img/Prop.jsx';
 import UrlProp from './EditorTags/A/Prop.jsx';
 import scroll from './js/scroll.js';
 import EditorTagClass from './EditorTags/EditorTagClass.js';
+import DataUtils from './Data/DataUtils.js';
 
 function EditorPanel({
     data,
@@ -97,7 +96,7 @@ function EditorPanel({
             .then(({ result, btn }) => {
                 if (btn === 'ok') {
                     change(
-                        Data.insert(
+                        DataUtils.insert(
                             data,
                             [EditorTagClass.createData('img', result)],
                             cursor,
@@ -115,7 +114,7 @@ function EditorPanel({
             .then(({ result, btn }) => {
                 if (btn === 'ok') {
                     change(
-                        Data.insert(
+                        DataUtils.insert(
                             data,
                             [EditorTagClass.createData('a', result)],
                             cursor,
