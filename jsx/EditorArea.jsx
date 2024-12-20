@@ -194,9 +194,13 @@ function EditorArea({
 
     const scrollToViewPort = () => {
         if (cursor && ref.current) {
+            // console.log('scroll');
             scroll.toViewPort(ref.current, DOM(`#${cursor}`), { margin: 32 });
         }
     };
+
+    // const scrollToViewPortDelay = useCallback(() => { _.throttle(scrollToViewPort, 1000); }, [data]);
+
     const doKeyDown = (o) => {
         lockKey(() => {
             // console.log(o.key, o.keyCode, 'ctrl', o.ctrlKey, 'shift', o.shiftKey, selects_debug(selects));
@@ -213,6 +217,7 @@ function EditorArea({
                         ...data.slice(0, index),
                         EditorTagClass.createData('char', { value: o.key }),
                         ...data.slice(index)]);
+                    scrollToViewPort();
                 }
                 if (o.keyCode === KEY_CODE_SPACE) {
                     no_handler = false;
