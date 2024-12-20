@@ -32,6 +32,15 @@ class EditorTagClass {
     static createData(type, data) {
         return this.get(type).createData(data);
     }
+
+    static asText(item) {
+        const tag = this.get(item.type);
+
+        if (tag.asText) {
+            return tag.asText(item);
+        }
+        return item.value || '';
+    }
 }
 
 export default EditorTagClass;

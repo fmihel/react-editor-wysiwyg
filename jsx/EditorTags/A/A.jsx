@@ -62,4 +62,6 @@ A.createData = (data = {}) => ({
 
 });
 
+A.asText = (item) => `[url:${item.href || ''}]`;
+
 export default A;

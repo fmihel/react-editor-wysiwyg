@@ -4,6 +4,7 @@ import HtmlSpecialChars, {
     CR_CHAR, CR_HTML, SPACE_CHAR, SPACE_HTML,
 } from '../js/HtmlSpecialChars';
 import clone from './clone';
+import EditorTagClass from '../EditorTags/EditorTagClass';
 
 const buffer = {
     hash: '',
@@ -21,20 +22,7 @@ class clipboard {
     }
 
     static writeData(data) {
-        const prepare = (value) => {
-            if (value) {
-                if (value === SPACE_HTML) {
-                    return SPACE_CHAR;
-                }
-                if (value === CR_HTML) {
-                    return CR_CHAR;
-                }
-                return value;
-            }
-            return '';
-        };
-
-        const text = data.map((it) => prepare(it.value)).join('');
+        const text = data.map((it) => EditorTagClass.asText(it)).join('');
         // console.log({ data, text });
         buffer.hash = crc32.compute_string_hex(text);
         buffer.data = [...data];

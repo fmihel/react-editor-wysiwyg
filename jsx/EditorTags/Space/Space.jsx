@@ -40,4 +40,6 @@ Space.createData = (data = {}) => ({
     style: { ...get(data, ['style'], {}) },
 });
 
+Space.asText = () => ' ';
+
 export default Space;

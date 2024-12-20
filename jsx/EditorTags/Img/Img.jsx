@@ -64,4 +64,6 @@ Img.createData = (data = {}) => ({
 
 });
 
+Img.asText = (item) => `[img:${item.src || ''}]`;
+
 export default Img;

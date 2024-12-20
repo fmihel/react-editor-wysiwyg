@@ -27,6 +27,8 @@ Br.createData = (data = {}) => ({
 
 });
 
+Br.asText = () => '\n';
+
 const isBr = (o) => o === 'br' || o.type === 'br';
 
 export {

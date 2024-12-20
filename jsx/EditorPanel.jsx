@@ -124,9 +124,6 @@ function EditorPanel({
             });
     };
 
-    const doScroll = () => {
-        scroll.toViewPort('.editor-area', '.cursor');
-    };
     return (
         <>
             <div className='editor-panel'>
@@ -137,7 +134,6 @@ function EditorPanel({
                 <input type="color" id="fone" name="fone" value="#000000" onChange={changeFone}/>
                 <button onClick={image} className="icon-img"></button>
                 <button onClick={url} className="icon-link"></button>
-                <button onClick={doScroll} >s</button>
                 <input type='number' min={0.5} max={4} step={0.1} value={fontSize} onChange={changeFontSize} onFocus={doFocus}/>
 
             </div>
