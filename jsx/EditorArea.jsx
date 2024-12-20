@@ -21,11 +21,11 @@ import End, { ID, removeLastEnd } from './EditorTags/End/End.jsx';
 import EditorTags from './EditorTags.jsx';
 import scroll from './js/scroll.js';
 import DOM from './js/DOM.js';
-import DataHash from './DataHash/DataHash.js';
+import Data from './Data/Data.js';
 import EditorTagClass from './EditorTags/EditorTagClass.js';
 import { isBr } from './EditorTags/Br/Br.jsx';
 import eventListener from './js/eventListener.js';
-import clipboard from './DataHash/clipboard.js';
+import clipboard from './Data/clipboard.js';
 
 const buffer = {
     selects: [],
@@ -58,13 +58,6 @@ function EditorArea({
     const [shiftSelect, setShiftSelect] = useState([]);
     const [mouseSelect, setMouseSelect] = useState(false);
 
-    // const [copy, setCopy] = useState([]);
-    // let copy = [];
-    // const setCopy = (newCopy) => {
-    //     copy = [...newCopy];
-    // };
-    // let useOuterSelect = false;
-
     /** получаем выделеные блоки из стандартартного sыделения или имметированного shift */
     const getSelects = () => {
         const out = shiftSelect.length ? shiftSelect : selected.get_ids(data);
@@ -91,7 +84,7 @@ function EditorArea({
     };
 
     useEffect(() => {
-        const newHash = DataHash.create();
+        const newHash = Data.create();
         setHash(newHash);
 
         const remove = selected.on((o) => {
@@ -103,7 +96,7 @@ function EditorArea({
         });
         return () => {
             remove();
-            DataHash.free(newHash);
+            Data.free(newHash);
         };
     }, []);
 
@@ -140,7 +133,7 @@ function EditorArea({
 
     useEffect(() => {
         if (hash) {
-            setData(DataHash.data(hash).change(([...outerData, End.createData()])));
+            setData(Data(hash).change(([...outerData, End.createData()])));
         }
     }, [outerData, hash]);
 
@@ -189,14 +182,14 @@ function EditorArea({
 
     const doChange = (newData) => {
         if (onChange) {
-            onChange(DataHash.data(hash).change(removeLastEnd(newData)));
+            onChange(Data(hash).change(removeLastEnd(newData)));
         } else {
-            setData(DataHash.data(hash).change(newData));
+            setData(Data(hash).change(newData));
         }
     };
 
     const doChangeTag = useCallback((o) => {
-        doChange(DataHash.data(hash).map((it) => (eq.id(o.id, it.id) ? { ...it, ...o } : { ...it })));
+        doChange(Data(hash).map((it) => (eq.id(o.id, it.id) ? { ...it, ...o } : { ...it })));
     }, [hash]);
 
     const scrollToViewPort = () => {
@@ -209,8 +202,8 @@ function EditorArea({
             // console.log(o.key, o.keyCode, 'ctrl', o.ctrlKey, 'shift', o.shiftKey, selects_debug(selects));
             // console.log(o.key, o.keyCode);
 
-            const wrap = DataHash.data(hash);
-            const index = wrap.index(cursor);
+            const dataHash = Data(hash);
+            const index = dataHash.index(cursor);
             let no_handler = true;
 
             if (cursor && !o.ctrlKey) {
@@ -242,31 +235,28 @@ function EditorArea({
                 no_handler = false;
 
                 if (o.keyCode === KEY_CODE_C) {
-                // setCopy(getSelects());
-                    // navigator.clipboard.writeText(Data.asArray(getSelectsObjects(), (it) => it.value).join(''));
-                    // navigator.clipboard.writeText(getSelects().map((id) => wrap.itemById(id).value).join(''));
-                    clipboard.writeData(getSelects().map((id) => wrap.itemById(id)));
+                    clipboard.writeData(getSelects().map((id) => dataHash.itemById(id)));
                 }
                 if (o.keyCode === KEY_CODE_V && cursor) {
                     clipboard.readData()
                         .then((newData) => {
-                            const indexTo = wrap.index(cursor);
+                            const indexTo = dataHash.index(cursor);
                             doChange([
-                                ...wrap.slice(0, indexTo),
+                                ...dataHash.slice(0, indexTo),
                                 ...newData,
-                                ...wrap.slice(indexTo),
+                                ...dataHash.slice(indexTo),
                             ]);
                         });
                 }
 
                 if (o.keyCode === KEY_CODE_A) {
-                    setShiftSelect(removeLastEnd(wrap.map((it) => it.id)));
+                    setShiftSelect(removeLastEnd(dataHash.map((it) => it.id)));
                 }
             }
 
             if (o.keyCode === KEY_CODE_LEFT && cursor) { // to left
                 no_handler = false;
-                const prev = wrap.prev(cursor);
+                const prev = dataHash.prev(cursor);
                 if (prev) {
                     setCursor(prev.id);
                 }
@@ -275,7 +265,7 @@ function EditorArea({
 
             if (o.keyCode === KEY_CODE_RIGHT) { // to right
                 no_handler = false;
-                const next = wrap.next(cursor);
+                const next = dataHash.next(cursor);
                 if (next) {
                     setCursor(next.id);
                 }
@@ -284,8 +274,8 @@ function EditorArea({
 
             if (o.keyCode === KEY_CODE_HOME && cursor) { // to home
                 no_handler = false;
-                const left = wrap.nearest(cursor, (it) => isBr(it));
-                const to = left ? wrap.next(left.id) : wrap.first();
+                const left = dataHash.nearest(cursor, (it) => isBr(it));
+                const to = left ? dataHash.next(left.id) : dataHash.first();
 
                 setShiftSelect([]);
                 setCursor(to ? to.id : false);
@@ -293,8 +283,8 @@ function EditorArea({
 
             if (o.keyCode === KEY_CODE_END && cursor) { // to end
                 no_handler = false;
-                if (!isBr(wrap.itemById(cursor))) {
-                    const right = wrap.nearest(cursor, (it) => isBr(it), false) || wrap.last();
+                if (!isBr(dataHash.itemById(cursor))) {
+                    const right = dataHash.nearest(cursor, (it) => isBr(it), false) || dataHash.last();
                     setShiftSelect([]);
                     setCursor(right ? right.id : false);
                 }
@@ -303,21 +293,21 @@ function EditorArea({
             if (o.keyCode === KEY_CODE_UP && cursor) { // to up
                 no_handler = false;
 
-                let move = wrap.first();
-                let next = wrap.nearest(cursor, (it) => isBr(it));// начало текущей строки строки
+                let move = dataHash.first();
+                let next = dataHash.nearest(cursor, (it) => isBr(it));// начало текущей строки строки
                 if (next) {
-                    let off = wrap.delta(cursor, (it) => isBr(it));// кол-во до левого края
-                    next = wrap.nearest(next.id, (it) => isBr(it));// начало предыдущей строки
+                    let off = dataHash.delta(cursor, (it) => isBr(it));// кол-во до левого края
+                    next = dataHash.nearest(next.id, (it) => isBr(it));// начало предыдущей строки
                     if (!next) {
-                        next = wrap.first();
+                        next = dataHash.first();
                         off--;
                     }
                     if (next) {
-                        next = wrap.next(next.id);
-                        move = wrap.find((it) => {
+                        next = dataHash.next(next.id);
+                        move = dataHash.find((it) => {
                             off--;
                             return (isBr(it) || off < 0);
-                        }, wrap.index(next.id), 1);
+                        }, dataHash.index(next.id), 1);
                     }
                 }
                 setCursor(move ? move.id : false);
@@ -327,25 +317,25 @@ function EditorArea({
             if (o.keyCode === KEY_CODE_DOWN && cursor) { // to down
                 no_handler = false;
 
-                let move = wrap.last(-1);
-                const cursorItem = wrap.itemById(cursor);
-                let next = isBr(cursorItem) ? cursorItem : wrap.nearest(cursor, (it) => isBr(it), false);// след строка
+                let move = dataHash.last(-1);
+                const cursorItem = dataHash.itemById(cursor);
+                let next = isBr(cursorItem) ? cursorItem : dataHash.nearest(cursor, (it) => isBr(it), false);// след строка
                 if (next) {
                     let first = false;
-                    let off = wrap.delta(cursor, (it, i) => {
+                    let off = dataHash.delta(cursor, (it, i) => {
                         first = (i === 0);
                         return isBr(it) || first;
                     });// кол-во до левого края
                     if (first) {
                         off++;
                     }
-                    next = wrap.next(next.id);
+                    next = dataHash.next(next.id);
 
                     if (next) {
-                        move = wrap.find((it) => {
+                        move = dataHash.find((it) => {
                             off--;
                             return (isBr(it) || off < 0);
-                        }, wrap.index(next.id), 1) || wrap.last(0);
+                        }, dataHash.index(next.id), 1) || dataHash.last(0);
                     }
                 }
 
@@ -362,15 +352,15 @@ function EditorArea({
                 no_handler = false;
                 const sel = getSelects();
                 if (sel.length) {
-                    const next = wrap.next(sel[sel.length - 1]);
+                    const next = dataHash.next(sel[sel.length - 1]);
 
-                    doChange(wrap.filter((it) => !sel.find((sid) => eq.id(it.id, sid))));
+                    doChange(dataHash.filter((it) => !sel.find((sid) => eq.id(it.id, sid))));
                     setShiftSelect([]);
                     setCursor(next ? next.id : 0);
                 } else {
-                    const prev = wrap.prev(cursor);
+                    const prev = dataHash.prev(cursor);
                     // console.log({ prev });
-                    doChange(wrap.filter((it) => !eq.id(it.id, prev.id)));
+                    doChange(dataHash.filter((it) => !eq.id(it.id, prev.id)));
                 }
             }
 
@@ -378,14 +368,14 @@ function EditorArea({
                 no_handler = false;
                 const sel = getSelects();
                 if (sel.length) {
-                    const next = wrap.next(sel[sel.length - 1]);
+                    const next = dataHash.next(sel[sel.length - 1]);
 
-                    doChange(wrap.filter((it) => !sel.find((sid) => eq.id(it.id, sid))));
+                    doChange(dataHash.filter((it) => !sel.find((sid) => eq.id(it.id, sid))));
                     setShiftSelect([]);
                     setCursor(next ? next.id : 0);
                 } else {
-                    const next = wrap.next(cursor);
-                    doChange(wrap.filter((it) => !eq.id(it.id, cursor)));
+                    const next = dataHash.next(cursor);
+                    doChange(dataHash.filter((it) => !eq.id(it.id, cursor)));
                     setCursor(next ? next.id : 0);
                 }
             }
