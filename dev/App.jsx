@@ -5,15 +5,15 @@ import Html from '../utils/Html.js';
 import { LOW, MID, HIGH } from './demoData.js';
 
 function App() {
-    const [data, setData] = useState(Html.toData(HIGH));
+    const [data, setData] = useState(Html.toData(LOW));
     const [code, setCode] = useState('');
     const [page, setPage] = useState(1);
 
     const doDecode = (from) => {
-        setCode(Html.fromData(from));
+        setCode(Html.fromData(from).replaceAll('&nbsp;', ' '));
     };
 
-    const decode = useCallback(_.debounce(doDecode, 5000), []);
+    const decode = useCallback(_.debounce(doDecode, 1000), []);
 
     const doChange = (newData) => {
         setData(newData);

@@ -8,7 +8,19 @@ export const GT_CHAR = '>';
 export const GT_SHIELD = '►';
 
 export const CR_HTML = '<br>';
-export const CR_CHAR = '↳';
+export const CR_CHAR = '\n';
+export const CR_SHIELD = '↳';
+
+export const SPACE_HTML = '&nbsp;';
+export const SPACE_CHAR = ' ';
+export const SPACE_SHIELD = '∅';
+
+export const HTML_TO_CHAR = {
+    [SPACE_HTML]: SPACE_CHAR,
+    [LT_HTML]: LT_CHAR,
+    [GT_HTML]: GT_CHAR,
+    [CR_HTML]: GT_CHAR,
+};
 
 class HtmlSpecialChars {
     /** < to &lt; */

@@ -19,14 +19,13 @@ import {
 } from './js/consts.js';
 import End, { ID, removeLastEnd } from './EditorTags/End/End.jsx';
 import EditorTags from './EditorTags.jsx';
-import Html from '../utils/Html.js';
-import HtmlSpecialChars, { CR_CHAR, CR_HTML } from './js/HtmlSpecialChars.js';
 import scroll from './js/scroll.js';
 import DOM from './js/DOM.js';
 import DataHash from './DataHash/DataHash.js';
 import EditorTagClass from './EditorTags/EditorTagClass.js';
 import { isBr } from './EditorTags/Br/Br.jsx';
 import eventListener from './js/eventListener.js';
+import clipboard from './DataHash/clipboard.js';
 
 const buffer = {
     selects: [],
@@ -245,24 +244,18 @@ function EditorArea({
                 if (o.keyCode === KEY_CODE_C) {
                 // setCopy(getSelects());
                     // navigator.clipboard.writeText(Data.asArray(getSelectsObjects(), (it) => it.value).join(''));
-                    navigator.clipboard.writeText(getSelects().map((id) => wrap.itemById(id).value).join(''));
+                    // navigator.clipboard.writeText(getSelects().map((id) => wrap.itemById(id).value).join(''));
+                    clipboard.writeData(getSelects().map((id) => wrap.itemById(id)));
                 }
                 if (o.keyCode === KEY_CODE_V && cursor) {
-                    navigator.clipboard
-                        .readText()
-                        .then((clipText) => {
-                            const newData = Html.toData(HtmlSpecialChars.shield(clipText).replaceAll(CR_CHAR, CR_HTML))
-                                .map((it) => ({
-                                    ...it,
-                                    ...it.value ? { value: HtmlSpecialChars.unShield(it.value) } : {},
-                                }));
+                    clipboard.readData()
+                        .then((newData) => {
                             const indexTo = wrap.index(cursor);
                             doChange([
                                 ...wrap.slice(0, indexTo),
                                 ...newData,
                                 ...wrap.slice(indexTo),
                             ]);
-                            // doChange(wrap.insert(data, newData, cursor));
                         });
                 }
 

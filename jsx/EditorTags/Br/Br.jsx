@@ -22,7 +22,7 @@ function Br({
 Br.createData = (data = {}) => ({
     id: getid(),
     type: 'br',
-    value: '↳',
+    value: '<br>',
     ...data,
 
 });
