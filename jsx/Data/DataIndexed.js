@@ -2,12 +2,11 @@
 // import { format } from 'date-format-parse';
 // import random_str from './random_str';
 
-class Data {
+class DataIndexed {
     constructor(data = []) {
-        this.data = data;
         this.indexs = {};
-        this._lockCreateIndexs = 0;
-        this.update();
+        this._lock = 0;
+        this.change(data);
     }
 
     itemById(id) {
@@ -23,18 +22,18 @@ class Data {
     }
 
     lock() {
-        this._lockCreateIndexs += 1;
+        this._lock += 1;
     }
 
     unlock() {
-        this._lockCreateIndexs -= 1;
-        if (this._lockCreateIndexs === 0) {
+        this._lock -= 1;
+        if (this._lock === 0) {
             this.update();
         }
     }
 
     update() {
-        if (this._lockCreateIndexs === 0) {
+        if (this._lock === 0) {
             //  const time = `${format(new Date(), 'HH:mm:ss')} sync`;
             // console.time(time);
             this.indexs = {};
@@ -145,4 +144,4 @@ class Data {
     }
 }
 
-export default Data;
+export default DataIndexed;

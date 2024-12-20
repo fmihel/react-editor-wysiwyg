@@ -1,5 +1,5 @@
 import getid from '../js/getid';
-import DataCore from './DataCorejs';
+import DataIndexed from './DataIndexed';
 
 const list = {};
 
@@ -9,7 +9,7 @@ function Data(hash) {
 
 Data.create = (data = []) => {
     const hash = getid('hash', 5);
-    list[hash] = new DataCore(data);
+    list[hash] = new DataIndexed(data);
     return hash;
 };
 
