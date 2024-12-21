@@ -141,7 +141,7 @@ function EditorArea({
         if (onCursor) {
             onCursor({ cursor });
         }
-        scrollToViewPort();
+        scrollToViewPortDelay();
     }, [cursor]);
 
     const doClickTag = useCallback((o) => {
@@ -177,7 +177,11 @@ function EditorArea({
     const doMouseUp = () => {
     };
 
+    const test = _.throttle(() => {
+        console.log('out');
+    }, 1000);
     const doMouseMove = () => {
+        // test();
     };
 
     const doChange = (newData) => {
@@ -193,13 +197,13 @@ function EditorArea({
     }, [hash]);
 
     const scrollToViewPort = () => {
-        if (cursor && ref.current) {
-            // console.log('scroll');
-            scroll.toViewPort(ref.current, DOM(`#${cursor}`), { margin: 32 });
+        if (ref.current) {
+            // scroll.toViewPort(ref.current, DOM(`#${cursor}`), { margin: 32 });
+            scroll.toViewPort(ref.current, DOM('.cursor', ref.current), { margin: 32 });
         }
     };
 
-    // const scrollToViewPortDelay = useCallback(() => { _.throttle(scrollToViewPort, 1000); }, [data]);
+    const scrollToViewPortDelay = useCallback(_.throttle(scrollToViewPort, 50, { leading: false, trailing: true }), [ref]);
 
     const doKeyDown = (o) => {
         lockKey(() => {
@@ -217,7 +221,6 @@ function EditorArea({
                         ...data.slice(0, index),
                         EditorTagClass.createData('char', { value: o.key }),
                         ...data.slice(index)]);
-                    scrollToViewPort();
                 }
                 if (o.keyCode === KEY_CODE_SPACE) {
                     no_handler = false;
@@ -298,24 +301,28 @@ function EditorArea({
             if (o.keyCode === KEY_CODE_UP && cursor) { // to up
                 no_handler = false;
 
-                let move = dataHash.first();
+                // let move = dataHash.first();
                 let next = dataHash.nearest(cursor, (it) => isBr(it));// начало текущей строки строки
                 if (next) {
+                    let move = false;
                     let off = dataHash.delta(cursor, (it) => isBr(it));// кол-во до левого края
-                    next = dataHash.nearest(next.id, (it) => isBr(it));// начало предыдущей строки
-                    if (!next) {
-                        next = dataHash.first();
-                        off--;
-                    }
+                    let is_first_line = false;
+                    next = dataHash.nearest(next.id, (it, i) => {
+                        is_first_line = (i === 0);
+                        return isBr(it) || i === 0;
+                    });// начало пред предыдущей строки
                     if (next) {
                         next = dataHash.next(next.id);
+                        off = is_first_line ? off - 1 : off;
                         move = dataHash.find((it) => {
                             off--;
                             return (isBr(it) || off < 0);
                         }, dataHash.index(next.id), 1);
+                        if (move) {
+                            setCursor(move.id);
+                        }
                     }
                 }
-                setCursor(move ? move.id : false);
                 setShiftSelect([]);
             }
 
