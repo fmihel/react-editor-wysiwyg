@@ -329,9 +329,9 @@ function EditorArea({
             if (o.keyCode === KEY_CODE_DOWN && cursor) { // to down
                 no_handler = false;
 
-                let move = dataHash.last(-1);
                 const cursorItem = dataHash.itemById(cursor);
                 let next = isBr(cursorItem) ? cursorItem : dataHash.nearest(cursor, (it) => isBr(it), false);// след строка
+                console.log({ next });
                 if (next) {
                     let first = false;
                     let off = dataHash.delta(cursor, (it, i) => {
@@ -344,14 +344,17 @@ function EditorArea({
                     next = dataHash.next(next.id);
 
                     if (next) {
-                        move = dataHash.find((it) => {
+                        const move = dataHash.find((it) => {
                             off--;
                             return (isBr(it) || off < 0);
-                        }, dataHash.index(next.id), 1) || dataHash.last(0);
+                        }, dataHash.index(next.id), 1);
+
+                        if (move) {
+                            setCursor(move ? move.id : false);
+                        }
                     }
                 }
 
-                setCursor(move ? move.id : false);
                 setShiftSelect([]);
 
                 // const down = wrap.nearest(cursor, (it) => isBr(it), false) || wrap.last();
