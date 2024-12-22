@@ -68,11 +68,6 @@ function EditorArea({
         return out;
     };
 
-    const getSelectsObjects = () => {
-        const s = getSelects();
-        return data.filter((it) => s.indexOf(it.id) > -1);
-    };
-
     const changeSelects = () => {
         if (onSelected) {
             const s = getSelects();
@@ -123,11 +118,9 @@ function EditorArea({
         if (outerSelect.length) {
             setShiftSelect(outerSelect);
         }
-        // useOuterSelect = !!outerSelect.length;
     }, [outerSelect]);
 
     useEffect(() => {
-        // setShowCursor(shiftSelect.length || mouseSelect.length || outerSelect.length);
         changeSelects();
     }, [shiftSelect, cursor, mouseSelect, outerSelect]);
 
@@ -157,31 +150,25 @@ function EditorArea({
         setShiftSelect([]);
     };
 
-    const reposCursor = () => {
-        if (cursor === false) {
-            const last = data[data.length - 1];
-            setCursor(last.id);
-        }
-    };
+    // const reposCursor = () => {
+    //     if (cursor === false) {
+    //         const last = data[data.length - 1];
+    //         setCursor(last.id);
+    //     }
+    // };
 
     const doMouseDown = () => {
         ref.current.focus();
         if (shiftSelect.length) {
             setShiftSelect([]);
             setCursor(false);
-        } else {
-            // reposCursor();
         }
     };
 
     const doMouseUp = () => {
     };
 
-    const test = _.throttle(() => {
-        console.log('out');
-    }, 1000);
     const doMouseMove = () => {
-        // test();
     };
 
     const doChange = (newData) => {
@@ -356,11 +343,6 @@ function EditorArea({
                 }
 
                 setShiftSelect([]);
-
-                // const down = wrap.nearest(cursor, (it) => isBr(it), false) || wrap.last();
-
-                // setShiftSelect([]);
-                // setCursor(down ? down.id : false);
             }
 
             if (o.keyCode === KEY_CODE_BACKSPACE) { // backspace
@@ -395,10 +377,6 @@ function EditorArea({
                 }
             }
 
-            // if ([KEY_CODE_LEFT, KEY_CODE_RIGHT, KEY_CODE_UP, KEY_CODE_DOWN,KEY_].indexOf(o.keyCode) > -1 || isCharKey(o.keyCode)) {
-            // scroll.toViewPort('.editor-area', '.cursor', { margin: 32 });
-            // if (scr) console.log({ scr });
-            // }
             if (no_handler) {
                 console.log('no handler');
             }
