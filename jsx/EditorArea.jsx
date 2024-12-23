@@ -177,6 +177,7 @@ function EditorArea({
         } else {
             setData(Data(hash).change(newData));
         }
+        scrollToViewPortDelay();
     };
 
     const doChangeTag = useCallback((o) => {
@@ -190,7 +191,7 @@ function EditorArea({
         }
     };
 
-    const scrollToViewPortDelay = useCallback(_.throttle(scrollToViewPort, 50, { leading: false, trailing: true }), [ref]);
+    const scrollToViewPortDelay = useCallback(_.throttle(scrollToViewPort, 100, { leading: false, trailing: true }), [ref]);
 
     const doKeyDown = (o) => {
         lockKey(() => {
