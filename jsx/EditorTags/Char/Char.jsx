@@ -8,6 +8,7 @@ function Char({
     type,
     value,
     style = {},
+    class: css = '',
     cursor = false,
     select = false,
     onClick,
@@ -24,7 +25,7 @@ function Char({
         <span
             id={id}
             style={{ ...style }}
-            className={`${cursor ? 'cursor' : ''} ${select ? 'select' : ''}` }
+            className={`${cursor ? 'cursor ' : ''}${select ? 'select ' : ''}${css ? `${css} ` : ''}` }
             // className={`${cursor ? 'cursor' : ''}` }
             onMouseDown={doClick}
         >
@@ -40,6 +41,7 @@ Char.createData = (data = {}) => ({
     value: '',
     ...data,
     style: { ...get(data, ['style'], {}) },
+    class: '',
 });
 
 export default Char;

@@ -5,11 +5,11 @@ import React, {
 } from 'react';
 import _ from 'lodash';
 import Style from '../utils/Style.js';
+import CssClass from '../utils/CssClass.js';
 import eq from './js/eq.js';
 import dialog from './EditorDialog.jsx';
 import ImgProp from './EditorTags/Img/Prop.jsx';
 import UrlProp from './EditorTags/A/Prop.jsx';
-import scroll from './js/scroll.js';
 import EditorTagClass from './EditorTags/EditorTagClass.js';
 import DataUtils from './Data/DataUtils.js';
 
@@ -45,6 +45,22 @@ function EditorPanel({
                             ...it.style,
                             ...define,
                         },
+                    };
+                }
+                return { ...it };
+            });
+
+            onChange(newData);
+        }
+    };
+
+    const changeClass = (modif) => {
+        if (onChange) {
+            const newData = data.map((it) => {
+                if (selects.find((sid) => eq.id(it.id, sid))) {
+                    return {
+                        ...it,
+                        class: modif(it.class),
                     };
                 }
                 return { ...it };
@@ -123,7 +139,12 @@ function EditorPanel({
                 }
             });
     };
-
+    const setClass = () => {
+        changeClass((css) => CssClass.add(css, 'custom_high'));
+    };
+    const delClass = () => {
+        changeClass((css) => CssClass.remove(css, 'custom_high'));
+    };
     return (
         <>
             <div className='editor-panel'>
@@ -135,6 +156,8 @@ function EditorPanel({
                 <button onClick={image} className="icon-img"></button>
                 <button onClick={url} className="icon-link"></button>
                 <input type='number' min={0.5} max={4} step={0.1} value={fontSize} onChange={changeFontSize} onFocus={doFocus}/>
+                <button onClick={setClass} className="">+c</button>
+                <button onClick={delClass} className="">-c</button>
 
             </div>
         </>

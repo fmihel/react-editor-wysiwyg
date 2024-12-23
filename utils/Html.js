@@ -66,9 +66,9 @@ class Html {
         data.map((it) => {
             if (com.length === 0) {
                 com.push({ ...it });
-            } else if (this._eqByStyle('char', it, com[com.length - 1])) {
+            } else if (this._eq('char', it, com[com.length - 1])) {
                 com[com.length - 1].value += it.value;
-            } else if (this._eqByStyle('space', it, com[com.length - 1])) {
+            } else if (this._eq('space', it, com[com.length - 1])) {
                 com[com.length - 1].value += it.value;
             } else {
                 com.push({ ...it });
@@ -111,11 +111,14 @@ class Html {
                 const style = `${Object.keys(attrs[attr]).map((p) => (Style.isNotEmptyProp(attrs[attr][p]) ? `${styleNameReactToCss(p)}:${attrs[attr][p]}` : '')).filter((s) => s).join(';')}`;
                 return style ? `${attr}="${style}"` : '';
             }
+            if (attr === 'class') {
+                return attrs[attr].trim() ? `${attr}="${attrs[attr]}"` : '';
+            }
             return `${attr}="${attrs[attr]}"`;
         }).join(' ');
     }
 
-    _eqByStyle(type, current, last, exclude = ['id', 'value', 'Com']) {
+    _eq(type, current, last, exclude = ['id', 'value', 'Com']) {
         return (current.type === type && last.type === type)
         && eq.object(last, current, {
             exclude,
