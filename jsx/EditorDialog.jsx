@@ -1,16 +1,20 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useReducer } from 'react';
 import Dialog from './Dialog.jsx';
 // import { DIALOG_ID } from './EditorDialog/consts';
+import get from './js/get.js';
 
 const EDITOR_DIALOG_ACTION = 'editor_dialog_action_init_yhew73';
 const DIALOG_ID = 'prop-dialog';
-
+const REDUX_STATE_FIELD = 'editor_dlg_838';
 /* eslint-disable default-case */
 const reducer = (state, action) => {
     switch (action.type) {
     case EDITOR_DIALOG_ACTION: {
         return {
-            ...action.payload,
+            ...state,
+            [REDUX_STATE_FIELD]: {
+                ...action.payload,
+            },
         };
     }
     // throw Error(`Unknown action: ${action.type}`);
@@ -23,17 +27,17 @@ const global = {
 function EditorDialog({}) {
     const [dialogData, dispatch] = useReducer(reducer, undefined);
 
-    useEffect(() => {
-        global.dispatch = dispatch;
-    }, [dispatch]);
+    // useEffect(() => {
+    global.dispatch = dispatch;
+    // }, [dispatch]);
 
     const doChangeProp = (o) => {
         Dialog.result(DIALOG_ID, o);
     };
-
+    const { Prop, data, param } = get(dialogData, [REDUX_STATE_FIELD], {});
     return (
-        <Dialog id={DIALOG_ID} {...dialogData && dialogData.param ? dialogData.param : {}}>
-            {(dialogData) && <dialogData.Prop {...dialogData.data} onChange={doChangeProp} />}
+        <Dialog id={DIALOG_ID} {...param}>
+            {Prop && <Prop {...data} onChange={doChangeProp} />}
         </Dialog>
     );
 }
