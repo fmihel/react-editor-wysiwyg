@@ -11,6 +11,7 @@ function Img({
     alt,
     src,
     style,
+    class: css = '',
     select,
     cursor,
     onClick,
@@ -44,7 +45,7 @@ function Img({
                 id={id}
                 alt={alt}
                 style={{ ...style }}
-                className={`img-tag ${cursor ? 'cursor' : ''} ${select ? 'select' : ''}` }
+                className={`img-tag ${cursor ? 'cursor ' : ''}${select ? 'select ' : ''}${css ? `${css} ` : ''}` }
                 onMouseDown={doClick}
                 onDoubleClick={onDoubleClick}
                 src={src}
@@ -59,6 +60,7 @@ Img.createData = (data = {}) => ({
 
     alt: '',
     src: '',
+    class: '',
     ...data,
     style: { ...get(data, ['style'], { width: 64, height: 64 }) },
 

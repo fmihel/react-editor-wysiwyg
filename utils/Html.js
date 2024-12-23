@@ -38,6 +38,7 @@ class Html {
 
         pars.map((it) => {
             const { name, value, attrs } = it;
+
             if (names.indexOf(name) > -1) {
                 if (name === 'span') {
                     value.split('').map((char) => {

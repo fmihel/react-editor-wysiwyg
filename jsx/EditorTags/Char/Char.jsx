@@ -39,9 +39,9 @@ Char.createData = (data = {}) => ({
     type: 'char',
 
     value: '',
+    class: '',
     ...data,
     style: { ...get(data, ['style'], {}) },
-    class: '',
 });
 
 export default Char;

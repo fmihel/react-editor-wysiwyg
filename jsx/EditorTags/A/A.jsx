@@ -11,6 +11,7 @@ function A({
     value,
     href,
     style,
+    class: css = '',
     select,
     cursor,
     onClick,
@@ -42,7 +43,7 @@ function A({
         <span
             id={id}
             style={{ ...style }}
-            className={`a-tag ${cursor ? 'cursor' : ''} ${select ? 'select' : ''}` }
+            className={`a-tag ${cursor ? 'cursor ' : ''}${select ? 'select ' : ''}${css ? `${css} ` : ''}` }
             onMouseDown={doClick}
             onDoubleClick={doDoubleClick}
         >
@@ -57,6 +58,7 @@ A.createData = (data = {}) => ({
 
     value: '',
     href: '',
+    class: '',
     ...data,
     style: { ...get(data, ['style'], {}) },
 

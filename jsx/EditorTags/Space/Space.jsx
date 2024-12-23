@@ -7,6 +7,7 @@ function Space({
     id,
     type,
     style = {},
+    class: css = '',
     cursor = false,
     select = false,
     onClick,
@@ -23,7 +24,7 @@ function Space({
         <span
             id={id}
             style={{ ...style, color: '#00000000' }}
-            className={`${cursor ? 'cursor' : ''} ${select ? 'select' : ''}` }
+            className={`${cursor ? 'cursor ' : ''}${select ? 'select ' : ''}${css ? `${css} ` : ''}` }
             // className={`${cursor ? 'cursor' : ''}` }
             onMouseDown={doClick}
         >
@@ -36,6 +37,7 @@ Space.createData = (data = {}) => ({
     id: getid(),
     type: 'space',
     value: '&nbsp;',
+    class: '',
     ...data,
     style: { ...get(data, ['style'], {}) },
 });
