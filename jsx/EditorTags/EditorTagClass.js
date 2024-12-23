@@ -17,11 +17,7 @@ const _tags = {
 class EditorTagClass {
     static add(o) {
         Object.keys(o).map((type) => {
-            if (!(type in _tags)) {
-                _tags[type] = o[type];
-            } else {
-                console.error(`tag ${type} already exists`);
-            }
+            _tags[type] = o[type];
         });
     }
 
