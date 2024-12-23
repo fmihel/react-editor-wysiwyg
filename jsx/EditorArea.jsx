@@ -318,7 +318,6 @@ function EditorArea({
 
                 const cursorItem = dataHash.itemById(cursor);
                 let next = isBr(cursorItem) ? cursorItem : dataHash.nearest(cursor, (it) => isBr(it), false);// след строка
-                console.log({ next });
                 if (next) {
                     let first = false;
                     let off = dataHash.delta(cursor, (it, i) => {
