@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 import React, { useEffect, useReducer } from 'react';
 import { createPortal } from 'react-dom';
 import DialogFrame from './Dialog/DialogFrame/DialogFrame.jsx';
@@ -7,7 +8,7 @@ import dialog from './Dialog/dialog.js';
 
 const EDITOR_DIALOG_ACTION = 'editor_dialog_action_init_yhew73';
 const REDUX_STATE_FIELD = 'editor_dlg_838';
-/* eslint-disable default-case */
+
 const reducer = (state, action) => {
     switch (action.type) {
     case EDITOR_DIALOG_ACTION: {

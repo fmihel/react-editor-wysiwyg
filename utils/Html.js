@@ -1,7 +1,6 @@
 /* eslint-disable no-return-assign */
 /* eslint-disable array-callback-return */
 import Parsing from '../jsx/js/Parsing.js';
-import EditorTags from '../jsx/EditorTags.jsx';
 import eq from '../jsx/js/eq.js';
 import styleNameReactToCss from '../jsx/js/styleNameReactToCss.js';
 import Style from './Style.js';
