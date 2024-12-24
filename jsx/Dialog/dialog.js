@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import random_str from '../js/random_str';
-
+// import DOM from '../js/DOM';
 // const ID_DIALOG = `prop-dialog-${random_str(3)}`;
 const ID_DIALOG = 'prop-dialog-7378493';
 const global = {
@@ -16,6 +16,7 @@ class dialog {
             document.body.appendChild(global.dom);
             this._addStateListener();
         }
+
         return global.dom;
     }
 
@@ -65,5 +66,5 @@ class dialog {
         observer.observe(global.dom, { attributes: true, childList: false, subtree: false });
     }
 }
-dialog.create();
+// dialog.create();
 export default dialog;
