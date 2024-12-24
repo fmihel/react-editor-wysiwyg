@@ -1,7 +1,7 @@
 @use './vars';
 @use './font';
 @use './editor-area' as area;
-@use './dialog';
+@use './editor-dialog' as dialog;
 @use './editor-panel' as panel;
 @use './tags.scss';
 

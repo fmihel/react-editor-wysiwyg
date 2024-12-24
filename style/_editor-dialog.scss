@@ -1,5 +1,5 @@
 @mixin define{
-.dialog{
+.editor-dialog{
     // padding: 0px;
 
     [frame]{
@@ -19,14 +19,14 @@
         
         [footer]{
             // border: 1px solid gray;
+            margin-top:0.2rem;
             display: flex;
             flex-direction: row;
             flex-wrap: nowrap;
             justify-content: flex-end;
-            align-items: center;
+            align-items: flex-start;
             align-content: center;            
             
-            height: 1.5rem
         }
     }
 }

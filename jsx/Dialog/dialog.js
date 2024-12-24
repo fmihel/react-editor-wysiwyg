@@ -12,7 +12,7 @@ class dialog {
         if (!global.dom) {
             global.dom = document.createElement('dialog');
             global.dom.setAttribute('id', ID_DIALOG);
-            global.dom.classList.add('dialog');
+            global.dom.classList.add('editor-dialog');
             document.body.appendChild(global.dom);
             this._addStateListener();
         }
