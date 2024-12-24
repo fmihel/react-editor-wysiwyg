@@ -32,9 +32,9 @@ function A({
 
     const doDoubleClick = (o) => {
         dialog.open({ Prop, data: { href, value } })
-            .then(({ result, btn }) => {
+            .then(({ data, btn }) => {
                 if (btn === 'ok') {
-                    change(result);
+                    change(data);
                 }
             });
         o.stopPropagation();

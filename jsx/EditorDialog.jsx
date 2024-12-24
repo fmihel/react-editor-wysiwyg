@@ -1,10 +1,11 @@
-import React, { useReducer } from 'react';
-import Dialog from './Dialog.jsx';
+import React, { useEffect, useReducer } from 'react';
+import { createPortal } from 'react-dom';
+import DialogFrame from './Dialog/DialogFrame/DialogFrame.jsx';
 // import { DIALOG_ID } from './EditorDialog/consts';
 import get from './js/get.js';
+import dialog from './Dialog/dialog.js';
 
 const EDITOR_DIALOG_ACTION = 'editor_dialog_action_init_yhew73';
-const DIALOG_ID = 'prop-dialog';
 const REDUX_STATE_FIELD = 'editor_dlg_838';
 /* eslint-disable default-case */
 const reducer = (state, action) => {
@@ -27,40 +28,42 @@ const global = {
 function EditorDialog({}) {
     const [dialogData, dispatch] = useReducer(reducer, undefined);
 
-    // useEffect(() => {
-    global.dispatch = dispatch;
-    // }, [dispatch]);
+    useEffect(() => {
+        global.dispatch = dispatch;
+    }, [dialogData]);
 
-    const doChangeProp = (o) => {
-        Dialog.result(DIALOG_ID, o);
+    const doChangeProp = (data) => {
+        dialog.result(() => ({ data }));
     };
-    const { Prop, data, param } = get(dialogData, [REDUX_STATE_FIELD], {});
+    const { Prop, data, footer } = get(dialogData, [REDUX_STATE_FIELD], {});
     return (
-        <Dialog id={DIALOG_ID} {...param}>
-            {Prop && <Prop {...data} onChange={doChangeProp} />}
-        </Dialog>
+        <>
+            {Prop
+                && createPortal(
+                    <DialogFrame footer={footer}>
+                        <Prop {...data} onChange={doChangeProp} />
+                    </DialogFrame>,
+                    dialog.create(),
+                )
+            }
+        </>
     );
 }
 
-EditorDialog.open = ({ Prop, data, param }) => {
+EditorDialog.open = ({ Prop, data, footer }) => {
     global.dispatch({
         type: EDITOR_DIALOG_ACTION,
         payload: {
             Prop,
             data,
-            param: {
-                footer: [
-                    { id: 'ok', caption: 'ok' },
-                    { id: 'cancel', caption: 'cancel' },
-                ],
-                ...param,
-            },
+            footer: footer || [
+                { id: 'ok', caption: 'ok' },
+                { id: 'cancel', caption: 'cancel' },
+            ],
+
         },
     });
-    return Dialog.open({
-        id: DIALOG_ID,
-        modal: true,
-    });
+    return dialog.open();
 };
 
 export default EditorDialog;

@@ -109,12 +109,12 @@ function EditorPanel({
             Prop: ImgProp,
             data: { src: '' },
         })
-            .then(({ result, btn }) => {
-                if (btn === 'ok') {
+            .then((o) => {
+                if (o.btn === 'ok') {
                     change(
                         DataUtils.insert(
                             data,
-                            [EditorTagClass.createData('img', result)],
+                            [EditorTagClass.createData('img', o.data)],
                             cursor,
                         ),
                     );
@@ -127,12 +127,12 @@ function EditorPanel({
             Prop: UrlProp,
             data: { href: '', value: '' },
         })
-            .then(({ result, btn }) => {
-                if (btn === 'ok') {
+            .then((o) => {
+                if (o.btn === 'ok') {
                     change(
                         DataUtils.insert(
                             data,
-                            [EditorTagClass.createData('a', result)],
+                            [EditorTagClass.createData('a', o.data)],
                             cursor,
                         ),
                     );

@@ -6,7 +6,7 @@ function toBtns(list) {
 
     if (type === 'object') {
         const keys = Object.keys(list);
-        return keys.map((key) => ({
+        return keys.map((key) => (typeof list[key] === 'string' ? { id: key, caption: list[key] } : {
             id: 'id' in list[key] ? list[key].id : key,
             caption: list[key].caption || key,
             className: list[key].className || '',

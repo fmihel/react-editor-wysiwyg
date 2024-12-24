@@ -31,9 +31,9 @@ function Img({
     };
     const onDoubleClick = (o) => {
         dialog.open({ Prop, data: { src } })
-            .then(({ result, btn }) => {
+            .then(({ data, btn }) => {
                 if (btn === 'ok') {
-                    change(result);
+                    change(data);
                 }
             });
         o.stopPropagation();

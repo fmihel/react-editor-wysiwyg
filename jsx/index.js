@@ -1,6 +1,6 @@
 import Editor from './Editor.jsx';
-import EditorDialog from './EditorDialog.jsx';
 import EditorTagClass from './EditorTags/EditorTagClass.js';
+import EditorDialog from './EditorDialog.jsx';
 
 export default Editor;
-export { EditorDialog, EditorTagClass };
+export { EditorTagClass, EditorDialog };

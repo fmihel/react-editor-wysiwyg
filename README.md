@@ -137,7 +137,6 @@ import React, {
     useCallback, useState,
 } from 'react';
 import Style from 'react-editor-wysyvig/utils/Style.js';
-import EditorTagClass from './EditorTags/EditorTagClass.js';
 import eq from 'react-editor-wysyvig/jsx/js/eq';
 
 const Panel=({
@@ -259,7 +258,7 @@ rigister it
 
 ```jsx
 import React from 'react';
-import EditorTagClass from 'react-editor-wysyvig/jsx/EditorTags/EditorTagClass';
+import { EditorTagClass } from 'react-editor-wysyvig';
 //register Block
 EditorTagClass.add([{block:Block}]);
 ```

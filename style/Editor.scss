@@ -24,7 +24,9 @@
     @include area.define{
         @include tags.define;
     };
-    @include dialog.define;
     @include panel.define;
- 
 }
+
+@include dialog.define;
+
+
