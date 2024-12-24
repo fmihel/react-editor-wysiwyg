@@ -5,7 +5,8 @@ import Html from '../utils/Html.js';
 import { LOW, MID, HIGH } from './demoData.js';
 
 function App() {
-    const [data, setData] = useState(Html.toData('A<span class="custom_high">B</span>CDE'));
+    const [data1, setData1] = useState(Html.toData('A<span class="custom_high">B</span>CDE'));
+    const [data2, setData2] = useState(Html.toData('Text in other Editor'));
     const [code, setCode] = useState('');
     const [page, setPage] = useState(1);
 
@@ -15,23 +16,24 @@ function App() {
 
     const decode = useCallback(_.debounce(doDecode, 1000), []);
 
-    const doChange = (newData) => {
-        setData(newData);
+    const doChange1 = (newData) => {
+        setData1(newData);
         decode(newData);
+    };
+    const doChange2 = (newData) => {
+        setData2(newData);
     };
 
     return (
         <>
-            {page === 1
-                && <div key='1' style={{ padding: 5, height: 200 }}>
-                    <Editor onChange={doChange} data = {data}/>
-                </div>
-            }
-            {page === 2
-                && <div key='2' style={{ padding: 5, height: 200 }}>
-                    <Editor onChange={doChange} data = {data}/>
-                </div>
-            }
+
+            <div key='1' style={{ padding: 5, height: 200 }}>
+                <Editor onChange={doChange1} data = {data1}/>
+            </div>
+
+            <div key='2' style={{ padding: 5, height: 200 }}>
+                <Editor onChange={doChange2} data = {data2}/>
+            </div>
             <button onClick={() => { setPage(page === 1 ? 2 : 1); }}>page {page}</button>
             <code
                 style={{
@@ -50,7 +52,7 @@ function App() {
                     margin: 5,
                 }}
             >
-                length {data.length}
+                length {data1.length}
             </div>
         </>
     );
