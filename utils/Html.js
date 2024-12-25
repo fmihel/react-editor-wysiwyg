@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-return-assign */
 /* eslint-disable array-callback-return */
 import Parsing from '../jsx/js/Parsing.js';
@@ -61,14 +62,11 @@ class Html {
 
     fromData(data) {
         const com = [];
-        // console.log(data);
 
         data.map((it) => {
             if (com.length === 0) {
                 com.push({ ...it });
-            } else if (this._eq('char', it, com[com.length - 1])) {
-                com[com.length - 1].value += it.value;
-            } else if (this._eq('space', it, com[com.length - 1])) {
+            } else if (this._eq_by_attr(['char', 'space'], it, com[com.length - 1])) {
                 com[com.length - 1].value += it.value;
             } else {
                 com.push({ ...it });
@@ -118,12 +116,12 @@ class Html {
         }).join(' ');
     }
 
-    _eq(type, current, last, exclude = ['id', 'value', 'Com']) {
-        return (current.type === type && last.type === type)
-        && eq.object(last, current, {
-            exclude,
-            custom: { style: (style1, style2) => Style.eq(style1, style2) },
-        });
+    _eq_by_attr(types, current, last, exclude = ['id', 'value', 'Com']) {
+        return ((types.indexOf(current.type) > -1 && types.indexOf(last.type) > -1)
+            && eq.object(last, current, {
+                exclude: [...exclude, 'type'],
+                custom: { style: (style1, style2) => Style.eq(style1, style2) },
+            }));
     }
 
     _spaceAsNbsp(str) {
