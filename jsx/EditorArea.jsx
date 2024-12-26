@@ -163,6 +163,10 @@ function EditorArea({
             setShiftSelect([]);
             setCursor(false);
         }
+        if (cursor === false) {
+            const last = data[data.length - 1];
+            setCursor(last.id);
+        }
     };
 
     const doMouseUp = () => {
