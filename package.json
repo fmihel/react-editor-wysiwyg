@@ -1,6 +1,6 @@
 {
   "name": "react-editor-wysyvig",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "react,wysyvig,editor,javascript",
   "main": "dist/Editor.js",
   "scripts": {
