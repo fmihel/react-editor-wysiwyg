@@ -67,4 +67,9 @@ EditorDialog.open = ({ Prop, data, footer }) => {
     return dialog.open();
 };
 
+EditorDialog.close = (result) => {
+    dialog.result(result);
+    dialog.close();
+};
+
 export default EditorDialog;
