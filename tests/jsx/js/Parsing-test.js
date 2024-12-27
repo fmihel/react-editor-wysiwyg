@@ -131,4 +131,22 @@ describe('Parsing.html', () => {
         ];
         expect(result).to.deep.equal(should);
     });
+    // <a href="https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0">fox</a>
+    it('<span>first<span><a href="http://url.tu">text</a>', () => {
+        const str = '<span>first</span><a href="http://url.tu">text</a>';
+        const result = Parsing.html(str);
+        const should = [
+            { name: 'span', value: 'first' },
+            { name: 'a', value: 'text', attrs: { href: 'http://url.tu' } },
+        ];
+        expect(result).to.deep.equal(should);
+    });
+    // it('<a href="http://url.tu">text</a>', () => {
+    //     const str = '<a href="https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0">text</a>';
+    //     const result = Parsing.html(str);
+    //     const should = [
+    //         { name: 'a', value: 'text', attrs: { href: 'http://url.tu' } },
+    //     ];
+    //     expect(result).to.deep.equal(should);
+    // });
 });
