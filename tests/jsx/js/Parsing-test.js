@@ -141,12 +141,65 @@ describe('Parsing.html', () => {
         ];
         expect(result).to.deep.equal(should);
     });
-    // it('<a href="http://url.tu">text</a>', () => {
-    //     const str = '<a href="https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0">text</a>';
-    //     const result = Parsing.html(str);
-    //     const should = [
-    //         { name: 'a', value: 'text', attrs: { href: 'http://url.tu' } },
-    //     ];
-    //     expect(result).to.deep.equal(should);
-    // });
+    it('<a href="...">text</a>', () => {
+        const str = '<a href="https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0">text</a>';
+        const result = Parsing.html(str);
+        const should = [
+            { name: 'a', value: 'text', attrs: { href: 'https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0' } },
+        ];
+        expect(result).to.deep.equal(should);
+    });
+});
+
+describe('Parsing._str_to_attrs', () => {
+    it('1', () => {
+        const str = 'p1=v1';
+        const result = Parsing._str_to_attrs(str);
+        const should = {
+            p1: 'v1',
+        };
+        expect(result).to.deep.equal(should);
+    });
+
+    it('2', () => {
+        const str = 'p1=v1 p2="v2"';
+        const result = Parsing._str_to_attrs(str);
+        const should = {
+            p1: 'v1',
+            p2: 'v2',
+        };
+        expect(result).to.deep.equal(should);
+    });
+    it('3', () => {
+        const str = 'p1=v1 p2="v2" p3';
+        const result = Parsing._str_to_attrs(str);
+        const should = {
+            p1: 'v1',
+            p2: 'v2',
+            p3: undefined,
+        };
+        expect(result).to.deep.equal(should);
+    });
+
+    it('4', () => {
+        const str = 'p1=  v1 p2 = "v2" p3 p4="test = space"';
+        const result = Parsing._str_to_attrs(str);
+        const should = {
+            p1: 'v1',
+            p2: 'v2',
+            p3: undefined,
+            p4: 'test = space',
+        };
+        expect(result).to.deep.equal(should);
+    });
+
+    // <a href="https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0"
+    it('5', () => {
+        const str = 'href="https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0"';
+        const result = Parsing._str_to_attrs(str);
+        const should = {
+            href: 'https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0',
+        };
+        expect(result).to.deep.equal(should);
+    });
 });

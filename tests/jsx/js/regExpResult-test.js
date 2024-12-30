@@ -36,7 +36,7 @@ describe('regExpResult', () => {
 
     it('4', () => {
         const value = regExpResult(
-            /([\w\-_]+)\s*=\s*("[\s\w~!@#$%^&*()\-+_={}\[\]:;|\\\/?.,><|`]+"|[^"\s]*)?/gm,
+            /([\w\-_]+)\s*=\s*("[\s\w~!@#$%^&*()\-+_={}[\]:;|\\/?.,><|`]+"|[^"\s]*)?/gm,
             'p1="aaa" p2= "bbb" p3 = ccc',
         );
         const should = [
@@ -49,14 +49,13 @@ describe('regExpResult', () => {
 
     it('5', () => {
         const value = regExpResult(
-            /[a-zA-Z0-9\-_]+(=(("[a-z0-9=\(\)\[\]\{\}+\-_~:;,\.*&\^\$\#\@/\!\s]*")|[^"'\s])*)?/gm,
-            'p1="aaa" p2= "bbb" p3 = ccc',
+            /(\w+)(=(("([^"]*)")|(\w*)))?/gm,
+            'p1="v1" p2=v2 p3',
         );
-        console.log(value);
         const should = [
-            ['p1="aaa"', 'p1', '"aaa"'],
-            ['p2= "bbb"', 'p2', '"bbb"'],
-            ['p3 = ccc', 'p3', 'ccc'],
+            ['p1="v1"', 'p1', '="v1"', '"v1"', '"v1"', 'v1', undefined],
+            ['p2=v2', 'p2', '=v2', 'v2', undefined, undefined, 'v2'],
+            ['p3', 'p3', undefined, undefined, undefined, undefined, undefined],
         ];
         expect(value).to.deep.equal(should);
     });

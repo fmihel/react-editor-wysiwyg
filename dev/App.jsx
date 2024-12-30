@@ -4,11 +4,11 @@ import Editor from '../jsx/Editor.jsx';
 import Html from '../utils/Html.js';
 import { LOW, MID, HIGH } from './demoData.js';
 
-// const HTML = `
-// Cъешь ещё этих мягких <span style="color:red;font-weight:bold">ф</span>ранцузских булок, да выпей чаю!
-// <br>The quick brown <a href="https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0">fox</a> jumps over the lazy dog.
-// `;
-const HTML = 'Cъешь ещё этих мягких <span style="color:red;font-weight:bold">ф</span>ранцузских булок, да выпей чаю! <br>The quick brown jumps over the lazy dog. <a href="https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0">fox</a>';
+const HTML = `
+Cъешь ещё этих мягких <span style="color:red;font-weight:bold">ф</span>ранцузских булок, да выпей чаю!
+<br>The quick brown <a href="https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0">fox</a> jumps over the lazy dog.
+`;
+// const HTML = 'Cъешь ещё этих мягких <span style="color:red;font-weight:bold">ф</span>ранцузских булок, да выпей чаю! <br>The quick brown jumps over the lazy dog. <a href="https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0">fox</a>';
 function App() {
     const [data1, setData1] = useState(Html.toData(HTML));
     const [data2, setData2] = useState(Html.toData('Text in other Editor'));

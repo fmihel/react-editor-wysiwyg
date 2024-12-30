@@ -106,85 +106,18 @@ class Parsing {
 
     _str_to_attrs(str) {
         const attrs = {};
-
-        const regex = /[a-zA-Z0-9\-_]+(=(("[a-z0-9=\(\)\[\]\{\}+\-_~:;,\.*&\^\$\#\@/\!\s]*")|[^"'\s])*)?/gm;
-        // const regex = /([\w\-_]+)\s*=\s*("[\s\w~!@#$%^&*()\-+_={}\[\]:;|\\\/?.,><|`]+"|[^"\s]*)?/gm;
-        // ([^=]+)\s*=\s*(("[\s\w~!@#$%^&*()\-+_={}\[\]:;|\\\/?.,><|`]*")|([^"\s=]*))
-        // \w+=?(("[^"]*")?)|([^"]*)?
-        // const str = `style="border:1px solid red" string="text" sybols=qwsqws=23j_ empty`;
-        let attr;
+        const regex = /(\w+)\s*(=\s*(("([^"]*)")|(\w*)))?/gm;
 
         regExpResult(regex, str, (group) => {
-            group.map((match, groupIndex) => {
-                // const attr = match[1];
-                // const value = match[2].replaceAll('"', '');
-                // attrs[attr] = value;
-                if (groupIndex === 0) {
-                    attr = match;
+            group = group.filter((g) => g !== undefined);
+            if (group.length > 1) {
+                attrs[group[1]] = undefined;
+                if (group.length > 3) {
+                    attrs[group[1]] = group[group.length - 1];
                 }
-                if (groupIndex === 1) {
-                    if (match) {
-                        attr = attr.replace(match, '');
-                        if (match.charAt(0) === '=') {
-                            match = match.replace('=', '');
-                        }
-                        if (match.charAt(0) === '"') {
-                            match = match.replace('"', '');
-                            match = match.split('').reverse().join('').replace('"', '')
-                                .split('')
-                                .reverse()
-                                .join('');
-                        }
-                        if (match.charAt(0) === '\'') {
-                            match = match.replace('\'', '');
-                            match = match.split('').reverse().join('').replace('\'', '')
-                                .split('')
-                                .reverse()
-                                .join('');
-                        }
-                    }
-                    attrs[attr] = match;
-                }
-            });
+            }
         });
-        // let m;
-        // while ((m = regex.exec(str)) !== null) {
-        //     if (m.index === regex.lastIndex) {
-        //         regex.lastIndex++;
-        //     }
 
-        //     let attr;
-        //     m.forEach((match, groupIndex) => {
-        //         if (groupIndex === 0) {
-        //             attr = match;
-        //         }
-
-        //         if (groupIndex === 1) {
-        //             if (match) {
-        //                 attr = attr.replace(match, '');
-        //                 if (match.charAt(0) === '=') {
-        //                     match = match.replace('=', '');
-        //                 }
-        //                 if (match.charAt(0) === '"') {
-        //                     match = match.replace('"', '');
-        //                     match = match.split('').reverse().join('').replace('"', '')
-        //                         .split('')
-        //                         .reverse()
-        //                         .join('');
-        //                 }
-        //                 if (match.charAt(0) === '\'') {
-        //                     match = match.replace('\'', '');
-        //                     match = match.split('').reverse().join('').replace('\'', '')
-        //                         .split('')
-        //                         .reverse()
-        //                         .join('');
-        //                 }
-        //             }
-        //             attrs[attr] = match;
-        //         }
-        //     });
-        // }
-        // console.log({ str, attrs });
         return attrs;
     }
 
