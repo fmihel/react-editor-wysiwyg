@@ -32,12 +32,12 @@
   },
   "homepage": "https://github.com/fmihel/react-editor-wysyvig#readme",
   "dependencies": {
-    "date-format-parse": "^0.2.7",
     "lodash": "^4.17.16",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "date-format-parse": "^0.2.7",
     "@babel/core": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
