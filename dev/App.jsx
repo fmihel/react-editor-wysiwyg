@@ -39,7 +39,7 @@ function App() {
             {/* <div key='2' style={{ padding: 5, height: 200 }}>
                 <Editor onChange={doChange2} data = {data2}/>
             </div> */}
-            <button onClick={() => { setPage(page === 1 ? 2 : 1); }}>page {page}</button>
+            {/* <button onClick={() => { setPage(page === 1 ? 2 : 1); }}>page {page}</button> */}
             <code
                 style={{
                     height: '30%',

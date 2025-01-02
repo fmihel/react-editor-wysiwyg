@@ -335,9 +335,9 @@ function EditorArea({
                     next = dataHash.next(next.id);
 
                     if (next) {
-                        const move = dataHash.find((it) => {
+                        const move = dataHash.find((it, i) => {
                             off--;
-                            return (isBr(it) || off < 0);
+                            return (isBr(it) || off < 0 || i === (data.length - 1));
                         }, dataHash.index(next.id), 1);
 
                         if (move) {
