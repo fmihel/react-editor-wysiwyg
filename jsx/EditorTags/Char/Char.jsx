@@ -19,6 +19,7 @@ function Char({
                 id, type, value, sender,
             });
         }
+        sender.stopPropagation();
     };
 
     return (
