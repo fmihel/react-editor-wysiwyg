@@ -18,6 +18,7 @@ function Space({
                 id, type, sender,
             });
         }
+        sender.stopPropagation();
     };
 
     return (
