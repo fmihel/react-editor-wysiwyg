@@ -21,6 +21,7 @@ function A({
         if (onClick) {
             onClick({ id, type, sender });
         }
+        sender.stopPropagation();
     };
     const change = (o) => {
         if (onChange) {
