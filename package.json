@@ -13,6 +13,7 @@
     "-----------------------------------------": "",
     "test": "mocha \"./tests/**/*-test.js\" --reporter min",
     "test-watch": "mocha \"./tests/**/*-test.js\" --reporter min --watch",
+    "test-browser":"node ./tests-browser/index.js",
     "copy-to": "cp ./dist/Editor.js D:\\work\\windeco\\windeco.ru\\main\\node_modules\\react-editor-wysyvig\\dist\\Editor.js"
   },
   "repository": {
@@ -37,7 +38,6 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "date-format-parse": "^0.2.7",
     "@babel/core": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
@@ -54,12 +54,14 @@
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.6.0",
+    "date-format-parse": "^0.2.7",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-import-resolver-webpack": "^0.11.1",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-react": "^7.28.0",
     "exports-loader": "^0.7.0",
+    "express": "^4.21.2",
     "fmihel-polyfills": "^0.3.0",
     "fmihel-redux-wrapper": "^2.0.0",
     "fmihel-server-lib": "^0.1.0",
