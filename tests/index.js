@@ -11,9 +11,7 @@ const extractFileName = (fullPath) => fullPath.replace(/^.*[\\/]/, '');
 // добавление .js т.к. ,rowser module не может без них читать import
 const toESImport = (content) => content
     .replace('import { expect } from \'chai\';', 'const { expect } = chai;')
-    .replace(/^import\s*[^;]*[^.js]+(';)$/gm, (m, p) => m.replace(p, '.js\';'))
-// import crc32 from '../../../jsx/js/crc32.js';
-;
+    .replace(/^import\s*[^;]((?!\.js).)*(';)$/gm, (m) => m.replace('\';', '.js\';'));
 
 // определяем обработчик для маршрута "/"
 app.get('/', (request, response) => {
@@ -57,7 +55,7 @@ app.get(['/*.js'], (request, response) => {
 // начинаем прослушивать подключения на 3000 порту
 app.listen(PORT, () => {
     console.log('------------------------');
-    console.log(`start on port ${PORT}`);
+    console.log(`start server on port ${PORT}`);
     console.log({
         url: `http://localhost:${PORT}`,
         dirname: __dirname,

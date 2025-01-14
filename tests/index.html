@@ -10,17 +10,18 @@
     <div id="mocha"></div>
     <!-- <script src="../jsx/js/gettype.js" type="module"></script> -->
 
-    <script src="https://unpkg.com/chai@4/chai.js" type="module"></script>
+    <script src="https://unpkg.com/chai@4/chai.js"></script>
     <script src="https://unpkg.com/mocha/mocha.js"></script>
 
     <script class="mocha-init">
       mocha.setup('bdd');
       mocha.checkLeaks();
     </script>
-    <!-- <script src="test.test.js"></script> -->
+    
     <script src="./jsx/js/type-test.js" type="module"></script>
     <script src="./jsx/js/crc32-test.js" type="module"></script>
     <script src="./jsx/js/regExpResult-test.js" type="module"></script>
+    <script src="./jsx/js/eq-test.js" type="module"></script>
     
     <script class="mocha-exec">
       /** старт только после загрузки всех модулей */
