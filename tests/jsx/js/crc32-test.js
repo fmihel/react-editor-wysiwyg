@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import crc32 from '../../../jsx/js/crc32';
 
-describe('crc32.', () => {
+describe('crc32', () => {
     it('compute_string 1', () => {
         const value = crc32.compute_string('test');
         const should = 3632233996;

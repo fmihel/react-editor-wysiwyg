@@ -8,9 +8,9 @@
   </head>
   <body>
     <div id="mocha"></div>
-    <script src="../jsx/js/gettype.js" type="module"></script>
+    <!-- <script src="../jsx/js/gettype.js" type="module"></script> -->
 
-    <script src="https://unpkg.com/chai@4/chai.js"></script>
+    <script src="https://unpkg.com/chai@4/chai.js" type="module"></script>
     <script src="https://unpkg.com/mocha/mocha.js"></script>
 
     <script class="mocha-init">
@@ -18,16 +18,19 @@
       mocha.checkLeaks();
     </script>
     <!-- <script src="test.test.js"></script> -->
-    <script src="./test.type.js" type="module"></script>
+    <script src="./jsx/js/type-test.js" type="module"></script>
+    <script src="./jsx/js/crc32-test.js" type="module"></script>
+    <script src="./jsx/js/regExpResult-test.js" type="module"></script>
+    
     <script class="mocha-exec">
       /** старт только после загрузки всех модулей */
         Promise.all(
           [].slice.call(document.scripts).map(script=>{
-              console.log(script.src,script.type);
+              // console.log(script.src,script.type);
               return ( script.type==='module' ? new Promise(ok=>{script.onload=ok;}) : false );  
           }).filter(script=>script)
         ).then(()=>{ 
-          
+          console.log('run');
           mocha.run(); 
         });
     </script>
