@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
-import { expect } from 'chai';
+import chai from 'chai';
 import gettype from '../../../jsx/js/gettype.js';
+
+const { expect } = chai;
 
 describe('gettype', () => {
     it('null', () => {

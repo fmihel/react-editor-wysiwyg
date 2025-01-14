@@ -11,6 +11,7 @@ const extractFileName = (fullPath) => fullPath.replace(/^.*[\\/]/, '');
 // добавление .js т.к. ,rowser module не может без них читать import
 const toESImport = (content) => content
     .replace('import { expect } from \'chai\';', 'const { expect } = chai;')
+    .replace('import chai from \'chai\';', '// const chai from \'chai\';')
     .replace(/^import\s*[^;]((?!\.js).)*(';)$/gm, (m) => m.replace('\';', '.js\';'));
 
 // определяем обработчик для маршрута "/"
@@ -19,11 +20,6 @@ app.get('/', (request, response) => {
     const data = fs.readFileSync(file, 'utf8');
     // отправляем ответ
     response.send(data);
-});
-app.get('chai', (request, response) => {
-    console.log('chai !!!!!');
-
-    response.send('');
 });
 
 app.get(['/*.js'], (request, response) => {

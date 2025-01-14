@@ -18,10 +18,11 @@
       mocha.checkLeaks();
     </script>
     
-    <script src="./jsx/js/type-test.js" type="module"></script>
+    <!-- <script src="./jsx/js/type-test.js" type="module"></script>
     <script src="./jsx/js/crc32-test.js" type="module"></script>
     <script src="./jsx/js/regExpResult-test.js" type="module"></script>
-    <script src="./jsx/js/eq-test.js" type="module"></script>
+    <script src="./jsx/js/eq-test.js" type="module"></script> -->
+    <script src="./jsx/js/Parsing-test.js" type="module"></script>
     
     <script class="mocha-exec">
       /** старт только после загрузки всех модулей */
@@ -31,7 +32,7 @@
               return ( script.type==='module' ? new Promise(ok=>{script.onload=ok;}) : false );  
           }).filter(script=>script)
         ).then(()=>{ 
-          console.log('run');
+          // console.log('run');
           mocha.run(); 
         });
     </script>

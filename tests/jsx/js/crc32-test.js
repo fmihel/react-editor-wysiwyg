@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
-import { expect } from 'chai';
+import chai from 'chai';
 import crc32 from '../../../jsx/js/crc32';
+
+const { expect } = chai;
 
 describe('crc32', () => {
     it('compute_string 1', () => {

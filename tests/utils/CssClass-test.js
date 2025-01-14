@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
-import { expect } from 'chai';
+import chai from 'chai';
 import css from '../../utils/CssClass';
+
+const { expect } = chai;
 
 describe('CssClass.have', () => {
     it('css.have(\'a b c\', \'c\')', () => {

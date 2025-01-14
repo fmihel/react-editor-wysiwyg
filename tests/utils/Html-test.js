@@ -1,7 +1,9 @@
 /* eslint-disable no-undef */
-import { expect } from 'chai';
+import chai from 'chai';
 import Html from '../../utils/Html';
 import eq from '../../jsx/js/eq';
+
+const { expect } = chai;
 
 describe('Html.attrsAsString', () => {
     it('{ test: 1 }', () => {
