@@ -4,17 +4,24 @@
     <meta charset="utf-8" />
     <title>Mocha Tests</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+    <!-- <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" /> -->
+    <link rel="stylesheet" href="./node_modules/mocha/mocha.css" />
+
   </head>
   <body>
     <div id="mocha"></div>
     <!-- <script src="../jsx/js/gettype.js" type="module"></script> -->
 
-    <script src="https://unpkg.com/chai@4/chai.js"></script>
-    <script src="https://unpkg.com/mocha/mocha.js"></script>
+    <!-- <script src="https://unpkg.com/chai@4/chai.js"></script> -->
+    <script src="./node_modules/chai/chai.js"></script>
+    <script src="./node_modules/mocha/mocha.js"></script>
+    <!-- <script src="https://unpkg.com/mocha/mocha.js"></script> -->
 
     <script class="mocha-init">
-      mocha.setup('bdd');
+      mocha.setup({
+        ui:'bdd',
+        
+      });
       mocha.checkLeaks();
     </script>
     
@@ -22,7 +29,8 @@
     <script src="./jsx/js/crc32-test.js" type="module"></script>
     <script src="./jsx/js/regExpResult-test.js" type="module"></script>
     <script src="./jsx/js/eq-test.js" type="module"></script> -->
-    <script src="./jsx/js/Parsing-test.js" type="module"></script>
+    <!-- <script src="./jsx/js/Parsing-test.js" type="module"></script> -->
+    <script src="./jsx/js/HtmlParsing-test.js" type="module"></script>
     
     <script class="mocha-exec">
       /** старт только после загрузки всех модулей */

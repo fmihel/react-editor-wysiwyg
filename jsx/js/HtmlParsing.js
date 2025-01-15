@@ -1,0 +1,125 @@
+class HtmlToArray {
+    constructor(code) {
+        this.setHtml(code);
+    }
+
+    setHtml(code) {
+        this.root = document.createElement('html');
+        this.root.innerHTML = code;
+    }
+
+    each(callback) {
+        return this._each(callback, this.root.children[1]);
+    }
+
+    _each(callback, node) {
+        for (let i = 0; i < node.childNodes.length; i++) {
+            const item = node.childNodes[i];
+            const info = this.getinfo(item);
+            if (callback({
+                item, parent: node, ...info, i,
+            }) === false) {
+                return false;
+            }
+
+            if (info.type !== 'text' && item.childNodes.length) {
+                if (this._each(callback, item) === false) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    map(callback) {
+        return this._map(callback, this.root.children[1]);
+    }
+
+    _map(callback, node) {
+        const out = [];
+        for (let i = 0; i < node.childNodes.length; i++) {
+            const item = node.childNodes[i];
+            const info = this.getinfo(item);
+
+            const data = callback ? (callback({
+                item, parent: node, ...info, i,
+            }) || info) : info;
+
+            if (info.type !== 'text' && item.childNodes.length) {
+                data.childs = this._map(callback, item);
+            }
+            out.push(data);
+        }
+        return out;
+    }
+
+    getinfo(node) {
+        return {
+            style: this._getStyle(node.style),
+            attributes: this._getAttr(node.attributes),
+            value: this._prepareValue(this._getValue(node)),
+            className: this._prepareClassName(node),
+            tag: this._prepareTag(node),
+            type: this._prepareType(node),
+        };
+    }
+
+    _getStyle(style) {
+        const out = {};
+        if (style && style.length) {
+            for (let j = 0; j < style.length; j++) {
+                out[style[j]] = style[style[j]];
+            }
+        }
+        return out;
+    }
+
+    _getAttr(attributes) {
+        const out = {};
+        if (attributes && attributes.length) {
+            for (let i = 0; i < attributes.length; i++) {
+                if (['id', 'class', 'style'].indexOf(attributes[i].name) === -1) {
+                    out[attributes[i].name] = attributes[i];
+                }
+            }
+        }
+        return out;
+    }
+
+    _getValue(it) {
+        return it.nodeValue || it.innerText;
+    }
+
+    _replace(str, from, to = '', repeat = false) {
+        let out = str;
+        const isarto = Array.isArray(to);
+        (Array.isArray(from) ? from : [from]).map((search, i) => {
+            const toValue = isarto ? to[i] : to;
+            const type = typeof search;
+            if (repeat) {
+                while ((type === 'string' && out.indexOf(search) > -1) || (type === 'object' && search.test(out))) {
+                    out = out.replaceAll(search, toValue);
+                }
+            } else out = out.replaceAll(search, toValue);
+        });
+        return out;
+    }
+
+    _prepareValue(value) {
+        return this._replace(value, ['  ', /\u00a0/g], [' ', '+'], true);
+    }
+
+    _prepareClassName(it) {
+        return it.className || '';
+    }
+
+    _prepareTag(it) {
+        return it.tagName || it.nodeName || '';
+    }
+
+    _prepareType(it) {
+        return it.nodeType == 3 ? 'text' : 'tag';
+    }
+}
+
+export default HtmlToArray;

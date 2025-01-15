@@ -47,6 +47,10 @@ app.get(['/*.js'], (request, response) => {
         response.send('');
     }
 });
+app.get(['/*.css'], (request, response) => {
+    const file = path.join(__dirname, '../', request.originalUrl);
+    response.sendFile(file);
+});
 
 // начинаем прослушивать подключения на 3000 порту
 app.listen(PORT, () => {
