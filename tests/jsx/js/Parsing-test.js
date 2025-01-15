@@ -6,7 +6,7 @@ const { expect } = chai;
 
 describe('Parsing', () => {
     if (typeof window !== 'undefined') {
-        describe.only('html_v2', () => {
+        describe('html_v2', () => {
             it('text', () => {
                 const str = 'text';
                 const result = Parsing.html_v2(str);
@@ -73,6 +73,8 @@ describe('Parsing', () => {
                     { name: 'span', value: 'firts' },
                     { name: 'img', attrs: { src: 'http://url.tu' } },
                 ];
+                // console.log(result);
+
                 expect(result).to.deep.equal(should);
             });
 
@@ -82,15 +84,61 @@ describe('Parsing', () => {
                 const should = [
                     { name: 'span', value: 'firts', attrs: { style: { color: 'red' } } },
                 ];
+
                 expect(result).to.deep.equal(should);
             });
 
-            it.only('<span style="color:red;background-color:#ff00ff">firts<span>', () => {
-                const result = Parsing.html_v2('<span style="color:red;background-color:#ff00ff05">firts</span>');
-                console.log(result);
-
+            it('<span style="color:#00ff0005;background-color:#ff00ff">firts<span>', () => {
+                const result = Parsing.html_v2('<span style="color:#00ff0005;background-color:#ff00ff">firts</span>');
                 const should = [
-                    { name: 'span', value: 'firts', attrs: { style: { color: 'red', backgroundColor: '#ff00ff' } } },
+                    { name: 'span', value: 'firts', attrs: { style: { color: 'rgba(0, 255, 0, 0.02)', backgroundColor: 'rgb(255, 0, 255)' } } },
+                ];
+                expect(result).to.deep.equal(should);
+            });
+            it('<span>A &nbsp;<span>&nbsp;&nbsp;', () => {
+                const str = '<span>A &nbsp;</span>&nbsp;&nbsp;';
+                const result = Parsing.html_v2(str);
+                const should = [
+                    { name: 'span', value: 'A  ' },
+                    { name: 'span', value: '  ' },
+                // { name: 'span', value: ' ', attrs: { style: { color: 'red', backgroundColor: '#ff00ff' } } },
+                ];
+                expect(result).to.deep.equal(should);
+            });
+            it('<span>a<</span><span>&nbsp;</span>', () => {
+                const str = '<span>a<</span><span>&nbsp;</span>';
+                const result = Parsing.html_v2(str);
+                const should = [
+                    { name: 'span', value: 'a<' },
+                    { name: 'span', value: ' ' },
+                // { name: 'span', value: ' ', attrs: { style: { color: 'red', backgroundColor: '#ff00ff' } } },
+                ];
+                expect(result).to.deep.equal(should);
+            });
+            it('<span>a&lt;</span><span>&nbsp;</span>', () => {
+                const str = '<span>a&lt;</span><span>&nbsp;</span>';
+                const result = Parsing.html_v2(str);
+                const should = [
+                    { name: 'span', value: 'a<' },
+                    { name: 'span', value: ' ' },
+                // { name: 'span', value: ' ', attrs: { style: { color: 'red', backgroundColor: '#ff00ff' } } },
+                ];
+                expect(result).to.deep.equal(should);
+            });
+            it('<span>first<span><a href="http://url.tu">text</a>', () => {
+                const str = '<span>first</span><a href="http://url.tu">text</a>';
+                const result = Parsing.html(str);
+                const should = [
+                    { name: 'span', value: 'first' },
+                    { name: 'a', value: 'text', attrs: { href: 'http://url.tu' } },
+                ];
+                expect(result).to.deep.equal(should);
+            });
+            it('<a href="...">text</a>', () => {
+                const str = '<a href="https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0">text</a>';
+                const result = Parsing.html_v2(str);
+                const should = [
+                    { name: 'a', value: 'text', attrs: { href: 'https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0' } },
                 ];
                 expect(result).to.deep.equal(should);
             });

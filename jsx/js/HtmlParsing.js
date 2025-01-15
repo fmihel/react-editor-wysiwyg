@@ -8,11 +8,11 @@ class HtmlParsing {
         this.root.innerHTML = code;
     }
 
-    each(callback) {
-        return this._each(callback, this.root.children[1], 0);
+    each(callback, deep = -1) {
+        return this._each(callback, this.root.children[1], 0, deep);
     }
 
-    _each(callback, node, level) {
+    _each(callback, node, level, deep) {
         for (let i = 0; i < node.childNodes.length; i++) {
             const item = node.childNodes[i];
             const info = this.getinfo(item);
@@ -22,8 +22,8 @@ class HtmlParsing {
                 return false;
             }
 
-            if (info.type !== 'text' && item.childNodes.length) {
-                if (this._each(callback, item, level + 1) === false) {
+            if (info.type !== 'text' && item.childNodes.length && (deep < 0 || deep < level)) {
+                if (this._each(callback, item, level + 1, deep) === false) {
                     return false;
                 }
             }
@@ -106,7 +106,7 @@ class HtmlParsing {
     }
 
     _prepareValue(value) {
-        return this._replace(value, ['  ', /\u00a0/g], [' ', '+'], true);
+        return this._replace(value, ['  ', /\u00a0/g], [' ', ' '], true);
     }
 
     _prepareClassName(it) {

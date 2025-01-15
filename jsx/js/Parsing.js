@@ -24,7 +24,7 @@ class Parsing {
         const dom = new HtmlParsing(html);
         const isEmpty = (v) => v === undefined || `${v}`.trim() === '' || Object.keys(v).length === 0;
         const props = (o) => removeEmptyProp({
-            value: o.value,
+
             attrs: {
                 ...o.attributes,
                 ...!isEmpty(o.style) ? { style: styleCssToReact(o.style) } : {},
@@ -35,7 +35,10 @@ class Parsing {
 
         const push = (o) => {
             if (o.tag === '#text' || o.tag === 'SPAN') {
-                out.push({ name: 'span', ...props(o) });
+                out.push({ name: 'span', value: o.value, ...props(o) });
+            } else
+            if (o.tag === 'A') {
+                out.push({ name: 'a', value: o.value, ...props(o) });
             } else
             if (o.tag === 'IMG') {
                 out.push({ name: 'img', ...props(o) });
@@ -46,11 +49,9 @@ class Parsing {
         };
 
         dom.each((o) => {
-            if (o.level === 0) {
-                // console.log(o);
-                push(o);
-            }
-        });
+            // console.log(o);
+            push(o);
+        }, 0);
 
         return out;
     }
