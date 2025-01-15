@@ -1,4 +1,4 @@
-class HtmlToArray {
+class HtmlParsing {
     constructor(code) {
         this.setHtml(code);
     }
@@ -9,21 +9,21 @@ class HtmlToArray {
     }
 
     each(callback) {
-        return this._each(callback, this.root.children[1]);
+        return this._each(callback, this.root.children[1], 0);
     }
 
-    _each(callback, node) {
+    _each(callback, node, level) {
         for (let i = 0; i < node.childNodes.length; i++) {
             const item = node.childNodes[i];
             const info = this.getinfo(item);
             if (callback({
-                item, parent: node, ...info, i,
+                item, parent: node, ...info, i, level,
             }) === false) {
                 return false;
             }
 
             if (info.type !== 'text' && item.childNodes.length) {
-                if (this._each(callback, item) === false) {
+                if (this._each(callback, item, level + 1) === false) {
                     return false;
                 }
             }
@@ -32,21 +32,21 @@ class HtmlToArray {
     }
 
     map(callback) {
-        return this._map(callback, this.root.children[1]);
+        return this._map(callback, this.root.children[1], 0);
     }
 
-    _map(callback, node) {
+    _map(callback, node, level) {
         const out = [];
         for (let i = 0; i < node.childNodes.length; i++) {
             const item = node.childNodes[i];
             const info = this.getinfo(item);
 
             const data = callback ? (callback({
-                item, parent: node, ...info, i,
+                item, parent: node, ...info, i, level,
             }) || info) : info;
 
             if (info.type !== 'text' && item.childNodes.length) {
-                data.childs = this._map(callback, item);
+                data.childs = this._map(callback, item, level + 1);
             }
             out.push(data);
         }
@@ -79,7 +79,7 @@ class HtmlToArray {
         if (attributes && attributes.length) {
             for (let i = 0; i < attributes.length; i++) {
                 if (['id', 'class', 'style'].indexOf(attributes[i].name) === -1) {
-                    out[attributes[i].name] = attributes[i];
+                    out[attributes[i].name] = attributes[i].value;
                 }
             }
         }
@@ -122,4 +122,4 @@ class HtmlToArray {
     }
 }
 
-export default HtmlToArray;
+export default HtmlParsing;

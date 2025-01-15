@@ -22,21 +22,13 @@ class Style {
         return out;
     }
 
-    static isNotEmptyProp(prop) {
-        return (prop !== undefined && `${prop}`.trim() !== '');
-    }
-
-    static removeEmptyStyleProp(style) {
-        const out = {};
-        Object.keys(style).filter((name) => this.isNotEmptyProp(style[name])).map((key) => {
-            out[key] = style[key];
-        });
-        return out;
+    static isEmptyProp(value) {
+        return (value === undefined || `${value}`.trim() === '');
     }
 
     static eq(style1, style2) {
-        const keys1 = keys(style1).filter((key) => this.isNotEmptyProp(style1[key]));
-        const keys2 = keys(style2).filter((key) => this.isNotEmptyProp(style2[key]));
+        const keys1 = keys(style1).filter((key) => !this.isEmptyProp(style1[key], this.isEmptyProp));
+        const keys2 = keys(style2).filter((key) => !this.isEmptyProp(style2[key], this.isEmptyProp));
 
         if (keys1.length !== keys2.length) {
             return false;

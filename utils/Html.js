@@ -106,7 +106,7 @@ class Html {
     attrsAsString(attrs) {
         return Object.keys(attrs).map((attr) => {
             if (attr === 'style') {
-                const style = `${Object.keys(attrs[attr]).map((p) => (Style.isNotEmptyProp(attrs[attr][p]) ? `${styleNameReactToCss(p)}:${attrs[attr][p]}` : '')).filter((s) => s).join(';')}`;
+                const style = `${Object.keys(attrs[attr]).map((p) => (!Style.isEmptyProp(attrs[attr][p]) ? `${styleNameReactToCss(p)}:${attrs[attr][p]}` : '')).filter((s) => s).join(';')}`;
                 return style ? `${attr}="${style}"` : '';
             }
             if (attr === 'class') {

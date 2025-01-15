@@ -4,22 +4,22 @@ import Style from '../../utils/Style';
 
 const { expect } = chai;
 
-describe('Style.isNotEmptyProp', () => {
-    describe('Style.isNotEmptyProp', () => {
+describe('Style.isEmptyProp', () => {
+    describe('Style.isEmptyProp', () => {
         it('empty', () => {
-            const result = Style.isNotEmptyProp('');
+            const result = !Style.isEmptyProp('');
             const should = false;
             expect(result).to.equal(should);
         });
 
         it('undefined', () => {
-            const result = Style.isNotEmptyProp(undefined);
+            const result = !Style.isEmptyProp(undefined);
             const should = false;
             expect(result).to.equal(should);
         });
 
         it('#ff00ff', () => {
-            const result = Style.isNotEmptyProp('#ff00ff');
+            const result = !Style.isEmptyProp('#ff00ff');
             const should = true;
             expect(result).to.equal(should);
         });

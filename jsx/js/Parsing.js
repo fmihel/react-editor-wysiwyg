@@ -5,6 +5,9 @@
 /* eslint-disable no-param-reassign */
 import regExpResult from './regExpResult';
 import styleNameCssToReact from './styleNameCssToReact';
+import HtmlParsing from './HtmlParsing';
+import removeEmptyProp from './removeEmptyProp';
+import styleCssToReact from './styleCssToReact';
 
 const defalt = {
     tags: [
@@ -16,6 +19,42 @@ const defalt = {
 };
 
 class Parsing {
+    html_v2(html) {
+        const out = [];
+        const dom = new HtmlParsing(html);
+        const isEmpty = (v) => v === undefined || `${v}`.trim() === '' || Object.keys(v).length === 0;
+        const props = (o) => removeEmptyProp({
+            value: o.value,
+            attrs: {
+                ...o.attributes,
+                ...!isEmpty(o.style) ? { style: styleCssToReact(o.style) } : {},
+                ...o.className ? { class: o.className } : {},
+
+            },
+        }, isEmpty);
+
+        const push = (o) => {
+            if (o.tag === '#text' || o.tag === 'SPAN') {
+                out.push({ name: 'span', ...props(o) });
+            } else
+            if (o.tag === 'IMG') {
+                out.push({ name: 'img', ...props(o) });
+            } else
+            if (o.tag === 'BR') {
+                out.push({ name: 'br' });
+            }
+        };
+
+        dom.each((o) => {
+            if (o.level === 0) {
+                // console.log(o);
+                push(o);
+            }
+        });
+
+        return out;
+    }
+
     html(html, param = defalt) {
         const { tags } = param;
         let pos = 0;

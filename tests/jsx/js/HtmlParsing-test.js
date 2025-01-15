@@ -55,6 +55,27 @@ if (typeof window !== 'undefined') {
                 ];
                 expect(should).to.deep.equal(calc);
             });
+
+            it('each("left<span src="test">center</span>right")', () => {
+                const html = new HtmlParsing('left<span src="test">center</span>right');
+                const calc = [];
+                html.each((o) => {
+                    // console.log(o);
+                    calc.push({
+                        tag: o.tag,
+                        value: o.value,
+                        attrs: o.attributes,
+                    });
+                });
+
+                const should = [
+                    { tag: '#text', value: 'left', attrs: {} },
+                    { tag: 'SPAN', value: 'center', attrs: { src: 'test' } },
+                    { tag: '#text', value: 'center', attrs: {} },
+                    { tag: '#text', value: 'right', attrs: {} },
+                ];
+                expect(should).to.deep.equal(calc);
+            });
         });
 
         describe('map', () => {
