@@ -101,7 +101,7 @@ function EditorArea({
     };
 
     const onFocsuOut = () => {
-        // setShowCursor(false);
+        setShowCursor(false);
         // console.log('hide');
     };
 

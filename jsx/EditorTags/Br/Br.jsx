@@ -11,7 +11,7 @@ function Br({
     return (
         <>
 
-            <span key="2" className={`${cursor ? 'cursor' : ''}` } style={{ minHeight: 12 }} >
+            <span key="2" className={`br-tag${cursor ? ' cursor' : ''}` } >
                 {/* ↳ */}
                 <br id={id} key="1" />
             </span>

@@ -27,9 +27,16 @@
     .end-tag{
         display: inline;
         min-height: 12px;
-        min-width: 2px;
+        min-width: 5px;
     }
 
+    .br-tag{
+        min-height: 12px;
+        border-left:2px solid var(--rew-transparent);
+        &.cursor{
+            border-left:2px solid var(--rew-cursor);
+        }
+    }
 
 
 }

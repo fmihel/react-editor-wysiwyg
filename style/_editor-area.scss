@@ -20,7 +20,7 @@
         }
 
         .cursor{
-            animation: blink 1s infinite; /* Параметры анимации */
+            animation: blink 1s infinite; /* мигание курсора */
             //border-left:1px solid var(--rew-cursor);
             
             background: linear-gradient(90deg, var(--rew-cursor) 0px, var(--rew-cursor) $cursorWidth, var(--rew-transparent) $cursorWidth, var(--rew-transparent) 100%);            

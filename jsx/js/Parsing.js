@@ -1,3 +1,5 @@
+import replaceAll from './replaceAll';
+
 class Parsing {
     constructor(html) {
         this.setHtml(html);
@@ -90,23 +92,8 @@ class Parsing {
         return it.nodeValue || it.innerText;
     }
 
-    _replace(str, from, to = '', repeat = false) {
-        let out = str;
-        const isarto = Array.isArray(to);
-        (Array.isArray(from) ? from : [from]).map((search, i) => {
-            const toValue = isarto ? to[i] : to;
-            const type = typeof search;
-            if (repeat) {
-                while ((type === 'string' && out.indexOf(search) > -1) || (type === 'object' && search.test(out))) {
-                    out = out.replaceAll(search, toValue);
-                }
-            } else out = out.replaceAll(search, toValue);
-        });
-        return out;
-    }
-
     _prepareValue(value) {
-        return this._replace(value, ['  ', /\u00a0/g], [' ', ' '], true);
+        return replaceAll(value, ['  ', /\u00a0/g, '\n'], [' ', ' ', ''], true);
     }
 
     _prepareClassName(it) {

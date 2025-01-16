@@ -21,7 +21,7 @@ const typeTag = {
     space: 'span',
 };
 
-const isEmpty = (v) => v === undefined || `${v}`.trim() === '' || Object.keys(v).length === 0;
+const isEmpty = (v) => v === undefined || `${v}`.trim() === '' || Object.keys(v || {}).length === 0;
 const props = (o) => removeEmptyProp({
 
     attrs: {
@@ -42,7 +42,7 @@ const defaultTagToData = (o) => {
     } if (o.tag === 'BR') {
         return { name: 'br' };
     }
-    if (o.value) return { name: 'span', value: o.value };
+    if (!isEmpty(o.value)) return { name: 'span', value: o.value.replace };
 
     return false;
 };
