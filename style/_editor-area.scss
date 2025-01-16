@@ -1,30 +1,43 @@
 @mixin define{
+    $cursorWidth:2px;
+    
     .editor-area{
 
         overflow: auto;
 
-        border:1px solid var(--rew-border);
+        border:$cursorWidth solid var(--rew-border);
+
         background-color: var(--rew-fone-edit);
         padding: calc(var(--rew-gap)*3);
         box-shadow:inset 2px 2px 4px 0px var(--rew-shadow);
+
         >*{
             color:var(--rew-color);
+            // border-left:$cursorWidth solid rgba(0,0,0,0);
+            // letter-spacing: -$cursorWidth;
+            box-sizing: border-box;
+            
         }
+
         .cursor{
-            animation: blink 2s infinite; /* Параметры анимации */
-            border-left:2px solid var(--rew-cursor);
+            animation: blink 1s infinite; /* Параметры анимации */
+            //border-left:1px solid var(--rew-cursor);
+            
+            background: linear-gradient(90deg, var(--rew-cursor) 0px, var(--rew-cursor) $cursorWidth, var(--rew-transparent) $cursorWidth, var(--rew-transparent) 100%);            
+            
             @keyframes blink {
                 0% { 
-                    border-left:2px solid var(--rew-cursor);
+                    // border-left:$cursorWidth solid var(--rew-cursor);
+                    background: linear-gradient(90deg, var(--rew-cursor) 0px, var(--rew-cursor) $cursorWidth, var(--rew-transparent) $cursorWidth, var(--rew-transparent) 100%);            
                 }
-                80% { 
-                    border-left:2px solid var(--rew-cursor);
+                50% { 
+                    background: linear-gradient(90deg, var(--rew-cursor) 0px, var(--rew-cursor) $cursorWidth, var(--rew-transparent) $cursorWidth, var(--rew-transparent) 100%);            
                 }
-                81% { 
-                    border-left:2px solid rgba(0,0,0,0);
+                51% { 
+                    background: none;            
                 }
                 100% { 
-                    border-left:2px solid rgba(0,0,0,0);
+                    background: none;            
                 }
 
             }            
@@ -33,9 +46,9 @@
         }
 
         .select{
-            // border-left:1px solid lime;
-            background-color: #2B5FC9;
-            color:white !important;
+            // border-left-color: $bgSelect;
+            background-color: var(--rew-bg-select) !important;
+            color:var(--rew-color-select) !important;
             // font-size: 0.6rem;
         }
         @content;
