@@ -6,8 +6,8 @@ Simple wysyvig editor on React .
 ###### ```This is a simple editor, developed for internal needs. Support for single-level nesting tags is assumed.```
 
 1. Install
-2. Struct data of Editor component
-3. Simple use Editor
+2. Simple use Editor
+3. Struct data of Editor component
 4. Custom Editor panel  
 5. Add custom tags 
 
@@ -16,45 +16,6 @@ Simple wysyvig editor on React .
 ```bash
 $ npm i react-editor-wysyvig
 ```
-
-
-## Struct data of Editor component
-The editor works with an array of data, each element of which completely describes one displayed element (symbol, image, link, etc.). See the example draw "ok":
-
-```jsx
-import React, { useCallback, useState } from 'react';
-import _ from 'lodash';
-import Editor from 'react-editor-wysyvig';
-import 'react-editor-wysyvig/style/Editor.scss';
-
-const  DATAS = [
-    {id:'1',type:'char',value:'o',style:{}},
-    {id:'2',type:'char',value:'k',style:{}},
-];
-
-function App() {
-    const [data, setData] = useState(DATAS);
-
-    const doChange = (newData) => {
-        setData(newData);
-    };
-
-    return (
-        <div>
-            <Editor onChange={doChange} data = {data}/>
-        </div>
-    );
-}
-
-```
-
-|name|type|notes|
-|---|---|---|
-|id|string|ident|
-|type|string|type of tag component|
-|value|string|displayed value|
-|style|object|react css style for draw|
-
 
 ## Simple use 
 
@@ -97,6 +58,46 @@ function App() {
 }
 
 ```
+
+
+## Struct data of Editor component
+The editor works with an array of data, each element of which completely describes one displayed element (symbol, image, link, etc.). See the example draw "ok":
+
+```jsx
+import React, { useCallback, useState } from 'react';
+import _ from 'lodash';
+import Editor from 'react-editor-wysyvig';
+import 'react-editor-wysyvig/style/Editor.scss';
+
+const  DATAS = [
+    {id:'1',type:'char',value:'o',style:{}},
+    {id:'2',type:'char',value:'k',style:{}},
+];
+
+function App() {
+    const [data, setData] = useState(DATAS);
+
+    const doChange = (newData) => {
+        setData(newData);
+    };
+
+    return (
+        <div>
+            <Editor onChange={doChange} data = {data}/>
+        </div>
+    );
+}
+
+```
+
+|name|type|notes|
+|---|---|---|
+|id|string|ident|
+|type|string|type of tag component|
+|value|string|displayed value|
+|style|object|react css style for draw|
+
+
 
 ## Custom Editor panel
 To replace the built-in style editing panel, add your own component inside the editor.
