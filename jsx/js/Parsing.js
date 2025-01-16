@@ -1,186 +1,125 @@
-/* eslint-disable no-return-assign */
-/* eslint-disable camelcase */
-/* eslint-disable no-useless-escape */
-/* eslint-disable no-cond-assign */
-/* eslint-disable no-param-reassign */
-import regExpResult from './regExpResult';
-import styleNameCssToReact from './styleNameCssToReact';
-import HtmlParsing from './HtmlParsing';
-import removeEmptyProp from './removeEmptyProp';
-import styleCssToReact from './styleCssToReact';
-
-const defalt = {
-    tags: [
-        { name: 'span' },
-        { name: 'a' },
-        { name: 'img' },
-        { name: 'br', noslash: true },
-    ],
-};
-
 class Parsing {
-    html_v2(html) {
-        const out = [];
-        const dom = new HtmlParsing(html);
-        const isEmpty = (v) => v === undefined || `${v}`.trim() === '' || Object.keys(v).length === 0;
-        const props = (o) => removeEmptyProp({
-
-            attrs: {
-                ...o.attributes,
-                ...!isEmpty(o.style) ? { style: styleCssToReact(o.style) } : {},
-                ...o.className ? { class: o.className } : {},
-
-            },
-        }, isEmpty);
-
-        const push = (o) => {
-            if (o.tag === '#text' || o.tag === 'SPAN') {
-                out.push({ name: 'span', value: o.value, ...props(o) });
-            } else
-            if (o.tag === 'A') {
-                out.push({ name: 'a', value: o.value, ...props(o) });
-            } else
-            if (o.tag === 'IMG') {
-                out.push({ name: 'img', ...props(o) });
-            } else
-            if (o.tag === 'BR') {
-                out.push({ name: 'br' });
-            } else {
-                out.push({ name: 'span', value: o.value });
-            }
-        };
-
-        dom.each((o) => {
-            push(o);
-        }, 0);
-
-        return out;
+    constructor(html) {
+        this.setHtml(html);
     }
 
-    html(html, param = defalt) {
-        const { tags } = param;
-        let pos = 0;
-
-        const out = [];
-        //---------------------------------------------------------------
-        html = html.trim();
-        while (html.indexOf('  ') > -1)html = html.replaceAll('  ', ' ');
-        [
-            ['&nbsp;', ' '],
-            ['&lt;', '<'],
-            ['&gt;', '>'],
-        ]
-            .map((o) => html = html.replaceAll(o[0], o[1]));
-
-        //---------------------------------------------------------------
-
-        while (pos < html.length) {
-            const pack = this._get_start(html, tags, pos);
-
-            if (pack) {
-                if (pack.lastText) {
-                    out.push({ name: 'span', value: pack.lastText });
-                } else {
-                    if (pack.leftText) {
-                        out.push({ name: 'span', value: pack.leftText });
-                    }
-                    const attrs = this._str_to_attrs(pack.attrs);
-                    if (attrs.style) {
-                        attrs.style = this._style_parsing(attrs.style);
-                    }
-                    out.push({
-                        name: pack.name,
-                        ...pack.value ? { value: pack.value } : {},
-                        ...pack.attrs ? { attrs } : {},
-                    });
-                }
-                pos = pack.endPos;
-            } else {
-                break;
-            }
-        }
-        return out;
+    setHtml(code) {
+        this.root = document.createElement('html');
+        this.root.innerHTML = code;
     }
 
-    _get_start(html, tags, startPos) {
-        const poss = tags.map((tag) => ({ ...tag, pos: html.indexOf(`<${tag.name}`, startPos) })).filter((it) => it.pos > -1).sort((a, b) => a.pos - b.pos);
-        if (!poss.length) {
-            if (startPos < html.length) {
-                return {
-                    lastText: html.substring(startPos, html.length),
-                    endPos: html.length,
-                };
-            }
+    each(callback, deep = -1) {
+        return this._each(callback, this.root.children[1], 0, deep);
+    }
 
-            return false;
-        }
-
-        const tag = poss[0];
-        const out = {
-            leftText: html.substring(startPos, tag.pos),
-            name: tag.name,
-        };
-        startPos += out.leftText.length;
-
-        const end = ['/>', '>'].map((find) => ({ pos: html.indexOf(`${find}`, startPos + 1), name: find })).filter((it) => it.pos > -1).sort((a, b) => a.pos - b.pos);
-        if (!end.length) {
-            return false;
-        }
-        out.attrs = html.substring(startPos + `<${tag.name}`.length, end[0].pos).trim();
-
-        if (end[0].name === '/>') {
-            out.endPos = end[0].pos + 2;
-        } else if (tag.noslash) {
-            out.endPos = end[0].pos + 1;
-        } else {
-            const endTag = `</${tag.name}>`;
-            const valueEndPos = html.indexOf(endTag, end[0].pos);
-            if (valueEndPos === -1) {
+    _each(callback, node, level, deep) {
+        for (let i = 0; i < node.childNodes.length; i++) {
+            const item = node.childNodes[i];
+            const info = this.getinfo(item);
+            if (callback({
+                item, parent: node, ...info, i, level,
+            }) === false) {
                 return false;
             }
-            out.value = html.substring(end[0].pos + 1, valueEndPos);
-            out.endPos = valueEndPos + endTag.length;
-        }
 
-        return out;
-    }
-
-    _str_to_attrs(str) {
-        const attrs = {};
-        const regex = /(\w+)\s*(=\s*(("([^"]*)")|(\w*)))?/gm;
-
-        regExpResult(regex, str, (group) => {
-            group = group.filter((g) => g !== undefined);
-            if (group.length > 1) {
-                attrs[group[1]] = undefined;
-                if (group.length > 3) {
-                    attrs[group[1]] = group[group.length - 1];
+            if (info.type !== 'text' && item.childNodes.length && (deep < 0 || deep < level)) {
+                if (this._each(callback, item, level + 1, deep) === false) {
+                    return false;
                 }
             }
-        });
-
-        return attrs;
+        }
+        return true;
     }
 
-    _style_parsing(str) {
-        const out = {};
-        // const str = `color:red;background-image:url("");opacity:0.2;`;
-        const regex = /([a-z\-]{2,}):([^;]+)/gm;
+    map(callback) {
+        return this._map(callback, this.root.children[1], 0);
+    }
 
-        let m;
-        while ((m = regex.exec(str)) !== null) {
-            let attr;
-            m.forEach((match, groupIndex) => {
-                if (groupIndex === 1) {
-                    attr = styleNameCssToReact(match);
-                }
+    _map(callback, node, level) {
+        const out = [];
+        for (let i = 0; i < node.childNodes.length; i++) {
+            const item = node.childNodes[i];
+            const info = this.getinfo(item);
 
-                if (groupIndex === 2) {
-                    out[attr] = match;
-                }
-            });
+            const data = callback ? (callback({
+                item, parent: node, ...info, i, level,
+            }) || info) : info;
+
+            if (info.type !== 'text' && item.childNodes.length) {
+                data.childs = this._map(callback, item, level + 1);
+            }
+            out.push(data);
         }
         return out;
     }
+
+    getinfo(node) {
+        return {
+            style: this._getStyle(node.style),
+            attributes: this._getAttr(node.attributes),
+            value: this._prepareValue(this._getValue(node)),
+            className: this._prepareClassName(node),
+            tag: this._prepareTag(node),
+            type: this._prepareType(node),
+        };
+    }
+
+    _getStyle(style) {
+        const out = {};
+        if (style && style.length) {
+            for (let j = 0; j < style.length; j++) {
+                out[style[j]] = style[style[j]];
+            }
+        }
+        return out;
+    }
+
+    _getAttr(attributes) {
+        const out = {};
+        if (attributes && attributes.length) {
+            for (let i = 0; i < attributes.length; i++) {
+                if (['id', 'class', 'style'].indexOf(attributes[i].name) === -1) {
+                    out[attributes[i].name] = attributes[i].value;
+                }
+            }
+        }
+        return out;
+    }
+
+    _getValue(it) {
+        return it.nodeValue || it.innerText;
+    }
+
+    _replace(str, from, to = '', repeat = false) {
+        let out = str;
+        const isarto = Array.isArray(to);
+        (Array.isArray(from) ? from : [from]).map((search, i) => {
+            const toValue = isarto ? to[i] : to;
+            const type = typeof search;
+            if (repeat) {
+                while ((type === 'string' && out.indexOf(search) > -1) || (type === 'object' && search.test(out))) {
+                    out = out.replaceAll(search, toValue);
+                }
+            } else out = out.replaceAll(search, toValue);
+        });
+        return out;
+    }
+
+    _prepareValue(value) {
+        return this._replace(value, ['  ', /\u00a0/g], [' ', ' '], true);
+    }
+
+    _prepareClassName(it) {
+        return it.className || '';
+    }
+
+    _prepareTag(it) {
+        return it.tagName || it.nodeName || '';
+    }
+
+    _prepareType(it) {
+        return it.nodeType == 3 ? 'text' : 'tag';
+    }
 }
-export default new Parsing();
+
+export default Parsing;

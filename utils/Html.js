@@ -7,20 +7,11 @@ import styleNameReactToCss from '../jsx/js/styleNameReactToCss.js';
 import Style from './Style.js';
 import HtmlSpecialChars from '../jsx/js/HtmlSpecialChars.js';
 import EditorTagClass from '../jsx/EditorTags/EditorTagClass.js';
+import removeEmptyProp from '../jsx/js/removeEmptyProp.js';
+import styleCssToReact from '../jsx/js/styleCssToReact.js';
 
 const SPACE_HTML = '&nbsp;';
 const SPACE_CHAR = ' ';
-const LT_HTML = '&lt;';
-const LT_CHAR = '<';
-const GT_HTML = '&gt;';
-const GT_CHAR = '>';
-
-const defaultTags = [
-    { name: 'span' },
-    { name: 'a' },
-    { name: 'img' },
-    { name: 'br', noslash: true },
-];
 
 const typeTag = {
     char: 'span',
@@ -30,30 +21,51 @@ const typeTag = {
     space: 'span',
 };
 
+const isEmpty = (v) => v === undefined || `${v}`.trim() === '' || Object.keys(v).length === 0;
+const props = (o) => removeEmptyProp({
+
+    attrs: {
+        ...o.attributes,
+        ...!isEmpty(o.style) ? { style: styleCssToReact(o.style) } : {},
+        ...o.className ? { class: o.className } : {},
+
+    },
+}, isEmpty);
+
+const defaultTagToData = (o) => {
+    if (o.tag === '#text' || o.tag === 'SPAN') {
+        return { name: 'span', value: o.value, ...props(o) };
+    } if (o.tag === 'A') {
+        return { name: 'a', value: o.value, ...props(o) };
+    } if (o.tag === 'IMG') {
+        return { name: 'img', ...props(o) };
+    } if (o.tag === 'BR') {
+        return { name: 'br' };
+    }
+    if (o.value) return { name: 'span', value: o.value };
+
+    return false;
+};
+
 class Html {
-    toData(html, tags = defaultTags) {
+    toData(html, tagToData = defaultTagToData) {
         const out = [];
-        const names = tags.map((it) => it.name);
-        const pars = Parsing.html(html, { tags });
-
-        pars.map((it) => {
+        const list = this._parsing(html, tagToData);
+        list.map((it) => {
             const { name, value, attrs } = it;
-
-            if (names.indexOf(name) > -1) {
-                if (name === 'span') {
-                    value.split('').map((char) => {
-                        if (char === SPACE_CHAR) {
-                            out.push(EditorTagClass.createData('space', { ...attrs }));
-                        } else {
-                            out.push(EditorTagClass.createData('char', { value: char, ...attrs }));
-                        }
-                    });
-                } else {
-                    out.push(EditorTagClass.createData(name, {
-                        value,
-                        ...attrs,
-                    }));
-                }
+            if (name === 'span') {
+                value.split('').map((char) => {
+                    if (char === SPACE_CHAR) {
+                        out.push(EditorTagClass.createData('space', { ...attrs }));
+                    } else {
+                        out.push(EditorTagClass.createData('char', { value: char, ...attrs }));
+                    }
+                });
+            } else {
+                out.push(EditorTagClass.createData(name, {
+                    value,
+                    ...attrs,
+                }));
             }
         });
 
@@ -126,6 +138,20 @@ class Html {
 
     _spaceAsNbsp(str) {
         return str.replaceAll(' ', SPACE_HTML);
+    }
+
+    _parsing(html, tagToData) {
+        const out = [];
+        const dom = new Parsing(html);
+
+        dom.each((o) => {
+            const data = tagToData(o);
+            if (data) {
+                out.push(data);
+            }
+        }, 0);
+
+        return out;
     }
 }
 

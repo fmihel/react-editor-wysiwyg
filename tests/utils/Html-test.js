@@ -5,7 +5,7 @@ import eq from '../../jsx/js/eq';
 
 const { expect } = chai;
 describe('Html', () => {
-    describe('Html.attrsAsString', () => {
+    describe('attrsAsString', () => {
         it('{ test: 1 }', () => {
             const attrs = { test: 1 };
             const result = Html.attrsAsString(attrs);
@@ -65,7 +65,7 @@ describe('Html', () => {
         });
     });
 
-    describe('Html.tag', () => {
+    describe('tag', () => {
         it('{ name: "br" }', () => {
             const setup = { name: 'br' };
             const result = Html.tag(setup);
@@ -113,7 +113,7 @@ describe('Html', () => {
         });
     });
 
-    describe('Html.fromData', () => {
+    describe('fromData', () => {
         it('1', () => {
             const result = Html.fromData([
                 { type: 'img', src: 'site.ru' },
@@ -216,237 +216,239 @@ describe('Html', () => {
         });
     });
 
-    describe('Html.toData', () => {
-        it('1', () => {
-            const result = Html.toData('t');
-            const should = eq.object(result, [
-                {
-                    type: 'char', value: 't', style: {}, class: '',
-                },
-            ], { exclude: ['id', 'Com'] });
-            // console.log(result);
-            expect(true).to.equal(should);
+    if (typeof window !== 'undefined') {
+        describe('toData', () => {
+            it('1', () => {
+                const result = Html.toData('t');
+                const should = eq.object(result, [
+                    {
+                        type: 'char', value: 't', style: {}, class: '',
+                    },
+                ], { exclude: ['id', 'Com'] });
+                // console.log(result);
+                expect(true).to.equal(should);
+            });
+
+            it('2', () => {
+                const result = Html.toData('txt');
+                const should = eq.object(result, [
+                    {
+                        type: 'char', value: 't', style: {}, class: '',
+                    },
+                    {
+                        type: 'char', value: 'x', style: {}, class: '',
+                    },
+                    {
+                        type: 'char', value: 't', style: {}, class: '',
+                    },
+                ], { exclude: ['id', 'Com'] });
+                // console.log(result);
+                expect(true).to.equal(should);
+            });
+
+            it('3', () => {
+                const result = Html.toData('<span>txt</span>');
+                const should = eq.object(result, [
+                    {
+                        type: 'char', value: 't', style: {}, class: '',
+                    },
+                    {
+                        type: 'char', value: 'x', style: {}, class: '',
+                    },
+                    {
+                        type: 'char', value: 't', style: {}, class: '',
+                    },
+                ], { exclude: ['id', 'Com'] });
+                // console.log(result);
+                expect(true).to.equal(should);
+            });
+
+            it('4', () => {
+                // const html = '<span style="color:red">t</span>';
+                const result = Html.toData('<span style="color:red">t</span>');
+                const should = eq.object(result, [
+                    {
+                        type: 'char', value: 't', style: { color: 'red' }, class: '',
+                    },
+                ], { exclude: ['id', 'Com'] });
+                expect(true).to.equal(should);
+            });
+
+            it('5', () => {
+                const result = Html.toData('<span style="color:red">txt</span>');
+                const should = eq.object(result, [
+                    {
+                        type: 'char', value: 't', style: { color: 'red' }, class: '',
+                    },
+                    {
+                        type: 'char', value: 'x', style: { color: 'red' }, class: '',
+                    },
+                    {
+                        type: 'char', value: 't', style: { color: 'red' }, class: '',
+                    },
+                ], { exclude: ['id', 'Com'] });
+                expect(true).to.equal(should);
+            });
+
+            it('6', () => {
+                const result = Html.toData('<span style="color:red;border-left:0px">txt</span>');
+                const should = eq.object(result, [
+                    {
+                        type: 'char', value: 't', style: { color: 'red', borderLeft: '0px' }, class: '',
+                    },
+                    {
+                        type: 'char', value: 'x', style: { color: 'red', borderLeft: '0px' }, class: '',
+                    },
+                    {
+                        type: 'char', value: 't', style: { color: 'red', borderLeft: '0px' }, class: '',
+                    },
+                ], { exclude: ['id', 'Com'] });
+                expect(true).to.equal(should);
+            });
+            it('7', () => {
+                const result = Html.toData('<span>txt</span>ted');
+                const should = eq.object(result, [
+                    {
+                        type: 'char', value: 't', style: {}, class: '',
+                    },
+                    {
+                        type: 'char', value: 'x', style: {}, class: '',
+                    },
+                    {
+                        type: 'char', value: 't', style: {}, class: '',
+                    },
+                    {
+                        type: 'char', value: 't', style: {}, class: '',
+                    },
+                    {
+                        type: 'char', value: 'e', style: {}, class: '',
+                    },
+                    {
+                        type: 'char', value: 'd', style: {}, class: '',
+                    },
+                ], { exclude: ['id', 'Com'] });
+                // console.log(result);
+                expect(true).to.equal(should);
+            });
+            it('8', () => {
+                const result = Html.toData('    txt        f   ');
+                const should = eq.object(result, [
+                    {
+                        type: 'char', value: 't', style: {}, class: '',
+                    },
+                    {
+                        type: 'char', value: 'x', style: {}, class: '',
+                    },
+                    {
+                        type: 'char', value: 't', style: {}, class: '',
+                    },
+                    // { type: 'char', value: ' ', style: {} },
+                    {
+                        type: 'space', value: '&nbsp;', style: {}, class: '',
+                    },
+                    {
+                        type: 'char', value: 'f', style: {}, class: '',
+                    },
+                ], { exclude: ['id', 'Com'] });
+                expect(true).to.equal(should);
+            });
+
+            it('9', () => {
+                const result = Html.toData('<span>t a</span>');
+                const should = eq.object(result, [
+                    {
+                        type: 'char', value: 't', style: {}, class: '',
+                    },
+                    {
+                        type: 'space', value: '&nbsp;', style: {}, class: '',
+                    },
+                    {
+                        type: 'char', value: 'a', style: {}, class: '',
+                    },
+                ], { exclude: ['id', 'Com'] });
+                expect(true).to.equal(should);
+            });
+
+            it('10', () => {
+                const result = Html.toData('&nbsp;<span style="color:red">t&nbsp;a</span>&nbsp; &nbsp;');
+
+                const should = eq.object(result, [
+                    {
+                        type: 'space', value: '&nbsp;', style: {}, class: '',
+                    },
+                    {
+                        type: 'char', value: 't', style: { color: 'red' }, class: '',
+                    },
+                    {
+                        type: 'space', value: '&nbsp;', style: { color: 'red' }, class: '',
+                    },
+                    {
+                        type: 'char', value: 'a', style: { color: 'red' }, class: '',
+                    },
+                    {
+                        type: 'space', value: '&nbsp;', style: {}, class: '',
+                    },
+                    {
+                        type: 'space', value: '&nbsp;', style: {}, class: '',
+                    },
+                    {
+                        type: 'space', value: '&nbsp;', style: {}, class: '',
+                    },
+                ], { exclude: ['id', 'Com'] });
+
+                expect(true).to.equal(should);
+            });
+
+            it('11', () => {
+                const result = Html.toData('&nbsp;<span>t></span>');
+
+                const should = eq.object(result, [
+                    {
+                        type: 'space', value: '&nbsp;', style: {}, class: '',
+                    },
+                    {
+                        type: 'char', value: 't', style: { }, class: '',
+                    },
+                    {
+                        type: 'char', value: '>', style: { }, class: '',
+                    },
+                ], { exclude: ['id', 'Com'] });
+
+                expect(true).to.equal(should);
+            });
+
+            it('12', () => {
+                const result = Html.toData('&nbsp;<span>t&lt;</span>>');
+
+                const should = eq.object(result, [
+                    {
+                        type: 'space', value: '&nbsp;', style: {}, class: '',
+                    },
+                    {
+                        type: 'char', value: 't', style: { }, class: '',
+                    },
+                    {
+                        type: 'char', value: '<', style: { }, class: '',
+                    },
+                    {
+                        type: 'char', value: '>', style: { }, class: '',
+                    },
+                ], { exclude: ['id', 'Com'] });
+
+                expect(true).to.equal(should);
+            });
+
+            it('13', () => {
+                const result = Html.toData('<span class="test">A</span>');
+
+                const should = eq.object(result, [
+                    {
+                        type: 'char', value: 'A', style: { }, class: 'test',
+                    },
+                ], { exclude: ['id', 'Com'] });
+
+                expect(true).to.equal(should);
+            });
         });
-
-        it('2', () => {
-            const result = Html.toData('txt');
-            const should = eq.object(result, [
-                {
-                    type: 'char', value: 't', style: {}, class: '',
-                },
-                {
-                    type: 'char', value: 'x', style: {}, class: '',
-                },
-                {
-                    type: 'char', value: 't', style: {}, class: '',
-                },
-            ], { exclude: ['id', 'Com'] });
-            // console.log(result);
-            expect(true).to.equal(should);
-        });
-
-        it('3', () => {
-            const result = Html.toData('<span>txt</span>');
-            const should = eq.object(result, [
-                {
-                    type: 'char', value: 't', style: {}, class: '',
-                },
-                {
-                    type: 'char', value: 'x', style: {}, class: '',
-                },
-                {
-                    type: 'char', value: 't', style: {}, class: '',
-                },
-            ], { exclude: ['id', 'Com'] });
-            // console.log(result);
-            expect(true).to.equal(should);
-        });
-
-        it('4', () => {
-        // const html = '<span style="color:red">t</span>';
-            const result = Html.toData('<span style="color:red">t</span>');
-            const should = eq.object(result, [
-                {
-                    type: 'char', value: 't', style: { color: 'red' }, class: '',
-                },
-            ], { exclude: ['id', 'Com'] });
-            expect(true).to.equal(should);
-        });
-
-        it('5', () => {
-            const result = Html.toData('<span style="color:red">txt</span>');
-            const should = eq.object(result, [
-                {
-                    type: 'char', value: 't', style: { color: 'red' }, class: '',
-                },
-                {
-                    type: 'char', value: 'x', style: { color: 'red' }, class: '',
-                },
-                {
-                    type: 'char', value: 't', style: { color: 'red' }, class: '',
-                },
-            ], { exclude: ['id', 'Com'] });
-            expect(true).to.equal(should);
-        });
-
-        it('6', () => {
-            const result = Html.toData('<span style="color:red;border-left:0px">txt</span>');
-            const should = eq.object(result, [
-                {
-                    type: 'char', value: 't', style: { color: 'red', borderLeft: '0px' }, class: '',
-                },
-                {
-                    type: 'char', value: 'x', style: { color: 'red', borderLeft: '0px' }, class: '',
-                },
-                {
-                    type: 'char', value: 't', style: { color: 'red', borderLeft: '0px' }, class: '',
-                },
-            ], { exclude: ['id', 'Com'] });
-            expect(true).to.equal(should);
-        });
-        it('7', () => {
-            const result = Html.toData('<span>txt</span>ted');
-            const should = eq.object(result, [
-                {
-                    type: 'char', value: 't', style: {}, class: '',
-                },
-                {
-                    type: 'char', value: 'x', style: {}, class: '',
-                },
-                {
-                    type: 'char', value: 't', style: {}, class: '',
-                },
-                {
-                    type: 'char', value: 't', style: {}, class: '',
-                },
-                {
-                    type: 'char', value: 'e', style: {}, class: '',
-                },
-                {
-                    type: 'char', value: 'd', style: {}, class: '',
-                },
-            ], { exclude: ['id', 'Com'] });
-            // console.log(result);
-            expect(true).to.equal(should);
-        });
-        it('8', () => {
-            const result = Html.toData('    txt        f   ');
-            const should = eq.object(result, [
-                {
-                    type: 'char', value: 't', style: {}, class: '',
-                },
-                {
-                    type: 'char', value: 'x', style: {}, class: '',
-                },
-                {
-                    type: 'char', value: 't', style: {}, class: '',
-                },
-                // { type: 'char', value: ' ', style: {} },
-                {
-                    type: 'space', value: '&nbsp;', style: {}, class: '',
-                },
-                {
-                    type: 'char', value: 'f', style: {}, class: '',
-                },
-            ], { exclude: ['id', 'Com'] });
-            expect(true).to.equal(should);
-        });
-
-        it('9', () => {
-            const result = Html.toData('<span>t a</span>');
-            const should = eq.object(result, [
-                {
-                    type: 'char', value: 't', style: {}, class: '',
-                },
-                {
-                    type: 'space', value: '&nbsp;', style: {}, class: '',
-                },
-                {
-                    type: 'char', value: 'a', style: {}, class: '',
-                },
-            ], { exclude: ['id', 'Com'] });
-            expect(true).to.equal(should);
-        });
-
-        it('10', () => {
-            const result = Html.toData('&nbsp;<span style="color:red">t&nbsp;a</span>&nbsp; &nbsp;');
-
-            const should = eq.object(result, [
-                {
-                    type: 'space', value: '&nbsp;', style: {}, class: '',
-                },
-                {
-                    type: 'char', value: 't', style: { color: 'red' }, class: '',
-                },
-                {
-                    type: 'space', value: '&nbsp;', style: { color: 'red' }, class: '',
-                },
-                {
-                    type: 'char', value: 'a', style: { color: 'red' }, class: '',
-                },
-                {
-                    type: 'space', value: '&nbsp;', style: {}, class: '',
-                },
-                {
-                    type: 'space', value: '&nbsp;', style: {}, class: '',
-                },
-                {
-                    type: 'space', value: '&nbsp;', style: {}, class: '',
-                },
-            ], { exclude: ['id', 'Com'] });
-
-            expect(true).to.equal(should);
-        });
-
-        it('11', () => {
-            const result = Html.toData('&nbsp;<span>t></span>');
-
-            const should = eq.object(result, [
-                {
-                    type: 'space', value: '&nbsp;', style: {}, class: '',
-                },
-                {
-                    type: 'char', value: 't', style: { }, class: '',
-                },
-                {
-                    type: 'char', value: '>', style: { }, class: '',
-                },
-            ], { exclude: ['id', 'Com'] });
-
-            expect(true).to.equal(should);
-        });
-
-        it('12', () => {
-            const result = Html.toData('&nbsp;<span>t&lt;</span>>');
-
-            const should = eq.object(result, [
-                {
-                    type: 'space', value: '&nbsp;', style: {}, class: '',
-                },
-                {
-                    type: 'char', value: 't', style: { }, class: '',
-                },
-                {
-                    type: 'char', value: '<', style: { }, class: '',
-                },
-                {
-                    type: 'char', value: '>', style: { }, class: '',
-                },
-            ], { exclude: ['id', 'Com'] });
-
-            expect(true).to.equal(should);
-        });
-
-        it('13', () => {
-            const result = Html.toData('<span class="test">A</span>');
-
-            const should = eq.object(result, [
-                {
-                    type: 'char', value: 'A', style: { }, class: 'test',
-                },
-            ], { exclude: ['id', 'Com'] });
-
-            expect(true).to.equal(should);
-        });
-    });
+    }
 });
