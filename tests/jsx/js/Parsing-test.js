@@ -142,6 +142,16 @@ describe('Parsing', () => {
                 ];
                 expect(result).to.deep.equal(should);
             });
+            it('<div>no define1 </div> text <b> bold</b>', () => {
+                const str = '<div style="color:#ff00">no define1 <div>in</div></div> text <b> bold</b>';
+                const result = Parsing.html_v2(str);
+                const should = [
+                    { name: 'span', value: 'no define1 in' },
+                    { name: 'span', value: ' text ' },
+                    { name: 'span', value: ' bold' },
+                ];
+                expect(result).to.deep.equal(should);
+            });
         });
     }
 

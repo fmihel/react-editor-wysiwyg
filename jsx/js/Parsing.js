@@ -45,11 +45,12 @@ class Parsing {
             } else
             if (o.tag === 'BR') {
                 out.push({ name: 'br' });
+            } else {
+                out.push({ name: 'span', value: o.value });
             }
         };
 
         dom.each((o) => {
-            // console.log(o);
             push(o);
         }, 0);
 
