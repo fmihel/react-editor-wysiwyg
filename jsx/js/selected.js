@@ -2,7 +2,7 @@
 /* eslint-disable prefer-destructuring */
 
 import eq from './eq.js';
-import { isNotEnd } from '../EditorTags/End/End.jsx';
+import { isEnd } from '../EditorTags/End/End.jsx';
 import get from './get.js';
 
 class Selected {
@@ -71,7 +71,7 @@ class Selected {
             return (start !== false && stop !== false);
         });
 
-        return (start !== false && stop !== false) ? data.slice(start, stop + 1).filter((it) => isNotEnd(it.id)) : [];
+        return (start !== false && stop !== false) ? data.slice(start, stop + 1).filter((it) => !isEnd(it.id)) : [];
     }
 
     getRangeDom() {

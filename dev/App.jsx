@@ -10,7 +10,7 @@ Cъешь ещё этих мягких <span style="color:red;font-weight:bold">
 `;
 // const HTML = `12 `;
 function App() {
-    const [data1, setData1] = useState(Html.toData(HTML));
+    const [data1, setData1] = useState(Html.toData(MID));
     // const [data2, setData2] = useState(Html.toData('Text in other Editor'));
     const [code, setCode] = useState('');
     const [page, setPage] = useState(1);

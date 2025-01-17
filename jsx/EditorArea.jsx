@@ -26,6 +26,7 @@ import EditorTagClass from './EditorTags/EditorTagClass.js';
 import { isBr } from './EditorTags/Br/Br.jsx';
 import eventListener from './js/eventListener.js';
 import clipboard from './Data/clipboard.js';
+import CursorHandler from './js/cursorHandler.js';
 
 const buffer = {
     selects: [],
@@ -260,16 +261,19 @@ function EditorArea({
                 if (prev) {
                     setCursor(prev.id);
                 }
-                setShiftSelect(o.shiftKey ? array.addUnique(shiftSelect, prev.id) : []);
+
+                setShiftSelect(o.shiftKey ? CursorHandler.moveLeft(shiftSelect, cursor, prev, dataHash) : []);
             }
 
             if (o.keyCode === KEY_CODE_RIGHT) { // to right
                 no_handler = false;
                 const next = dataHash.next(cursor);
+
                 if (next) {
                     setCursor(next.id);
                 }
-                setShiftSelect(o.shiftKey ? array.addUnique(shiftSelect, cursor) : []);
+
+                setShiftSelect(o.shiftKey ? CursorHandler.moveRight(shiftSelect, cursor, next, dataHash) : []);
             }
 
             if (o.keyCode === KEY_CODE_HOME && cursor) { // to home
@@ -277,16 +281,17 @@ function EditorArea({
                 const left = dataHash.nearest(cursor, (it) => isBr(it));
                 const to = left ? dataHash.next(left.id) : dataHash.first();
 
-                setShiftSelect([]);
                 setCursor(to ? to.id : false);
+                setShiftSelect(o.shiftKey && to ? CursorHandler.moveLeft(shiftSelect, cursor, to, dataHash) : []);
             }
 
             if (o.keyCode === KEY_CODE_END && cursor) { // to end
                 no_handler = false;
                 if (!isBr(dataHash.itemById(cursor))) {
                     const right = dataHash.nearest(cursor, (it) => isBr(it), false) || dataHash.last();
-                    setShiftSelect([]);
+
                     setCursor(right ? right.id : false);
+                    setShiftSelect(o.shiftKey && right ? CursorHandler.moveRight(shiftSelect, cursor, right, dataHash) : []);
                 }
             }
 
@@ -295,8 +300,8 @@ function EditorArea({
 
                 // let move = dataHash.first();
                 let next = dataHash.nearest(cursor, (it) => isBr(it));// начало текущей строки строки
+                let move = false;
                 if (next) {
-                    let move = false;
                     let off = dataHash.delta(cursor, (it) => isBr(it));// кол-во до левого края
                     let is_first_line = false;
                     next = dataHash.nearest(next.id, (it, i) => {
@@ -315,7 +320,7 @@ function EditorArea({
                         }
                     }
                 }
-                setShiftSelect([]);
+                setShiftSelect(o.shiftKey ? CursorHandler.moveLeft(shiftSelect, cursor, move, dataHash) : []);
             }
 
             if (o.keyCode === KEY_CODE_DOWN && cursor) { // to down
@@ -323,6 +328,7 @@ function EditorArea({
 
                 const cursorItem = dataHash.itemById(cursor);
                 let next = isBr(cursorItem) ? cursorItem : dataHash.nearest(cursor, (it) => isBr(it), false);// след строка
+                let move = false;
                 if (next) {
                     let first = false;
                     let off = dataHash.delta(cursor, (it, i) => {
@@ -335,18 +341,18 @@ function EditorArea({
                     next = dataHash.next(next.id);
 
                     if (next) {
-                        const move = dataHash.find((it, i) => {
+                        move = dataHash.find((it, i) => {
                             off--;
                             return (isBr(it) || off < 0 || i === (data.length - 1));
                         }, dataHash.index(next.id), 1);
 
                         if (move) {
-                            setCursor(move ? move.id : false);
+                            setCursor(move.id);
                         }
                     }
                 }
 
-                setShiftSelect([]);
+                setShiftSelect(o.shiftKey ? CursorHandler.moveRight(shiftSelect, cursor, move, dataHash) : []);
             }
 
             if (o.keyCode === KEY_CODE_BACKSPACE) { // backspace
