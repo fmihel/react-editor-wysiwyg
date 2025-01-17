@@ -388,7 +388,7 @@ function EditorArea({
             }
 
             if (no_handler) {
-                console.log('no handler');
+                // console.log('no handler');
             }
         });
         // o.stopPropagation();

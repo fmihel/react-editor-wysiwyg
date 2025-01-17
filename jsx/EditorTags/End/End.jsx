@@ -33,7 +33,7 @@ End.createData = (data = {}) => ({
 
 export default End;
 
-const isEnd = (item) => !eq.id(item.id, ID);
+const isEnd = (item) => eq.id(item.id, ID);
 const removeLastEnd = (list) => {
     const out = [...list];
     if (out.length) {
