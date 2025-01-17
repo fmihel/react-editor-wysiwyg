@@ -1,6 +1,6 @@
-# react-editor-wysyvig v0.1.x
+# react-editor-wysiwyg v0.1.x
 
-Simple wysyvig editor on React .
+Simple wysiwyg editor on React .
 
 ###### ```Attention ! Editor for only desktop browser not mobile !!```
 ###### ```This is a simple editor, developed for internal needs. Support for single-level nesting tags is assumed.```
@@ -14,7 +14,7 @@ Simple wysyvig editor on React .
 
 ## Install
 ```bash
-$ npm i react-editor-wysyvig
+$ npm i react-editor-wysiwyg
 ```
 
 ## Simple use 
@@ -24,9 +24,9 @@ The editor package includes a utility for converting simple HTML into editor dat
 ```jsx
 import React, { useCallback, useState } from 'react';
 import _ from 'lodash';
-import Editor from 'react-editor-wysyvig';
-import Html from 'react-editor-wysyvig/utils/Html.js';
-import 'react-editor-wysyvig/style/Editor.scss';
+import Editor from 'react-editor-wysiwyg';
+import Html from 'react-editor-wysiwyg/utils/Html.js';
+import 'react-editor-wysiwyg/style/Editor.scss';
 
 const HTML = 'Simple<br>text';// init html text';
 
@@ -66,8 +66,8 @@ The editor works with an array of data, each element of which completely describ
 ```jsx
 import React, { useCallback, useState } from 'react';
 import _ from 'lodash';
-import Editor from 'react-editor-wysyvig';
-import 'react-editor-wysyvig/style/Editor.scss';
+import Editor from 'react-editor-wysiwyg';
+import 'react-editor-wysiwyg/style/Editor.scss';
 
 const  DATAS = [
     {id:'1',type:'char',value:'o',style:{}},
@@ -105,8 +105,8 @@ To replace the built-in style editing panel, add your own component inside the e
 ```jsx
 import React, { useCallback, useState } from 'react';
 import _ from 'lodash';
-import Editor from 'react-editor-wysyvig';
-import 'react-editor-wysyvig/style/Editor.scss';
+import Editor from 'react-editor-wysiwyg';
+import 'react-editor-wysiwyg/style/Editor.scss';
 import Panel from './Panel.jsx';
 
 const  DATAS = [
@@ -137,8 +137,8 @@ Example of custom Panel component
 import React, {
     useCallback, useState,
 } from 'react';
-import Style from 'react-editor-wysyvig/utils/Style.js';
-import eq from 'react-editor-wysyvig/jsx/js/eq';
+import Style from 'react-editor-wysiwyg/utils/Style.js';
+import eq from 'react-editor-wysiwyg/jsx/js/eq';
 
 const Panel=({
     data,
@@ -211,8 +211,8 @@ To add your custom tag, you need to create a component corresponding to it and r
 ```jsx
 /* eslint-disable camelcase */
 import React from 'react';
-import get from 'react-editor-wysyvig/jsx/js/get';
-import getid from 'react-editor-wysyvig/jsx/js/getid';
+import get from 'react-editor-wysiwyg/jsx/js/get';
+import getid from 'react-editor-wysiwyg/jsx/js/getid';
 
 function Block({
     id,
@@ -259,7 +259,7 @@ rigister it
 
 ```jsx
 import React from 'react';
-import { EditorTagClass } from 'react-editor-wysyvig';
+import { EditorTagClass } from 'react-editor-wysiwyg';
 //register Block
 EditorTagClass.add([{block:Block}]);
 ```
