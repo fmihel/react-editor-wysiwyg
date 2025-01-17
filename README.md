@@ -1,4 +1,4 @@
-# react-editor-wysiwyg v0.1.x
+# react-editor-wysiwyg v0.0.x
 
 Simple wysiwyg editor on React .
 

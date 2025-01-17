@@ -1,7 +1,7 @@
 {
-  "name": "react-editor-wysyvig",
-  "version": "0.1.1",
-  "description": "react,wysyvig,editor,javascript",
+  "name": "react-editor-wysiwyg",
+  "version": "0.0.1",
+  "description": "react,wysiwyg,editor,javascript",
   "main": "dist/Editor.js",
   "scripts": {
     "run": "webpack-dev-server --config webpack.config.dev.js",
@@ -14,24 +14,24 @@
     "test": "mocha \"./tests/**/*-test.js\" --reporter min",
     "test-watch": "mocha \"./tests/**/*-test.js\" --reporter min --watch",
     "test-browser": "node ./tests/index.js",
-    "copy-to": "cp ./dist/Editor.js D:\\work\\windeco\\windeco.ru\\main\\node_modules\\react-editor-wysyvig\\dist\\Editor.js"
+    "copy-to": "cp ./dist/Editor.js D:\\work\\windeco\\windeco.ru\\main\\node_modules\\react-editor-wysiwyg\\dist\\Editor.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fmihel/react-editor-wysyvig.git"
+    "url": "git+https://github.com/fmihel/react-editor-wysiwyg.git"
   },
   "keywords": [
     "react",
-    "wysyvig",
+    "wysiwyg",
     "editor",
     "javascript"
   ],
   "author": "fmihel76@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fmihel/react-editor-wysyvig/issues"
+    "url": "https://github.com/fmihel/react-editor-wysiwyg/issues"
   },
-  "homepage": "https://github.com/fmihel/react-editor-wysyvig#readme",
+  "homepage": "https://github.com/fmihel/react-editor-wysiwyg#readme",
   "dependencies": {
     "lodash": "^4.17.16",
     "react": "^18.2.0",
