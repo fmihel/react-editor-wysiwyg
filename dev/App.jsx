@@ -1,8 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import _ from 'lodash';
 import Editor from '../jsx/Editor.jsx';
 import Html from '../utils/Html.js';
 import { LOW, MID, HIGH } from './demoData.js';
+import Parsing from '../jsx/js/Parsing.js';
+import replaceAll from '../jsx/js/replaceAll.js';
 
 const HTML = `
 Cъешь ещё этих мягких <span style="color:red;font-weight:bold">ф</span>ранцузских булок, да выпей чаю!
@@ -10,7 +12,7 @@ Cъешь ещё этих мягких <span style="color:red;font-weight:bold">
 `;
 // const HTML = `12 `;
 function App() {
-    const [data1, setData1] = useState(Html.toData(MID));
+    const [data1, setData1] = useState(Html.toData(HTML));
     // const [data2, setData2] = useState(Html.toData('Text in other Editor'));
     const [code, setCode] = useState('');
     const [page, setPage] = useState(1);

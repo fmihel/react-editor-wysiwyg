@@ -10,6 +10,10 @@ class Parsing {
         this.root.innerHTML = code;
     }
 
+    asText() {
+        return this.root.children[1].outerText;
+    }
+
     each(callback, deep = -1) {
         return this._each(callback, this.root.children[1], 0, deep);
     }

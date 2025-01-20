@@ -72,16 +72,18 @@ class Html {
         return out;
     }
 
-    fromData(data) {
+    fromData(data, selects = []) {
         const com = [];
 
         data.map((it) => {
-            if (com.length === 0) {
-                com.push({ ...it });
-            } else if (this._eq_by_attr(['char', 'space'], it, com[com.length - 1])) {
-                com[com.length - 1].value += it.value;
-            } else {
-                com.push({ ...it });
+            if (selects.length === 0 || selects.indexOf(it.id) > -1) {
+                if (com.length === 0) {
+                    com.push({ ...it });
+                } else if (this._eq_by_attr(['char', 'space'], it, com[com.length - 1])) {
+                    com[com.length - 1].value += it.value;
+                } else {
+                    com.push({ ...it });
+                }
             }
         });
 
@@ -90,13 +92,18 @@ class Html {
                 id, type, Com, ...attr
             } = o;
 
-            const name = typeTag[o.type];
+            // const name = typeTag[o.type];
 
             return this.tag({
                 ...attr,
                 name: typeTag[o.type],
             });
         }).join('');
+    }
+
+    asText(html) {
+        const p = new Parsing(html);
+        return p.asText();
     }
 
     tag({ name, value, ...attrs }) {

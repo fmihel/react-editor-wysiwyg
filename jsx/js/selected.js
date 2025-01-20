@@ -118,6 +118,13 @@ class Selected {
             this._rangePrev = false;
         }
     }
+
+    clear() {
+        const sel = this.selection();
+        if (sel) {
+            sel.removeAllRanges();
+        }
+    }
 }
 
 export default new Selected();

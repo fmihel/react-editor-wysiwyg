@@ -78,18 +78,19 @@ function EditorArea({
             }
         }
     };
-
+    const onMouseSelect = (o) => {
+        if (o) {
+            // setCursor(false);
+            // setShowCursor(false);
+            setShiftSelect([]);
+        }
+        setMouseSelect(!!o);
+    };
     useEffect(() => {
         const newHash = Data.create();
         setHash(newHash);
 
-        const remove = selected.on((o) => {
-            if (o) {
-                setCursor(false);
-                setShiftSelect([]);
-            }
-            setMouseSelect(!!o);
-        });
+        const remove = selected.on(onMouseSelect);
         return () => {
             remove();
             Data.free(newHash);
@@ -132,6 +133,7 @@ function EditorArea({
     }, [outerData, hash]);
 
     useEffect(() => {
+        // console.log({ cursor });
         if (onCursor) {
             onCursor({ cursor });
         }
@@ -168,12 +170,6 @@ function EditorArea({
             const last = data[data.length - 1];
             setCursor(last.id);
         }
-    };
-
-    const doMouseUp = () => {
-    };
-
-    const doMouseMove = () => {
     };
 
     const doChange = (newData) => {
@@ -390,6 +386,8 @@ function EditorArea({
             if (no_handler) {
                 // console.log('no handler');
             }
+            setShowCursor(true);
+            selected.clear();
         });
         // o.stopPropagation();
         o.preventDefault();
@@ -414,8 +412,8 @@ function EditorArea({
                 className='editor-area'
                 tabIndex={0}
                 onMouseDown={doMouseDown}
-                onMouseUp={doMouseUp}
-                onMouseMove={doMouseMove}
+                // onMouseUp={doMouseUp}
+                // onMouseMove={doMouseMove}
                 onKeyDown={doKeyDown}
                 onDoubleClick={doDoubleClick}
                 // onBlur={onFocusIn}
