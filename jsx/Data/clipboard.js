@@ -5,6 +5,7 @@ import HtmlSpecialChars, {
 } from '../js/HtmlSpecialChars';
 import clone from './clone';
 import EditorTagClass from '../EditorTags/EditorTagClass';
+import replaceAll from '../js/replaceAll';
 
 const buffer = {
     hash: '',
@@ -23,8 +24,8 @@ class clipboard {
 
     static writeData(data) {
         const text = data.map((it) => EditorTagClass.asText(it)).join('');
-        // console.log({ data, text });
-        buffer.hash = crc32.compute_string_hex(text);
+
+        buffer.hash = this.crc(text);
         buffer.data = [...data];
 
         this.writeText(text);
@@ -33,7 +34,7 @@ class clipboard {
     static async readData() {
         const text = await this.readText();
         if (text) {
-            const hash = crc32.compute_string_hex(text);
+            const hash = this.crc(text);
 
             if (buffer.hash === hash) {
                 return clone(buffer.data);
@@ -46,6 +47,10 @@ class clipboard {
                 }));
         }
         return [];
+    }
+
+    static crc(text) {
+        return crc32.compute_string_hex(replaceAll(text, ['\n', '\r'], ['N', '']));
     }
 }
 

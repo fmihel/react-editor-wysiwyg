@@ -240,7 +240,9 @@ function EditorArea({
                 no_handler = false;
                 clear_shift_select = false;
                 if (o.keyCode === KEY_CODE_C) {
-                    clipboard.writeData(getSelects().map((id) => dataHash.itemById(id)));
+                    const sel = getSelects().map((id) => dataHash.itemById(id));
+                    console.log('sel', sel);
+                    clipboard.writeData(sel);
                 }
                 if (o.keyCode === KEY_CODE_V && cursor) {
                     clear_shift_select = true;
