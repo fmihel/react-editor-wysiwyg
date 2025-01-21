@@ -187,7 +187,6 @@ function EditorArea({
 
     const scrollToViewPort = () => {
         if (ref.current) {
-            // scroll.toViewPort(ref.current, DOM(`#${cursor}`), { margin: 32 });
             scroll.toViewPort(ref.current, DOM('.cursor', ref.current), { margin: 32 });
         }
     };
@@ -202,13 +201,22 @@ function EditorArea({
             const dataHash = Data(hash);
             const index = dataHash.index(cursor);
             let no_handler = true;
+            let clear_shift_select = true;
 
             if (cursor && !o.ctrlKey) {
                 if (isCharKey(o.keyCode)) {
                     no_handler = false;
+
+                    // вычисляем предыдущий э-т, для заимствования стиляs
+                    const prev = index > 0 ? dataHash.nearest(data[index].id, ((it) => it.type === 'char')) : false;
+
                     doChange([
                         ...data.slice(0, index),
-                        EditorTagClass.createData('char', { value: o.key }),
+                        EditorTagClass.createData('char', {
+                            value: o.key,
+                            ...prev && prev.style ? { style: prev.style } : {},
+                            ...prev && prev.class ? { class: prev.class } : {},
+                        }),
                         ...data.slice(index)]);
                 }
                 if (o.keyCode === KEY_CODE_SPACE) {
@@ -230,11 +238,12 @@ function EditorArea({
 
             if (o.ctrlKey) {
                 no_handler = false;
-
+                clear_shift_select = false;
                 if (o.keyCode === KEY_CODE_C) {
                     clipboard.writeData(getSelects().map((id) => dataHash.itemById(id)));
                 }
                 if (o.keyCode === KEY_CODE_V && cursor) {
+                    clear_shift_select = true;
                     clipboard.readData()
                         .then((newData) => {
                             const indexTo = dataHash.index(cursor);
@@ -247,6 +256,7 @@ function EditorArea({
                 }
 
                 if (o.keyCode === KEY_CODE_A) {
+                    clear_shift_select = true;
                     setShiftSelect(removeLastEnd(dataHash.map((it) => it.id)));
                 }
             }
@@ -386,8 +396,10 @@ function EditorArea({
             if (no_handler) {
                 // console.log('no handler');
             }
-            setShowCursor(true);
-            selected.clear();
+            if (clear_shift_select) {
+                setShowCursor(true);
+                selected.clear();
+            }
         });
         // o.stopPropagation();
         o.preventDefault();
