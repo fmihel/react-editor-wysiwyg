@@ -426,7 +426,6 @@ function EditorArea({
         <>
             {/* <Profiler id='area' onRender={checkRender}> */}
             <div
-                id='editor-id'
                 className='editor-area'
                 tabIndex={0}
                 onMouseDown={doMouseDown}
