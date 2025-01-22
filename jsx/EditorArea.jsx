@@ -16,6 +16,7 @@ import {
     isCharKey,
     KEY_CODE_HOME,
     KEY_CODE_END,
+    KEY_CODE_Z,
 } from './js/consts.js';
 import End, { ID, removeLastEnd } from './EditorTags/End/End.jsx';
 import EditorTags from './EditorTags.jsx';
@@ -27,6 +28,7 @@ import { isBr } from './EditorTags/Br/Br.jsx';
 import eventListener from './js/eventListener.js';
 import clipboard from './Data/clipboard.js';
 import CursorHandler from './js/cursorHandler.js';
+import interval from './js/interval.js';
 
 const buffer = {
     selects: [],
@@ -43,7 +45,6 @@ const lockKey = (handler) => {
 };
 
 function EditorArea({
-    // list = test_list,
     data: outerData,
     selects: outerSelect = [],
     onChange = undefined,
@@ -58,7 +59,7 @@ function EditorArea({
     const [showCursor, setShowCursor] = useState(false);
     const [shiftSelect, setShiftSelect] = useState([]);
     const [mouseSelect, setMouseSelect] = useState(false);
-
+    const [history, setHistory] = useState([]);
     /** получаем выделеные блоки из стандартартного sыделения или имметированного shift */
     const getSelects = () => {
         const out = shiftSelect.length ? shiftSelect : selected.get_ids(data);
@@ -172,7 +173,13 @@ function EditorArea({
         }
     };
 
-    const doChange = (newData) => {
+    const doChange = (newData, hist = true) => {
+        if (hist) {
+            if (interval(2)) {
+                setHistory([data, ...history].slice(0, 100));
+            }
+        }
+
         if (onChange) {
             onChange(Data(hash).change(removeLastEnd(newData)));
         } else {
@@ -263,6 +270,15 @@ function EditorArea({
                 if (o.keyCode === KEY_CODE_A) {
                     clear_shift_select = true;
                     setShiftSelect(removeLastEnd(dataHash.map((it) => it.id)));
+                }
+
+                if (o.keyCode === KEY_CODE_Z) {
+                    clear_shift_select = false;
+                    if (history.length) {
+                        const restory = history[0];
+                        setHistory(history.slice(1));
+                        doChange(restory, false);
+                    }
                 }
             }
 
