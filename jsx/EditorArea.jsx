@@ -241,8 +241,11 @@ function EditorArea({
                 clear_shift_select = false;
                 if (o.keyCode === KEY_CODE_C) {
                     const sel = getSelects().map((id) => dataHash.itemById(id));
-                    console.log('sel', sel);
-                    clipboard.writeData(sel);
+                    if (sel.length) {
+                        clipboard.writeData(sel);
+                    } else {
+                        selected.clear();
+                    }
                 }
                 if (o.keyCode === KEY_CODE_V && cursor) {
                     clear_shift_select = true;
@@ -423,6 +426,7 @@ function EditorArea({
         <>
             {/* <Profiler id='area' onRender={checkRender}> */}
             <div
+                id='editor-id'
                 className='editor-area'
                 tabIndex={0}
                 onMouseDown={doMouseDown}
