@@ -7,7 +7,7 @@ import React, {
     Profiler, useCallback, useEffect, useRef, useState,
 } from 'react';
 import _ from 'lodash';
-import array from './js/array.js';
+// import array from './js/array.js';
 import selected from './js/selected.js';
 import eq from './js/eq.js';
 import {
@@ -29,6 +29,7 @@ import eventListener from './js/eventListener.js';
 import clipboard from './Data/clipboard.js';
 import CursorHandler from './js/cursorHandler.js';
 import interval from './js/interval.js';
+import uHistory from './js/history.js';
 
 const buffer = {
     selects: [],
@@ -176,7 +177,7 @@ function EditorArea({
     const doChange = (newData, hist = true) => {
         if (hist) {
             if (interval(2)) {
-                setHistory([data, ...history].slice(0, 100));
+                setHistory(uHistory.add(data, history));
             }
         }
 
@@ -274,11 +275,10 @@ function EditorArea({
 
                 if (o.keyCode === KEY_CODE_Z) {
                     clear_shift_select = false;
-                    if (history.length) {
-                        const restory = history[0];
-                        setHistory(history.slice(1));
-                        doChange(restory, false);
-                    }
+                    uHistory.restory(history, (last, newHistory) => {
+                        setHistory(newHistory);
+                        doChange(last, false);
+                    });
                 }
             }
 
