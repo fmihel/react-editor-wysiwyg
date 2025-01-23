@@ -1,7 +1,7 @@
 import React from 'react';
 import eq from '../../js/eq';
 
-export const ID = 'end';
+export const ID_END = 'end';
 function End({
     id,
     cursor = false,
@@ -26,19 +26,19 @@ function End({
 }
 
 End.createData = (data = {}) => ({
-    id: ID,
+    id: ID_END,
     type: 'end',
     ...data,
 });
 
 export default End;
 
-const isEnd = (item) => eq.id(item.id, ID);
+const isEnd = (item) => eq.id(item.id, ID_END);
 const removeLastEnd = (list) => {
     const out = [...list];
     if (out.length) {
         const last = out[out.length - 1];
-        if (last === ID || (typeof (last) === 'object' && last.type === ID)) {
+        if (last === ID_END || (typeof (last) === 'object' && last.type === ID_END)) {
             out.pop();
         }
     }

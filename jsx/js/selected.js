@@ -140,6 +140,15 @@ class Selected {
             sel.removeAllRanges();
         }
     }
+
+    /** признак, что нет выбранныех элементов */
+    empty() {
+        const selection = this.selection();
+        if (selection && !selection.isCollapsed) {
+            return false;
+        }
+        return true;
+    }
 }
 
 export default new Selected();

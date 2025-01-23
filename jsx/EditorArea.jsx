@@ -18,7 +18,7 @@ import {
     KEY_CODE_END,
     KEY_CODE_Z,
 } from './js/consts.js';
-import End, { ID, removeLastEnd } from './EditorTags/End/End.jsx';
+import End, { ID_END, removeLastEnd } from './EditorTags/End/End.jsx';
 import EditorTags from './EditorTags.jsx';
 import scroll from './js/scroll.js';
 import DOM from './js/DOM.js';
@@ -64,7 +64,7 @@ function EditorArea({
     /** получаем выделеные блоки из стандартартного sыделения или имметированного shift */
     const getSelects = () => {
         const out = shiftSelect.length ? shiftSelect : selected.get_ids(data);
-        if (out.length && out[out.length - 1] === ID) {
+        if (out.length && out[out.length - 1] === ID_END) {
             out.pop();
         }
 
@@ -400,6 +400,7 @@ function EditorArea({
 
             if (o.keyCode === KEY_CODE_DEL) { // delete
                 no_handler = false;
+                selected.empty();
                 const sel = getSelects();
                 if (sel.length) {
                     const next = dataHash.next(sel[sel.length - 1]);
@@ -407,7 +408,7 @@ function EditorArea({
                     doChange(dataHash.filter((it) => !sel.find((sid) => eq.id(it.id, sid))));
                     setShiftSelect([]);
                     setCursor(next ? next.id : 0);
-                } else {
+                } else if (cursor !== ID_END && selected.empty()) {
                     const next = dataHash.next(cursor);
                     doChange(dataHash.filter((it) => !eq.id(it.id, cursor)));
                     setCursor(next ? next.id : 0);
