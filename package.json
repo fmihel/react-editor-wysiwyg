@@ -1,6 +1,6 @@
 {
   "name": "react-editor-wysiwyg",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "react,wysiwyg,editor,javascript",
   "main": "dist/Editor.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "test": "mocha \"./tests/**/*-test.js\" --reporter min",
     "test-watch": "mocha \"./tests/**/*-test.js\" --reporter min --watch",
     "test-browser": "node ./tests/index.js",
-    "copy-to":"sh ./copy.sh"
+    "copy-to": "sh ./copy.sh"
   },
   "repository": {
     "type": "git",
