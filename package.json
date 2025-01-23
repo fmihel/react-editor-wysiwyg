@@ -14,7 +14,7 @@
     "test": "mocha \"./tests/**/*-test.js\" --reporter min",
     "test-watch": "mocha \"./tests/**/*-test.js\" --reporter min --watch",
     "test-browser": "node ./tests/index.js",
-    "copy-to": "cp ./dist/Editor.js D:\\work\\windeco\\windeco.ru\\main\\node_modules\\react-editor-wysiwyg\\dist\\Editor.js"
+    "copy-to":"sh ./copy.sh"
   },
   "repository": {
     "type": "git",

@@ -42,7 +42,7 @@ const defaultTagToData = (o) => {
     } if (o.tag === 'BR') {
         return { name: 'br' };
     }
-    if (!isEmpty(o.value)) return { name: 'span', value: o.value.replace };
+    if (!isEmpty(o.value)) return { name: 'span', value: o.value, ...props(o) };
 
     return false;
 };
@@ -51,23 +51,29 @@ class Html {
     toData(html, tagToData = defaultTagToData) {
         const out = [];
         const list = this._parsing(html, tagToData);
-        list.map((it) => {
-            const { name, value, attrs } = it;
-            if (name === 'span') {
-                value.split('').map((char) => {
-                    if (char === SPACE_CHAR) {
-                        out.push(EditorTagClass.createData('space', { ...attrs }));
-                    } else {
-                        out.push(EditorTagClass.createData('char', { value: char, ...attrs }));
-                    }
-                });
-            } else {
-                out.push(EditorTagClass.createData(name, {
-                    value,
-                    ...attrs,
-                }));
-            }
-        });
+        try {
+            list.map((it) => {
+                const { name, value = '', attrs } = it;
+                if (name === 'span') {
+                    value.split('').map((char) => {
+                        if (char === SPACE_CHAR) {
+                            out.push(EditorTagClass.createData('space', { ...attrs }));
+                        } else {
+                            out.push(EditorTagClass.createData('char', { value: char, ...attrs }));
+                        }
+                    });
+                } else {
+                    out.push(EditorTagClass.createData(name, {
+                        value,
+                        ...attrs,
+                    }));
+                }
+            });
+        } catch (error) {
+            console.log('-----------------------------');
+            console.log(html);
+            console.log(list);
+        }
 
         return out;
     }
