@@ -10,15 +10,8 @@ const HTML = `
 Cъешь ещё этих мягких <span style="color:red;font-weight:bold">ф</span>ранцузских булок, да выпей чаю!
 <br>The quick brown <a href="https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0">fox</a> jumps over the lazy dog.
 `;
-const TEST = `<div style="font-size:1.25rem;line-height:1.3rem;padding-bottom:24px">Ленинградская область<br> Псковская область<br> Республика Карелия</div>
-
-СПБ, п. Шушары, ул. Образцовая, д. 5, к. 2, пом. 11Н<br>
-+7 (812) 934-88-87<br>
-+7 (911) 177-88-89<br>
-Windecoko@yandex.ru`;
-// const HTML = `12 `;
 function App() {
-    const [data1, setData1] = useState(Html.toData(TEST));
+    const [data1, setData1] = useState(Html.toData(HTML));
     // const [data2, setData2] = useState(Html.toData('Text in other Editor'));
     const [code, setCode] = useState('');
     const [page, setPage] = useState(1);

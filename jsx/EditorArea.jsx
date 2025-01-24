@@ -325,27 +325,9 @@ function EditorArea({
             if (o.keyCode === KEY_CODE_UP && cursor) { // to up
                 no_handler = false;
 
-                // let move = dataHash.first();
-                let next = dataHash.nearest(cursor, (it) => isBr(it));// начало текущей строки строки
-                let move = false;
-                if (next) {
-                    let off = dataHash.delta(cursor, (it) => isBr(it));// кол-во до левого края
-                    let is_first_line = false;
-                    next = dataHash.nearest(next.id, (it, i) => {
-                        is_first_line = (i === 0);
-                        return isBr(it) || i === 0;
-                    });// начало пред предыдущей строки
-                    if (next) {
-                        next = dataHash.next(next.id);
-                        off = is_first_line ? off - 1 : off;
-                        move = dataHash.find((it) => {
-                            off--;
-                            return (isBr(it) || off < 0);
-                        }, dataHash.index(next.id), 1);
-                        if (move) {
-                            setCursor(move.id);
-                        }
-                    }
+                const move = CursorHandler.moveUp(cursor, dataHash);
+                if (move) {
+                    setCursor(move.id);
                 }
                 setShiftSelect(o.shiftKey ? CursorHandler.moveLeft(shiftSelect, cursor, move, dataHash) : []);
             }
@@ -353,30 +335,9 @@ function EditorArea({
             if (o.keyCode === KEY_CODE_DOWN && cursor) { // to down
                 no_handler = false;
 
-                const cursorItem = dataHash.itemById(cursor);
-                let next = isBr(cursorItem) ? cursorItem : dataHash.nearest(cursor, (it) => isBr(it), false);// след строка
-                let move = false;
-                if (next) {
-                    let first = false;
-                    let off = dataHash.delta(cursor, (it, i) => {
-                        first = (i === 0);
-                        return isBr(it) || first;
-                    });// кол-во до левого края
-                    if (first) {
-                        off++;
-                    }
-                    next = dataHash.next(next.id);
-
-                    if (next) {
-                        move = dataHash.find((it, i) => {
-                            off--;
-                            return (isBr(it) || off < 0 || i === (data.length - 1));
-                        }, dataHash.index(next.id), 1);
-
-                        if (move) {
-                            setCursor(move.id);
-                        }
-                    }
+                const move = CursorHandler.moveDown(cursor, dataHash);
+                if (move) {
+                    setCursor(move.id);
                 }
 
                 setShiftSelect(o.shiftKey ? CursorHandler.moveRight(shiftSelect, cursor, move, dataHash) : []);

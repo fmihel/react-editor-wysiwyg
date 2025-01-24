@@ -1,3 +1,7 @@
+/* eslint-disable camelcase */
+import { isBr } from '../EditorTags/Br/Br.jsx';
+import DOM from './DOM.js';
+
 class CursorHandler {
     static moveLeft(shiftSelect, cursor, prev, dataHash) {
         let list = [];
@@ -41,6 +45,55 @@ class CursorHandler {
             list = shiftSelect;
         }
         return list;
+    }
+
+    static moveUp(cursor, dataHash) {
+        let move = false;
+        const start_line = dataHash.nearest(cursor, (it) => isBr(it));// начало текущей строки строки
+        if (start_line) {
+            let off = dataHash.delta(cursor, (it) => isBr(it));// кол-во до левого края
+
+            const next_line_start = dataHash.nearest(start_line.id, (it) => isBr(it));
+
+            if (next_line_start) {
+                move = dataHash.nearest(next_line_start.id, (it) => {
+                    off--;
+                    return off < 0 || isBr(it);
+                }, false);
+            } else { // первая строка
+                move = dataHash.find((it, i) => {
+                    off--;
+                    return off < 0 || isBr(it);
+                });
+            }
+        }
+
+        return move;
+    }
+
+    static moveDown(cursor, dataHash) {
+        const cursorItem = dataHash.itemById(cursor);
+        let next = isBr(cursorItem) ? cursorItem : dataHash.nearest(cursor, (it) => isBr(it), false);// след строка
+        let move = false;
+        if (next) {
+            let first = false;
+            let off = dataHash.delta(cursor, (it, i) => {
+                first = (i === 0);
+                return isBr(it) || first;
+            });// кол-во до левого края
+            if (first) {
+                off++;
+            }
+            next = dataHash.next(next.id);
+
+            if (next) {
+                move = dataHash.find((it, i) => {
+                    off--;
+                    return (isBr(it) || off < 0 || i === (dataHash.data.length - 1));
+                }, dataHash.index(next.id), 1);
+            }
+        }
+        return move;
     }
 }
 
