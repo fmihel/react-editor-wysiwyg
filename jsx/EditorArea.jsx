@@ -27,7 +27,7 @@ import EditorTagClass from './EditorTags/EditorTagClass.js';
 import { isBr } from './EditorTags/Br/Br.jsx';
 import eventListener from './js/eventListener.js';
 import clipboard from './Data/clipboard.js';
-import CursorHandler from './js/cursorHandler.js';
+import CursorHandler from './js/CursorHandler.js';
 import interval from './js/interval.js';
 import uHistory from './js/history.js';
 
