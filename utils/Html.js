@@ -48,7 +48,13 @@ const defaultTagToData = (o) => {
 };
 
 class Html {
-    toData(html, tagToData = defaultTagToData) {
+    toData(html, params = {}) {
+        const { tagToData, editorTagClass } = {
+            tagToData: defaultTagToData,
+            editorTagClass: EditorTagClass,
+            ...params,
+        };
+
         const out = [];
         const list = this._parsing(html, tagToData);
         try {
@@ -57,13 +63,13 @@ class Html {
                 if (name === 'span') {
                     value.split('').map((char) => {
                         if (char === SPACE_CHAR) {
-                            out.push(EditorTagClass.createData('space', { ...attrs }));
+                            out.push(editorTagClass.createData('space', { ...attrs }));
                         } else {
-                            out.push(EditorTagClass.createData('char', { value: char, ...attrs }));
+                            out.push(editorTagClass.createData('char', { value: char, ...attrs }));
                         }
                     });
                 } else {
-                    out.push(EditorTagClass.createData(name, {
+                    out.push(editorTagClass.createData(name, {
                         value,
                         ...attrs,
                     }));

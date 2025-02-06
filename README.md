@@ -1,4 +1,4 @@
-# react-editor-wysiwyg v0.2.x
+# react-editor-wysiwyg v1.x
 
 Simple wysiwyg editor on React .
 
@@ -262,5 +262,13 @@ import React from 'react';
 import { EditorTagClass } from 'react-editor-wysiwyg';
 //register Block
 EditorTagClass.add([{block:Block}]);
+```
+
+for use in Html.toData utils
+```jsx
+import { EditorTagClass } from 'react-editor-wysiwyg';
+import Html from 'react-editor-wysiwyg/utils/Html';
+
+let data = Html.toData('<span>text</span>',{editorTagClass:EditorTagClass});
 ```
 
