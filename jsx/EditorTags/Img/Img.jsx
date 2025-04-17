@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import get from '../../js/get.js';
 import Prop from './Prop.jsx';
 import dialog from '../../EditorDialog.jsx';
@@ -17,6 +17,9 @@ function Img({
     onClick,
     onChange,
 }) {
+    const [title, setTitle] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const ref = useRef();
     const doClick = (sender) => {
         if (onClick) {
             onClick({ id, type, sender });
@@ -40,9 +43,21 @@ function Img({
         o.stopPropagation();
         // o.preventDefault();
     };
+
+    const onAfterLoad = () => {
+        setIsLoading(true);
+    };
+
+    useEffect(() => {
+        if (isLoading && ref && ref.current && src) {
+            setTitle(`${src.split(/(\\|\/)/g).pop()} ( ${ref.current.naturalWidth} x ${ref.current.naturalHeight} )`);
+        }
+    }, [isLoading, ref, src]);
+
     return (
         <>
             <img
+                ref ={ref}
                 id={id}
                 alt={alt}
                 style={{ ...style }}
@@ -50,6 +65,8 @@ function Img({
                 onMouseDown={doClick}
                 onDoubleClick={onDoubleClick}
                 src={src}
+                title={title}
+                onLoad={onAfterLoad}
             />
         </>
     );
