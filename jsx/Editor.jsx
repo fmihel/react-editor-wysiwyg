@@ -1,5 +1,6 @@
 import React, {
     useState, Children, cloneElement, useEffect, useReducer,
+    forwardRef,
 } from 'react';
 import EditorPanel from './EditorPanel.jsx';
 import EditorArea from './EditorArea.jsx';
@@ -10,14 +11,14 @@ import demoData from './js/demoData.js';
 // import { DIALOG_ID } from './EditorDialog/consts.js';
 import EditorDialog from './EditorDialog.jsx';
 
-function Editor({
+const Editor = forwardRef(({
     id,
     className,
     style = {},
     data = demoData,
     onChange,
     children,
-}) {
+}, fRef) => {
     const [selects, setSelects] = useState([]);
     const [outerSelects, setOuterSelects] = useState([]);
     const [cursor, setCursor] = useState(false);
@@ -67,6 +68,7 @@ function Editor({
                 }
             </div>
             <EditorArea
+                ref = {fRef}
                 data = {data}
                 selects={outerSelects}
                 onChange={doChange}
@@ -76,6 +78,6 @@ function Editor({
             <EditorDialog/>
         </div>
     );
-}
+});
 
 export default Editor;

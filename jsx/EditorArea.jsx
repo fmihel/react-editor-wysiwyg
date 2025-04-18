@@ -4,6 +4,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
 import React, {
+    forwardRef,
     Profiler, useCallback, useEffect, useRef, useState,
 } from 'react';
 import _ from 'lodash';
@@ -45,15 +46,15 @@ const lockKey = (handler) => {
     }
 };
 
-function EditorArea({
+const EditorArea = forwardRef(({
     data: outerData,
     selects: outerSelect = [],
     onChange = undefined,
     onSelected = undefined,
     onCursor = undefined,
 
-}) {
-    const ref = useRef();
+}, fRef) => {
+    const ref = fRef || useRef();
     const [hash, setHash] = useState();
     const [data, setData] = useState([]);
     const [cursor, setCursor] = useState(false);
@@ -427,6 +428,6 @@ function EditorArea({
             {/* </Profiler> */}
         </>
     );
-}
+});
 
 export default EditorArea;
